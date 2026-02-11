@@ -47,6 +47,7 @@ public class BoxMover : MonoBehaviour{
 
       if (enemy != null){
         currentIntent = new AttackIntent(enemy);
+        
       }
       else{
         Vector3 worldClick = GetMouseWorld();
