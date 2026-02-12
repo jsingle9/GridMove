@@ -43,11 +43,13 @@ public class BoxMover : MonoBehaviour{
       if (Camera.main == null)
       return;
 
+      Debug.Log("Mouse clicked");
       Enemy enemy = GetClickedEnemy();
 
       if (enemy != null){
         currentIntent = new AttackIntent(enemy);
-        
+        //Debug.Log("enemy clicked, attack!");
+
       }
       else{
         Vector3 worldClick = GetMouseWorld();

@@ -15,10 +15,9 @@ public class IntentResolver
     public List<GridNode> Resolve(
         Intent intent,
         GridNode actorNode
-    )
-    {
-        if (intent is MoveIntent move)
-        {
+    ){
+        if(intent is MoveIntent move){
+            Debug.Log("intent = move intent");
             GridNode target = grid.GetNodeFromWorld(
                 grid.GridToWorld(move.targetCell)
             );
@@ -26,8 +25,8 @@ public class IntentResolver
             return pathfinder.FindPath(actorNode, target);
         }
 
-        if (intent is AttackIntent attack)
-        {
+        if(intent is AttackIntent attack){
+            Debug.Log("intent = attack intent");
             return ResolveAttackMove(actorNode, attack.target);
         }
 
@@ -41,8 +40,8 @@ public class IntentResolver
           GridNode enemyNode =
               grid.GetNodeFromWorld(enemy.transform.position);
 
-              foreach (GridNode neighbor in grid.GetNeighbors(enemyNode)){
-              if (!neighbor.walkable) continue;
+              foreach(GridNode neighbor in grid.GetNeighbors(enemyNode)){
+              if(!neighbor.walkable) continue;
 
               return pathfinder.FindPath(actorNode, neighbor);
           }
