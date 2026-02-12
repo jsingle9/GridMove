@@ -35,19 +35,17 @@ public class IntentResolver
     }
 
     List<GridNode> ResolveAttackMove(
-        GridNode actorNode,
-        Enemy enemy
-    )
-    {
-        GridNode enemyNode =
-            grid.GetNodeFromWorld(enemy.transform.position);
+          GridNode actorNode,
+          Enemy enemy
+        ){
+          GridNode enemyNode =
+              grid.GetNodeFromWorld(enemy.transform.position);
 
-        foreach (GridNode neighbor in grid.GetNeighbors(enemyNode))
-        {
-            if (!neighbor.walkable) continue;
+              foreach (GridNode neighbor in grid.GetNeighbors(enemyNode)){
+              if (!neighbor.walkable) continue;
 
-            return pathfinder.FindPath(actorNode, neighbor);
-        }
+              return pathfinder.FindPath(actorNode, neighbor);
+          }
 
         return null;
     }
