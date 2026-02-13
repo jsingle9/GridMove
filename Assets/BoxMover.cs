@@ -31,17 +31,17 @@ public class BoxMover : MonoBehaviour{
 
     void Update()
     {
-        HandleInput();
+        //HandleInput();
         HandleMovement();
     }
 
     void HandleInput(){
       // Guard clause: bail out early
-      if (!Mouse.current.leftButton.wasPressedThisFrame || isMoving)
-      return;
+      //if (!Mouse.current.leftButton.wasPressedThisFrame || isMoving)
+      //return;
 
       if (Camera.main == null)
-      return;
+        return;
 
       Debug.Log("Mouse clicked");
       Enemy enemy = GetClickedEnemy();
@@ -109,7 +109,8 @@ public class BoxMover : MonoBehaviour{
   }
 
   public Enemy GetClickedEnemy(){
-      if (Camera.main == null) return null;
+      if(Camera.main == null)
+        return null;
 
       Ray ray = Camera.main.ScreenPointToRay(
           Mouse.current.position.ReadValue()
@@ -138,6 +139,33 @@ public class BoxMover : MonoBehaviour{
 
     pathIndex = 0;
     SetNextTarget();
+  }
+
+  public void HandleLeftClick(){
+
+    Debug.Log("HandleLeftClick called");
+    if(isMoving)
+      return;
+
+    //if(currentIntent != null)
+      //return;
+
+    Enemy enemy = GetClickedEnemy();
+
+    if(enemy != null){
+      currentIntent = new AttackIntent(enemy);
+
+    }
+    else{
+      Vector3 worldClick = GetMouseWorld();
+      Vector3Int gridPos = grid.WorldToGrid(worldClick);
+
+      if (!grid.IsWalkable(gridPos))
+          return;
+
+      currentIntent = new MoveIntent(gridPos);
+    }
+    ResolveIntent();
   }
 
 }
