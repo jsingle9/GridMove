@@ -48,4 +48,5 @@ public class IntentResolver
 
         return null;
     }
+
 }

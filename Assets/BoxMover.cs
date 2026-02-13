@@ -33,6 +33,7 @@ public class BoxMover : MonoBehaviour{
     {
         //HandleInput();
         HandleMovement();
+        CheckIntentCompletion();
     }
 
     void HandleInput(){
@@ -166,6 +167,15 @@ public class BoxMover : MonoBehaviour{
       currentIntent = new MoveIntent(gridPos);
     }
     ResolveIntent();
+  }
+
+  void CheckIntentCompletion(){
+    if(currentIntent == null)
+        return;
+
+    if(!isMoving){
+      currentIntent = null;
+    }
   }
 
 }
