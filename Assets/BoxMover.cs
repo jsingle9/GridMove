@@ -1,181 +1,110 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
-public class BoxMover : MonoBehaviour{
+public class BoxMover : MonoBehaviour
+{
     [SerializeField] GridController grid;
-    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] UnitMover mover;
+
     IntentResolver resolver;
     Intent currentIntent;
 
-    Pathfinder pathfinder;
-
-    List<GridNode> currentPath;
-    int pathIndex;
-
-    Vector3 targetPosition;
-    bool isMoving;
-
     void Start()
     {
+        mover = GetComponent<UnitMover>();
+        mover.Initialize(grid);
+
         resolver = new IntentResolver(grid);
+
         if (grid == null)
         {
             Debug.LogError("BoxMover has no GridController assigned!", this);
             return;
         }
-
-        pathfinder = new Pathfinder(grid);
-        targetPosition = transform.position;
     }
 
     void Update()
     {
-        //HandleInput();
-        HandleMovement();
+        mover.Tick();
         CheckIntentCompletion();
     }
 
-    void HandleInput(){
-      // Guard clause: bail out early
-      //if (!Mouse.current.leftButton.wasPressedThisFrame || isMoving)
-      //return;
+    public void HandleLeftClick()
+    {
+        if (mover.IsMoving)
+            return;
 
-      if (Camera.main == null)
-        return;
+        Enemy enemy = GetClickedEnemy();
 
-      Debug.Log("Mouse clicked");
-      Enemy enemy = GetClickedEnemy();
+        if (enemy != null)
+        {
+            currentIntent = new AttackIntent(enemy);
+        }
+        else
+        {
+            Vector3 worldClick = GetMouseWorld();
+            Vector3Int gridPos = grid.WorldToGrid(worldClick);
 
-      if (enemy != null){
-        currentIntent = new AttackIntent(enemy);
-        //Debug.Log("enemy clicked, attack!");
+            if (!grid.IsWalkable(gridPos))
+                return;
 
-      }
-      else{
-        Vector3 worldClick = GetMouseWorld();
-        Vector3Int gridPos = grid.WorldToGrid(worldClick);
+            currentIntent = new MoveIntent(gridPos);
+        }
 
-        if (!grid.IsWalkable(gridPos))
-          return;
+        ResolveIntent();
+    }
 
-        currentIntent = new MoveIntent(gridPos);
-      }
+    void ResolveIntent()
+    {
+        if (currentIntent == null)
+            return;
 
-      ResolveIntent();
+        GridNode startNode = grid.GetNodeFromWorld(transform.position);
+        if (startNode == null)
+            return;
+
+        List<GridNode> path = resolver.Resolve(currentIntent, startNode);
+
+        if (path == null || path.Count == 0)
+            return;
+
+        mover.StartPath(path);
+    }
+
+    void CheckIntentCompletion()
+    {
+        if (currentIntent != null && !mover.IsMoving)
+            currentIntent = null;
     }
 
     Vector3 GetMouseWorld()
     {
-      if (Camera.main == null)
-          return Vector3.zero;
+        if (Camera.main == null)
+            return Vector3.zero;
 
-      Vector3 mousePos = Mouse.current.position.ReadValue();
-      mousePos.z = -Camera.main.transform.position.z;
+        Vector3 mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+        mousePos.z = -Camera.main.transform.position.z;
 
-      Vector3 world = Camera.main.ScreenToWorldPoint(mousePos);
-      world.z = 0;
+        Vector3 world = Camera.main.ScreenToWorldPoint(mousePos);
+        world.z = 0;
 
-      return world;
+        return world;
     }
 
+    Enemy GetClickedEnemy()
+    {
+        if (Camera.main == null)
+            return null;
 
-  void HandleMovement(){
-        if (!isMoving) return;
-
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            moveSpeed * Time.deltaTime
+        Ray ray = Camera.main.ScreenPointToRay(
+            UnityEngine.InputSystem.Mouse.current.position.ReadValue()
         );
 
-        if (Vector3.Distance(transform.position, targetPosition) < 0.01f){
-            transform.position = targetPosition;
-            pathIndex++;
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
-            if (pathIndex >= currentPath.Count){
-                isMoving = false;
-                currentPath = null;
-            }
-            else{
-                SetNextTarget();
-            }
-      }
-  }
+        if (hit.collider == null)
+            return null;
 
-  void SetNextTarget(){
-        GridNode nextNode = currentPath[pathIndex];
-        targetPosition = grid.GridToWorld(nextNode.gridPos);
-        isMoving = true;
-  }
-
-  public Enemy GetClickedEnemy(){
-      if(Camera.main == null)
-        return null;
-
-      Ray ray = Camera.main.ScreenPointToRay(
-          Mouse.current.position.ReadValue()
-      );
-
-      RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
-      if(hit.collider == null)
-        return null;
-
-    return hit.collider.GetComponent<Enemy>();
-  }
-
-  void ResolveIntent(){
-    if (currentIntent == null)
-        return;
-
-    GridNode startNode = grid.GetNodeFromWorld(transform.position);
-    if (startNode == null)
-        return;
-
-    currentPath = resolver.Resolve(currentIntent, startNode);
-
-    if (currentPath == null || currentPath.Count == 0)
-        return;
-
-    pathIndex = 0;
-    SetNextTarget();
-  }
-
-  public void HandleLeftClick(){
-
-    Debug.Log("HandleLeftClick called");
-    if(isMoving)
-      return;
-
-    //if(currentIntent != null)
-      //return;
-
-    Enemy enemy = GetClickedEnemy();
-
-    if(enemy != null){
-      currentIntent = new AttackIntent(enemy);
-
+        return hit.collider.GetComponent<Enemy>();
     }
-    else{
-      Vector3 worldClick = GetMouseWorld();
-      Vector3Int gridPos = grid.WorldToGrid(worldClick);
-
-      if (!grid.IsWalkable(gridPos))
-          return;
-
-      currentIntent = new MoveIntent(gridPos);
-    }
-    ResolveIntent();
-  }
-
-  void CheckIntentCompletion(){
-    if(currentIntent == null)
-        return;
-
-    if(!isMoving){
-      currentIntent = null;
-    }
-  }
-
 }
