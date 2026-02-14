@@ -17,11 +17,11 @@ public class Enemy : MonoBehaviour{
     dynamicObstacle.UpdateCell(transform.position);
   }
 
-  public void OnMouseDown(){
-    Debug.Log("OnMouseDown Fired");
-
-    // Tell the game this is an attack target
-    // This might later call an IntentManager or CombatManager
-
+  void OnTriggerEnter2D(Collider2D other){
+    Debug.Log("Trigger entered by: " + other.name);
+    if(other.GetComponent<BoxMover>()){
+        GameStateManager.Instance.EnterCombat();
+    }
   }
+
 }

@@ -29,33 +29,30 @@ public class BoxMover : MonoBehaviour
         CheckIntentCompletion();
     }
 
-    public void HandleLeftClick()
-    {
-        if (mover.IsMoving)
-            return;
+    public void HandleLeftClick(){
+      Debug.Log("HandleLeftClick - Current State: " +
+          GameStateManager.Instance.CurrentState);
 
-        Enemy enemy = GetClickedEnemy();
+     Enemy enemy = GetClickedEnemy();
 
-        if (enemy != null)
-        {
-            currentIntent = new AttackIntent(enemy);
-        }
-        else
-        {
-            Vector3 worldClick = GetMouseWorld();
-            Vector3Int gridPos = grid.WorldToGrid(worldClick);
+     // If enemy clicked → always start combat
+     if(enemy != null){
+         Debug.Log("Enemy clicked - entering combat");
 
-            if (!grid.IsWalkable(gridPos))
-                return;
-
-            currentIntent = new MoveIntent(gridPos);
-        }
-
-        ResolveIntent();
+         GameStateManager.Instance.EnterCombat();
+         currentIntent = new AttackIntent(enemy);
+         ResolveIntent();
+         return;
+      }
+      if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+          HandleExploreClick();
+      }
+      else if(GameStateManager.Instance.CurrentState == GameState.Combat){
+          HandleCombatClick();
+      }
     }
 
-    void ResolveIntent()
-    {
+    void ResolveIntent(){
         if (currentIntent == null)
             return;
 
@@ -73,8 +70,19 @@ public class BoxMover : MonoBehaviour
 
     void CheckIntentCompletion()
     {
-        if (currentIntent != null && !mover.IsMoving)
-            currentIntent = null;
+      if(currentIntent == null)
+        return;
+
+      if(!mover.IsMoving)
+      {
+        if (currentIntent is AttackIntent attack){
+            Debug.Log("Attack triggered on: " + attack.target.name);
+            GameStateManager.Instance.EnterCombat();
+            // Later: call CombatManager.ResolveAttack(...)
+        }
+
+      currentIntent = null;
+  }
     }
 
     Vector3 GetMouseWorld()
@@ -91,8 +99,7 @@ public class BoxMover : MonoBehaviour
         return world;
     }
 
-    Enemy GetClickedEnemy()
-    {
+    Enemy GetClickedEnemy(){
         if (Camera.main == null)
             return null;
 
@@ -107,4 +114,42 @@ public class BoxMover : MonoBehaviour
 
         return hit.collider.GetComponent<Enemy>();
     }
+
+    void HandleExploreClick(){
+      if(mover.IsMoving)
+          return;
+
+      Vector3 worldClick = GetMouseWorld();
+      Vector3Int gridPos = grid.WorldToGrid(worldClick);
+
+      if(!grid.IsWalkable(gridPos))
+        return;
+
+      currentIntent = new MoveIntent(gridPos);
+      ResolveIntent();
+    }
+
+    void HandleCombatClick(){
+      if(mover.IsMoving)
+        return;
+
+      Enemy enemy = GetClickedEnemy();
+
+      if (enemy != null){
+        currentIntent = new AttackIntent(enemy);
+      }
+      else{
+        Vector3 worldClick = GetMouseWorld();
+        Vector3Int gridPos = grid.WorldToGrid(worldClick);
+
+        if (!grid.IsWalkable(gridPos))
+            return;
+
+        currentIntent = new MoveIntent(gridPos);
+      }
+
+      ResolveIntent();
+    }
+
+
 }
