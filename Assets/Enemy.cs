@@ -28,11 +28,17 @@ public class Enemy : MonoBehaviour, ICombatant{
   public void StartTurn(){
     Debug.Log("Enemy turn started");
     // AI combat logic goes here
+    Invoke(nameof(FinishTurn), 1f);
   }
 
   public void EndTurn(){
     Debug.Log("Enemy turn ended");
     // pass control back to initiative or combat manager here
+
+  }
+
+  void FinishTurn(){
+    CombatManager.Instance.EndTurn();
   }
 
 }
