@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BoxMover : MonoBehaviour
+public class BoxMover : MonoBehaviour, ICombatant
 {
     [SerializeField] GridController grid;
     [SerializeField] UnitMover mover;
 
     IntentResolver resolver;
     Intent currentIntent;
+    public int Initiative { get; set; }
 
     void Start()
     {
@@ -16,7 +17,7 @@ public class BoxMover : MonoBehaviour
 
         resolver = new IntentResolver(grid);
 
-        if (grid == null)
+        if(grid == null)
         {
             Debug.LogError("BoxMover has no GridController assigned!", this);
             return;
@@ -53,32 +54,36 @@ public class BoxMover : MonoBehaviour
     }
 
     void ResolveIntent(){
-        if (currentIntent == null)
+        if(currentIntent == null)
             return;
 
         GridNode startNode = grid.GetNodeFromWorld(transform.position);
-        if (startNode == null)
+        if(startNode == null)
             return;
 
         List<GridNode> path = resolver.Resolve(currentIntent, startNode);
 
-        if (path == null || path.Count == 0)
+        if(path == null || path.Count == 0)
             return;
 
         mover.StartPath(path);
     }
 
-    void CheckIntentCompletion()
-    {
+    void CheckIntentCompletion(){
       if(currentIntent == null)
         return;
 
-      if(!mover.IsMoving)
-      {
+      if(!mover.IsMoving){
         if (currentIntent is AttackIntent attack){
             Debug.Log("Attack triggered on: " + attack.target.name);
             GameStateManager.Instance.EnterCombat();
-            // Later: call CombatManager.ResolveAttack(...)
+            // Start initiative combat
+            List<ICombatant> participants = new List<ICombatant>();
+
+            participants.Add(GetComponent<ICombatant>());
+            participants.Add(attack.target.GetComponent<ICombatant>());
+
+            CombatManager.Instance.StartCombat(participants);
         }
 
       currentIntent = null;
@@ -151,5 +156,13 @@ public class BoxMover : MonoBehaviour
       ResolveIntent();
     }
 
+    public void StartTurn(){
+        Debug.Log("Player turn started");
+        // AI logic here later
+    }
 
+    public void EndTurn(){
+        Debug.Log("Player turn ended");
+        // Disable input
+    }
 }
