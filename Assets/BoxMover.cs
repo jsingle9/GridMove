@@ -158,11 +158,16 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     public void StartTurn(){
         Debug.Log("Player turn started");
-        // AI logic here later
+
+        Invoke(nameof(FinishTurn), 1f);
     }
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
         // Disable input
+    }
+
+    void FinishTurn(){
+      CombatManager.Instance.EndTurn();
     }
 }
