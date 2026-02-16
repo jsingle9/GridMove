@@ -82,20 +82,40 @@ public class BoxMover : MonoBehaviour, ICombatant
         return;
 
       if(!mover.IsMoving){
-        if (currentIntent is AttackIntent attack){
-            Debug.Log("Attack triggered on: " + attack.target.name);
-            GameStateManager.Instance.EnterCombat();
-            // Start initiative combat
-            List<ICombatant> participants = new List<ICombatant>();
 
-            participants.Add(GetComponent<ICombatant>());
-            participants.Add(attack.target.GetComponent<ICombatant>());
+        if(currentIntent is AttackIntent attack){
+          Debug.Log("Attack resolved → entering combat");
 
-            CombatManager.Instance.StartCombat(participants);
-        }
+          GameStateManager.Instance.EnterCombat();
 
-      currentIntent = null;
-  }
+          float combatRadius = 4f;
+
+          List<ICombatant> participants = new List<ICombatant>();
+
+          // Always add player
+          participants.Add(GetComponent<ICombatant>());
+
+          // Find nearby enemies
+          Collider2D[] hits = Physics2D.OverlapCircleAll(
+            transform.position,
+            combatRadius
+          );
+
+        foreach(Collider2D hit in hits){
+          Enemy enemy = hit.GetComponent<Enemy>();
+          if(enemy == null) continue;
+
+          ICombatant combatant = enemy.GetComponent<ICombatant>();
+            if(combatant != null && !participants.Contains(combatant)){
+              participants.Add(combatant);
+            }
+      }
+
+        CombatManager.Instance.StartCombat(participants);
+      }
+
+        currentIntent = null;
+      }
     }
 
     Vector3 GetMouseWorld()
@@ -113,7 +133,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     Enemy GetClickedEnemy(){
-        if (Camera.main == null)
+        if(Camera.main == null)
             return null;
 
         Ray ray = Camera.main.ScreenPointToRay(
@@ -177,5 +197,10 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void FinishTurn(){
       CombatManager.Instance.EndTurn();
+    }
+
+    void OnDrawGizmosSelected(){
+      Gizmos.color = Color.green;
+      Gizmos.DrawWireSphere(transform.position, 4f);
     }
 }

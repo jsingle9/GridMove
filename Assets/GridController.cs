@@ -104,8 +104,7 @@ public class GridController : MonoBehaviour
           Vector3Int.right
       };
 
-      foreach (var dir in directions)
-      {
+      foreach(var dir in directions){
           Vector3Int checkPos = node.gridPos + dir;
 
           if (!InBounds(checkPos)) continue;
@@ -116,10 +115,10 @@ public class GridController : MonoBehaviour
           neighbors.Add(grid[x, y]);
       }
 
-    return neighbors;
-}
+      return neighbors;
+    }
 
-    void OnDrawGizmos(){
+    /*void OnDrawGizmos(){
       Gizmos.color = Color.red;
 
       // start start main grid drawing WorldToViewportPoint
@@ -129,6 +128,6 @@ public class GridController : MonoBehaviour
                 new Vector3(1f, 1f, 0)); //Each cell size is 1
           }
       }
-    }
+    }*/
 
 }
