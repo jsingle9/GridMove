@@ -40,4 +40,8 @@ public class CombatManager : MonoBehaviour{
 
         combatants[currentIndex].StartTurn();
   }
+
+  public bool IsPlayersTurn(ICombatant combatant){
+    return combatants[currentIndex] == combatant;
+  }
 }
