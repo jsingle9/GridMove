@@ -31,6 +31,14 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     public void HandleLeftClick(){
+
+      // locks player out of doing stuff if not its turn in combat
+      // by checking gamestate
+      if(GameStateManager.Instance.CurrentState == GameState.Combat){
+        if (!CombatManager.Instance.IsPlayersTurn(this))
+          return;
+      }
+
       Debug.Log("HandleLeftClick - Current State: " +
           GameStateManager.Instance.CurrentState);
 
