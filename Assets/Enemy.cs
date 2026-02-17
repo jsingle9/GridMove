@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour, ICombatant{
   public int Initiative { get; set; }
   public bool HasMove { get; set; }
   public bool HasAction { get; set; }
+  public bool HasBonusAction { get; set; }
 
   void Awake(){
     dynamicObstacle = GetComponent<DynamicObstacle>();
