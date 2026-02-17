@@ -9,6 +9,8 @@ public class BoxMover : MonoBehaviour, ICombatant
     IntentResolver resolver;
     Intent currentIntent;
     public int Initiative { get; set; }
+    public bool HasMove { get; set; }
+    public bool HasAction { get; set; }
 
     void Start()
     {
@@ -31,7 +33,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         CheckForProximityCombat();
     }
 
-    public void HandleLeftClick(){
+  /*  public void HandleLeftClick(){
 
       // locks player out of doing stuff if not its turn in combat
       // by checking gamestate
@@ -60,7 +62,67 @@ public class BoxMover : MonoBehaviour, ICombatant
       else if(GameStateManager.Instance.CurrentState == GameState.Combat){
           HandleCombatClick();
       }
+    } */
+    public void HandleLeftClick()
+    {
+    // Only current combatant can act
+    if(GameStateManager.Instance.CurrentState == GameState.Combat){
+        if(!CombatManager.Instance.IsPlayersTurn(this))
+            return;
+
+        // Check if player has actions remaining
+        if(!HasMove && !HasAction){
+            Debug.Log("No actions left");
+            return;
+        }
+      }
+
+      Debug.Log("HandleLeftClick - Current State: " +
+        GameStateManager.Instance.CurrentState);
+
+      Enemy enemy = GetClickedEnemy();
+
+    // attack! Clicking enemy
+      if(enemy != null){
+        Debug.Log("Enemy clicked");
+
+        // If NOT already in combat → start combat
+        if (GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+            Debug.Log("Entering combat from attack");
+            GameStateManager.Instance.EnterCombat();
+        }
+
+        // In combat this becomes your action
+        if(GameStateManager.Instance.CurrentState == GameState.Combat){
+            if(!HasAction){
+                Debug.Log("Action already used");
+                return;
+            }
+
+            HasAction = false;
+        }
+
+        currentIntent = new AttackIntent(enemy);
+        ResolveIntent();
+        return;
+      }
+
+    // 🚶 Movement
+      if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+          HandleExploreClick();
+      }
+      else if(GameStateManager.Instance.CurrentState == GameState.Combat){
+          if(!HasMove){
+              Debug.Log("Move already used");
+              return;
+          }
+
+          HasMove = false;
+          HandleCombatClick();
+
+      }
     }
+
 
     void ResolveIntent(){
         if(currentIntent == null)
@@ -117,6 +179,13 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         currentIntent = null;
       }
+      if(GameStateManager.Instance.CurrentState == GameState.Combat){
+        if(!HasMove && !HasAction && !mover.IsMoving && currentIntent == null){
+            Debug.Log("Player turn complete → ending turn");
+            FinishTurn();
+        }
+      }
+
     }
 
     Vector3 GetMouseWorld()
@@ -188,7 +257,9 @@ public class BoxMover : MonoBehaviour, ICombatant
     public void StartTurn(){
         Debug.Log("Player turn started");
 
-        Invoke(nameof(FinishTurn), 1f);
+        HasMove = true;
+        HasAction = true;
+        //Invoke(nameof(FinishTurn), 1f);
     }
 
     public void EndTurn(){
