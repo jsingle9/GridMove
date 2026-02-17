@@ -4,6 +4,8 @@ public class Enemy : MonoBehaviour, ICombatant{
 
   DynamicObstacle dynamicObstacle;
   public int Initiative { get; set; }
+  public bool HasMove { get; set; }
+  public bool HasAction { get; set; }
 
   void Awake(){
     dynamicObstacle = GetComponent<DynamicObstacle>();
@@ -27,6 +29,8 @@ public class Enemy : MonoBehaviour, ICombatant{
 
   public void StartTurn(){
     Debug.Log("Enemy turn started");
+    HasMove = true;
+    HasAction = true;
     // AI combat logic goes here
     Invoke(nameof(FinishTurn), 1f);
   }
