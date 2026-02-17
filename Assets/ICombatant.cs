@@ -6,4 +6,5 @@ public interface ICombatant{
 
     bool HasMove { get; set; }
     bool HasAction { get; set; }
+    bool HasBonusAction { get; set; }
 }

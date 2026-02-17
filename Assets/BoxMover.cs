@@ -11,6 +11,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
+    public bool HasBonusAction { get; set; }
 
     void Start()
     {
@@ -26,45 +27,22 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
     }
 
-    void Update()
-    {
+    void Update(){
         mover.Tick();
         CheckIntentCompletion();
         CheckForProximityCombat();
+        if(GameStateManager.Instance.CurrentState == GameState.Combat){
+          if(CombatManager.Instance.IsPlayersTurn(this)){
+              if(UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame){
+                  Debug.Log("Manual end turn");
+                  FinishTurn();
+              }
+          }
+        }
     }
 
-  /*  public void HandleLeftClick(){
 
-      // locks player out of doing stuff if not its turn in combat
-      // by checking gamestate
-      if(GameStateManager.Instance.CurrentState == GameState.Combat){
-        if (!CombatManager.Instance.IsPlayersTurn(this))
-          return;
-      }
-
-      Debug.Log("HandleLeftClick - Current State: " +
-          GameStateManager.Instance.CurrentState);
-
-     Enemy enemy = GetClickedEnemy();
-
-     // If enemy clicked → always start combat
-     if(enemy != null){
-         Debug.Log("Enemy clicked - entering combat");
-
-         GameStateManager.Instance.EnterCombat();
-         currentIntent = new AttackIntent(enemy);
-         ResolveIntent();
-         return;
-      }
-      if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-          HandleExploreClick();
-      }
-      else if(GameStateManager.Instance.CurrentState == GameState.Combat){
-          HandleCombatClick();
-      }
-    } */
-    public void HandleLeftClick()
-    {
+    public void HandleLeftClick(){
     // Only current combatant can act
     if(GameStateManager.Instance.CurrentState == GameState.Combat){
         if(!CombatManager.Instance.IsPlayersTurn(this))
@@ -87,7 +65,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         Debug.Log("Enemy clicked");
 
         // If NOT already in combat → start combat
-        if (GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
             Debug.Log("Entering combat from attack");
             GameStateManager.Instance.EnterCombat();
         }
@@ -188,8 +166,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     }
 
-    Vector3 GetMouseWorld()
-    {
+    Vector3 GetMouseWorld(){
         if (Camera.main == null)
             return Vector3.zero;
 
@@ -259,6 +236,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         HasMove = true;
         HasAction = true;
+        HasBonusAction = true;
         //Invoke(nameof(FinishTurn), 1f);
     }
 
