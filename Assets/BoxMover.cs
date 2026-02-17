@@ -28,6 +28,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     {
         mover.Tick();
         CheckIntentCompletion();
+        CheckForProximityCombat();
     }
 
     public void HandleLeftClick(){
@@ -194,6 +195,45 @@ public class BoxMover : MonoBehaviour, ICombatant
         Debug.Log("Player turn ended");
         // Disable input
     }
+
+    void CheckForProximityCombat(){
+      // If already in combat return
+      if(GameStateManager.Instance.CurrentState != GameState.FreeExplore)
+          return;
+
+      float combatRadius = 4f;
+
+      Collider2D[] hits = Physics2D.OverlapCircleAll(
+          transform.position,
+          combatRadius
+      );
+
+      List<ICombatant> participants = new List<ICombatant>();
+      bool enemyFound = false;
+
+      participants.Add(GetComponent<ICombatant>());
+
+      foreach (Collider2D hit in hits){
+          Enemy enemy = hit.GetComponent<Enemy>();
+          if(enemy == null) continue;
+
+          enemyFound = true;
+
+          ICombatant combatant = enemy.GetComponent<ICombatant>();
+          if(combatant != null && !participants.Contains(combatant))
+              participants.Add(combatant);
+      }
+
+      if(!enemyFound)
+        return;
+
+      Debug.Log("Proximity combat triggered");
+
+      mover.Stop();
+      GameStateManager.Instance.EnterCombat();
+      CombatManager.Instance.StartCombat(participants);
+    }
+
 
     void FinishTurn(){
       CombatManager.Instance.EndTurn();

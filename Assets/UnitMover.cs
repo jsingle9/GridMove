@@ -52,6 +52,11 @@ public class UnitMover : MonoBehaviour
         }
     }
 
+    public void Stop(){
+      isMoving = false;
+      currentPath = null;
+    }
+
     void SetNextTarget(){
         GridNode nextNode = currentPath[pathIndex];
         targetPosition = grid.GridToWorld(nextNode.gridPos);
