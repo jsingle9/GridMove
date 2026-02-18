@@ -18,6 +18,9 @@ public class BoxMover : MonoBehaviour, ICombatant
         mover = GetComponent<UnitMover>();
         mover.Initialize(grid);
 
+        Vector3Int startCell = grid.WorldToGrid(transform.position);
+        grid.RegisterOccupant(startCell, this);
+
         resolver = new IntentResolver(grid);
 
         if(grid == null)
@@ -44,15 +47,14 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     public void HandleLeftClick(){
     // Only current combatant can act
-    if(GameStateManager.Instance.CurrentState == GameState.Combat){
-        if(!CombatManager.Instance.IsPlayersTurn(this))
-            return;
+      if(GameStateManager.Instance.CurrentState == GameState.Combat){
+          if(!CombatManager.Instance.IsPlayersTurn(this))
+              return;
 
-        // Check if player has actions remaining
-        if(!HasMove && !HasAction){
+          if(!HasMove && !HasAction){
             Debug.Log("No actions left");
             return;
-        }
+          }
       }
 
       Debug.Log("HandleLeftClick - Current State: " +
@@ -60,46 +62,44 @@ public class BoxMover : MonoBehaviour, ICombatant
 
       Enemy enemy = GetClickedEnemy();
 
-    // attack! Clicking enemy
+      // 🗡 ATTACK CLICKED
+
       if(enemy != null){
         Debug.Log("Enemy clicked");
 
-        // If NOT already in combat → start combat
-        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-            Debug.Log("Entering combat from attack");
-            GameStateManager.Instance.EnterCombat();
-        }
+    // Enter combat if in explore
+      if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+          Debug.Log("Entering combat from attack");
+          GameStateManager.Instance.EnterCombat();
+      }
 
-        // In combat this becomes your action
-        if(GameStateManager.Instance.CurrentState == GameState.Combat){
-            if(!HasAction){
-                Debug.Log("Action already used");
-                return;
-            }
+      // In combat → attack ability will handle action spending later
+      if(GameStateManager.Instance.CurrentState == GameState.Combat){
+        Debug.Log("Using AttackAbility");   // test log
 
-            HasAction = false;
-        }
+        AttackAbility attack = new AttackAbility(enemy);
+        attack.TryUse(this);
 
-        currentIntent = new AttackIntent(enemy);
-        ResolveIntent();
         return;
       }
 
-    // 🚶 Movement
+    }
+
+      // 🚶 MOVEMENT
       if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
           HandleExploreClick();
       }
       else if(GameStateManager.Instance.CurrentState == GameState.Combat){
-          if(!HasMove){
-              Debug.Log("Move already used");
-              return;
-          }
 
-          HasMove = false;
+        if(!HasMove){
+            Debug.Log("Move already used");
+            return;
+        }
+
           HandleCombatClick();
-
       }
     }
+
 
 
     void ResolveIntent(){
@@ -125,34 +125,34 @@ public class BoxMover : MonoBehaviour, ICombatant
       if(!mover.IsMoving){
 
         if(currentIntent is AttackIntent attack){
-          Debug.Log("Attack resolved → entering combat");
+          if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+            Debug.Log("Attack resolved → entering combat");
+            GameStateManager.Instance.EnterCombat();
+            float combatRadius = 4f;
 
-          GameStateManager.Instance.EnterCombat();
+            List<ICombatant> participants = new List<ICombatant>();
 
-          float combatRadius = 4f;
+            // Always add player
+            participants.Add(GetComponent<ICombatant>());
 
-          List<ICombatant> participants = new List<ICombatant>();
+            // Find nearby enemies
+            Collider2D[] hits = Physics2D.OverlapCircleAll(
+              transform.position,
+              combatRadius
+            );
 
-          // Always add player
-          participants.Add(GetComponent<ICombatant>());
+            foreach(Collider2D hit in hits){
+              Enemy enemy = hit.GetComponent<Enemy>();
+              if(enemy == null) continue;
 
-          // Find nearby enemies
-          Collider2D[] hits = Physics2D.OverlapCircleAll(
-            transform.position,
-            combatRadius
-          );
+              ICombatant combatant = enemy.GetComponent<ICombatant>();
+                if(combatant != null && !participants.Contains(combatant)){
+                  participants.Add(combatant);
+                }
+              }CombatManager.Instance.StartCombat(participants);
+          }
 
-        foreach(Collider2D hit in hits){
-          Enemy enemy = hit.GetComponent<Enemy>();
-          if(enemy == null) continue;
 
-          ICombatant combatant = enemy.GetComponent<ICombatant>();
-            if(combatant != null && !participants.Contains(combatant)){
-              participants.Add(combatant);
-            }
-      }
-
-        CombatManager.Instance.StartCombat(participants);
       }
 
         currentIntent = null;
@@ -210,6 +210,9 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     void HandleCombatClick(){
+      if(!CombatManager.Instance.IsPlayersTurn(this))
+        return;
+
       if(mover.IsMoving)
         return;
 
@@ -279,6 +282,7 @@ public class BoxMover : MonoBehaviour, ICombatant
       Debug.Log("Proximity combat triggered");
 
       mover.Stop();
+      currentIntent = null;
       GameStateManager.Instance.EnterCombat();
       CombatManager.Instance.StartCombat(participants);
     }
@@ -286,6 +290,11 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void FinishTurn(){
       CombatManager.Instance.EndTurn();
+    }
+
+    public void SetIntent(Intent intent){
+      currentIntent = intent;
+      ResolveIntent();
     }
 
     void OnDrawGizmosSelected(){

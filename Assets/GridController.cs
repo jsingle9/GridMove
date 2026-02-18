@@ -7,7 +7,10 @@ using System.Collections.Generic;
 public class GridController : MonoBehaviour
 {
 
-     public GridNode[,] grid;
+    Dictionary<Vector3Int, ICombatant> occupiedTiles =
+    new Dictionary<Vector3Int, ICombatant>();
+
+    public GridNode[,] grid;
     [SerializeField] int width = 256;   // -5 to +5
     [SerializeField] int height = 256;
     [SerializeField] Vector3Int gridOrigin = new Vector3Int(-128, -128, 0);
@@ -117,6 +120,28 @@ public class GridController : MonoBehaviour
 
       return neighbors;
     }
+
+    public void RegisterOccupant(Vector3Int cell, ICombatant unit){
+      occupiedTiles[cell] = unit;
+    }
+
+    public void UnregisterOccupant(Vector3Int cell){
+      if(occupiedTiles.ContainsKey(cell))
+          occupiedTiles.Remove(cell);
+    }
+
+    public bool IsTileOccupied(Vector3Int cell, GameObject ignore = null){
+    if(!occupiedTiles.ContainsKey(cell))
+        return false;
+
+    if(ignore != null){
+        ICombatant occ = occupiedTiles[cell];
+        if(occ != null && occ == ignore.GetComponent<ICombatant>())
+            return false;
+    }
+
+    return true;
+}
 
     /*void OnDrawGizmos(){
       Gizmos.color = Color.red;

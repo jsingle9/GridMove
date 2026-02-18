@@ -26,8 +26,7 @@ public class Pathfinder{
         startNode.hCost = GetDistance(startNode, targetNode);
         startNode.parent = null;
 
-        while (openSet.Count > 0)
-        {
+        while (openSet.Count > 0){
             GridNode currentNode = openSet[0];
 
             for (int i = 1; i < openSet.Count; i++)
@@ -53,7 +52,17 @@ public class Pathfinder{
                 if (!neighbor.walkable || closedSet.Contains(neighbor))
                     continue;
 
-                int newCostToNeighbor =
+                //  block tiles occupied by combatants DURING COMBAT
+               if(GameStateManager.Instance.CurrentState == GameState.Combat){
+
+                  // allow pathing to FINAL target even if occupied
+                  bool isTargetTile = neighbor == targetNode;
+
+                  if(!isTargetTile && grid.IsTileOccupied(neighbor.gridPos)){
+                  continue;
+                }
+              }
+              int newCostToNeighbor =
                     currentNode.gCost + GetDistance(currentNode, neighbor);
 
                 if (newCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))

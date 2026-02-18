@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class UnitMover : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 5f;
-
+    Vector3Int currentCell;
     List<GridNode> currentPath;
     int pathIndex;
 
@@ -18,6 +18,8 @@ public class UnitMover : MonoBehaviour
     public void Initialize(GridController grid){
         this.grid = grid;
         targetPosition = transform.position;
+        currentCell = grid.WorldToGrid(transform.position);
+        grid.RegisterOccupant(currentCell, GetComponent<ICombatant>());
     }
 
     public void StartPath(List<GridNode> path){
@@ -40,6 +42,13 @@ public class UnitMover : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.01f){
             transform.position = targetPosition;
+            Vector3Int newCell = grid.WorldToGrid(transform.position);
+
+            if(newCell != currentCell){
+              grid.UnregisterOccupant(currentCell);
+              grid.RegisterOccupant(newCell, GetComponent<ICombatant>());
+              currentCell = newCell;
+            }
             pathIndex++;
 
             if (pathIndex >= currentPath.Count){
@@ -55,6 +64,13 @@ public class UnitMover : MonoBehaviour
     public void Stop(){
       isMoving = false;
       currentPath = null;
+      Vector3Int newCell = grid.WorldToGrid(transform.position);
+
+      if(newCell != currentCell){
+        grid.UnregisterOccupant(currentCell);
+        grid.RegisterOccupant(newCell, GetComponent<ICombatant>());
+        currentCell = newCell;
+      }
     }
 
     void SetNextTarget(){

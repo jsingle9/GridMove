@@ -42,6 +42,12 @@ public class CombatManager : MonoBehaviour{
   }
 
   public bool IsPlayersTurn(ICombatant combatant){
+    if(combatants == null || combatants.Count == 0)
+        return false;
+
+    if(currentIndex < 0 || currentIndex >= combatants.Count)
+        return false;
+
     return combatants[currentIndex] == combatant;
   }
 }
