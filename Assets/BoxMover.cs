@@ -64,26 +64,29 @@ public class BoxMover : MonoBehaviour, ICombatant
 
       // 🗡 ATTACK CLICKED
 
-      if(enemy != null){
-        Debug.Log("Enemy clicked");
+
 
     // Enter combat if in explore
+    if(enemy != null){
+      Debug.Log("Enemy clicked");
+
+      // FROM FREE EXPLORE → walk to enemy first
       if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-          Debug.Log("Entering combat from attack");
-          GameStateManager.Instance.EnterCombat();
+
+          currentIntent = new AttackIntent(enemy);
+          ResolveIntent();
+          return;
       }
 
-      // In combat → attack ability will handle action spending later
+      // ALREADY IN COMBAT → use ability
       if(GameStateManager.Instance.CurrentState == GameState.Combat){
-        Debug.Log("Using AttackAbility");   // test log
+          Debug.Log("Using AttackAbility");
 
-        AttackAbility attack = new AttackAbility(enemy);
-        attack.TryUse(this);
-
-        return;
+          AttackAbility attack = new AttackAbility(enemy);
+          attack.TryUse(this);
+          return;
+        }
       }
-
-    }
 
       // 🚶 MOVEMENT
       if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
@@ -251,6 +254,9 @@ public class BoxMover : MonoBehaviour, ICombatant
     void CheckForProximityCombat(){
       // If already in combat return
       if(GameStateManager.Instance.CurrentState != GameState.FreeExplore)
+          return;
+
+      if(currentIntent is AttackIntent)
           return;
 
       float combatRadius = 4f;
