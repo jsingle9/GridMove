@@ -259,6 +259,9 @@ public class BoxMover : MonoBehaviour, ICombatant
       if(currentIntent is AttackIntent)
           return;
 
+      if(mover.IsMoving)
+          return;
+
       float combatRadius = 4f;
 
       Collider2D[] hits = Physics2D.OverlapCircleAll(
