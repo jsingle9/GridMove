@@ -3,6 +3,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, ICombatant{
 
   DynamicObstacle dynamicObstacle;
+  [SerializeField] GridController grid;
   public int Initiative { get; set; }
   public bool HasMove { get; set; }
   public bool HasAction { get; set; }
@@ -13,7 +14,11 @@ public class Enemy : MonoBehaviour, ICombatant{
   }
 
   public void start(){
-
+    if(grid == null){
+      grid = FindFirstObjectByType<GridController>();
+    }
+    Vector3Int startCell = grid.WorldToGrid(transform.position);
+    grid.RegisterOccupant(startCell, GetComponent<ICombatant>());
   }
 
   public void MoveTo(Vector3 worldTagetPosition){
