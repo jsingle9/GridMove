@@ -1,0 +1,57 @@
+public enum AbilityCostType
+{
+    Action,
+    BonusAction,
+    Free
+}
+
+public abstract class Ability
+{
+    public string AbilityName;
+    public AbilityCostType CostType;
+
+    public virtual bool CanUse(ICombatant user)
+    {
+        switch(CostType)
+        {
+            case AbilityCostType.Action:
+                return user.HasAction;
+
+            case AbilityCostType.BonusAction:
+                return user.HasBonusAction;
+
+            case AbilityCostType.Free:
+                return true;
+        }
+
+        return false;
+    }
+
+    public virtual void SpendCost(ICombatant user)
+    {
+        switch(CostType)
+        {
+            case AbilityCostType.Action:
+                user.HasAction = false;
+                break;
+
+            case AbilityCostType.BonusAction:
+                user.HasBonusAction = false;
+                break;
+        }
+    }
+
+    public void TryUse(ICombatant user)
+    {
+        UnityEngine.Debug.Log($"Using Ability {AbilityName}");
+        if(!CanUse(user)){
+            UnityEngine.Debug.Log($"Cannot use {AbilityName}");
+            return;
+        }
+        UnityEngine.Debug.Log($"SUCCESS: {AbilityName} allowed → spending cost");
+        SpendCost(user);
+        Execute(user);
+    }
+
+    protected abstract void Execute(ICombatant user);
+}

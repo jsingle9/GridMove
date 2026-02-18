@@ -34,19 +34,44 @@ public class IntentResolver
     }
 
     List<GridNode> ResolveAttackMove(
-          GridNode actorNode,
-          Enemy enemy
-        ){
-          GridNode enemyNode =
-              grid.GetNodeFromWorld(enemy.transform.position);
+      GridNode actorNode,
+      Enemy enemy
+    ){
+        GridNode enemyNode = grid.GetNodeFromWorld(enemy.transform.position);
 
-              foreach(GridNode neighbor in grid.GetNeighbors(enemyNode)){
-              if(!neighbor.walkable) continue;
+        List<GridNode> bestPath = null;
+        int bestLength = int.MaxValue;
 
-              return pathfinder.FindPath(actorNode, neighbor);
-          }
+        foreach(GridNode neighbor in grid.GetNeighbors(enemyNode)){
 
-        return null;
+        // must be walkable
+        if(!neighbor.walkable)
+            continue;
+
+        // cannot stand on another combatant
+        if(GameStateManager.Instance.CurrentState == GameState.Combat){
+          if(grid.IsTileOccupied(neighbor.gridPos, enemy.gameObject))
+            continue;
+        }
+
+        List<GridNode> path = pathfinder.FindPath(actorNode, neighbor);
+
+        if(path == null || path.Count == 0)
+            continue;
+
+        // choose shortest valid path
+        if(path.Count < bestLength){
+            bestLength = path.Count;
+            bestPath = path;
+        }
     }
+
+    if(bestPath == null){
+        Debug.Log("No valid adjacent path to enemy");
+    }
+
+    return bestPath;
+  }
+
 
 }
