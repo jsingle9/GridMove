@@ -5,6 +5,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 {
     [SerializeField] GridController grid;
     [SerializeField] UnitMover mover;
+    List<Ability> abilities = new List<Ability>();
 
     IntentResolver resolver;
     Intent currentIntent;
@@ -12,6 +13,10 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
+
+    void Awake(){
+        abilities.Add(new AttackAbility(null));
+    }
 
     void Start()
     {
@@ -304,6 +309,14 @@ public class BoxMover : MonoBehaviour, ICombatant
     public void SetIntent(Intent intent){
       currentIntent = intent;
       ResolveIntent();
+    }
+
+    public List<Ability> GetAbilities(){
+      return abilities;
+    }
+
+    public Vector3 GetWorldPosition(){
+      return transform.position;
     }
 
     void OnDrawGizmosSelected(){

@@ -1,54 +1,101 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public class Enemy : MonoBehaviour, ICombatant{
+public class Enemy : MonoBehaviour, ICombatant
+{
+    DynamicObstacle dynamicObstacle;
+    [SerializeField] GridController grid;
 
-  DynamicObstacle dynamicObstacle;
-  [SerializeField] GridController grid;
-  public int Initiative { get; set; }
-  public bool HasMove { get; set; }
-  public bool HasAction { get; set; }
-  public bool HasBonusAction { get; set; }
+    public int Initiative { get; set; }
+    public bool HasMove { get; set; }
+    public bool HasAction { get; set; }
+    public bool HasBonusAction { get; set; }
 
-  void Awake(){
-    dynamicObstacle = GetComponent<DynamicObstacle>();
-  }
+    List<Ability> abilities = new List<Ability>();
 
-  public void start(){
-    if(grid == null){
-      grid = FindFirstObjectByType<GridController>();
+    void Awake()
+    {
+        dynamicObstacle = GetComponent<DynamicObstacle>();
+
+        // Give enemy a default attack ability
+        abilities.Add(new AttackAbility(null));
     }
-    Vector3Int startCell = grid.WorldToGrid(transform.position);
-    grid.RegisterOccupant(startCell, GetComponent<ICombatant>());
-  }
 
-  public void MoveTo(Vector3 worldTagetPosition){
-    transform.position = worldTagetPosition;
-    dynamicObstacle.UpdateCell(transform.position);
-  }
+    void Start() // NOTE: capital S
+    {
+        if (grid == null)
+            grid = FindFirstObjectByType<GridController>();
 
-  void OnTriggerEnter2D(Collider2D other){
-    Debug.Log("Trigger entered by: " + other.name);
-    if(other.GetComponent<BoxMover>()){
-        GameStateManager.Instance.EnterCombat();
+        Vector3Int startCell = grid.WorldToGrid(transform.position);
+        grid.RegisterOccupant(startCell, this);
     }
-  }
 
-  public void StartTurn(){
-    Debug.Log("Enemy turn started");
-    HasMove = true;
-    HasAction = true;
-    // AI combat logic goes here
-    Invoke(nameof(FinishTurn), 1f);
-  }
+    public void MoveTo(Vector3 worldTargetPosition)
+    {
+        transform.position = worldTargetPosition;
+        dynamicObstacle.UpdateCell(transform.position);
+    }
 
-  public void EndTurn(){
-    Debug.Log("Enemy turn ended");
-    // pass control back to initiative or combat manager here
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Trigger entered by: " + other.name);
+        if (other.GetComponent<BoxMover>())
+        {
+            GameStateManager.Instance.EnterCombat();
+        }
+    }
 
-  }
+    // =========================
+    // TURN SYSTEM
+    // =========================
 
-  void FinishTurn(){
-    CombatManager.Instance.EndTurn();
-  }
+    public void StartTurn()
+    {
+        Debug.Log("Enemy turn started");
 
+        HasMove = true;
+        HasAction = true;
+        HasBonusAction = true;
+
+        // TEMP basic AI: wait then end turn
+        Invoke(nameof(FinishTurn), 1f);
+    }
+
+    public void EndTurn()
+    {
+        Debug.Log("Enemy turn ended");
+    }
+
+    void FinishTurn()
+    {
+        CombatManager.Instance.EndTurn();
+    }
+
+    // =========================
+    // ABILITIES
+    // =========================
+
+    public List<Ability> GetAbilities()
+    {
+        return abilities;
+    }
+
+    // =========================
+    // INTENT SYSTEM
+    // =========================
+
+    public void SetIntent(Intent intent)
+    {
+        // later AI will use this
+        // for now you can ignore
+    }
+
+    // =========================
+    // POSITION
+    // =========================
+
+    public Vector3 GetWorldPosition()
+    {
+        return transform.position;
+    }
 }

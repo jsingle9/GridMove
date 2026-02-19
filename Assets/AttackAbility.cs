@@ -11,13 +11,17 @@ public class AttackAbility : Ability
         target = targetEnemy;
     }
 
+    /*public override void SetTarget(object t){
+      target = t as ICombatant;
+    }*/
+
     protected override void Execute(ICombatant user)
     {
         Debug.Log("Attack ability executed");
 
-        BoxMover player = user as BoxMover;
-        if(player == null) return;
+        //BoxMover player = user as BoxMover;
+        if(target == null) return;
 
-        player.SetIntent(new AttackIntent(target));
+        user.SetIntent(new AttackIntent(target));
     }
 }

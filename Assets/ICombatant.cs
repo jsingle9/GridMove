@@ -1,10 +1,16 @@
+using UnityEngine;
+using System.Collections.Generic;
 
 public interface ICombatant{
     int Initiative { get; set; }
     void StartTurn();
     void EndTurn();
+    List<Ability> GetAbilities();
 
     bool HasMove { get; set; }
     bool HasAction { get; set; }
     bool HasBonusAction { get; set; }
+    void SetIntent(Intent intent);
+    Vector3 GetWorldPosition();
+
 }
