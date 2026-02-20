@@ -17,6 +17,15 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
 
+    [SerializeField] int armorClass = 14;
+    [SerializeField] int attackBonus = 5;
+    [SerializeField] string damageDice = "1d8";
+    [SerializeField] int damageModifier = 3;
+
+    public int ArmorClass => armorClass;
+    public int AttackBonus => attackBonus;
+    public string DamageDice => damageDice;
+    public int DamageModifier => damageModifier;
 
     void Awake(){
         currentHP = maxHP;
