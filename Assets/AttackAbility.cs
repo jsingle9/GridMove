@@ -17,10 +17,32 @@ public class AttackAbility : Ability{
     protected override void Execute(ICombatant user){
       if(target == null) return;
 
-      int damage = Random.Range(3, 9);
+      Debug.Log($"{user} attacks {target}");
 
-      Debug.Log($"{user} hits {target} for {damage}");
+      int roll = DiceRoller.RollD20();
+      int total = roll + user.AttackBonus;
 
-      target.TakeDamage(damage);
-    }
+      // Log the numbers so we can see what is happening
+      // with the math
+      Debug.Log($"Attack roll: {roll} + {user.AttackBonus} = {total} vs AC {target.ArmorClass}");
+
+        // NAT 20 crit
+        bool crit = roll == 20;
+
+        if(total >= target.ArmorClass || crit){
+          int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
+
+        if(crit){
+            Debug.Log("CRITICAL HIT!");
+            damage *= 2;
+        }
+
+          Debug.Log($"Hit for {damage} damage");
+          target.TakeDamage(damage);
+      }
+      else{
+          Debug.Log("Miss");
+      }
+  }
+
 }

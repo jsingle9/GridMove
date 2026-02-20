@@ -5,13 +5,25 @@ public class Enemy : MonoBehaviour, ICombatant
 {
     DynamicObstacle dynamicObstacle;
     [SerializeField] GridController grid;
-    [SerializeField] int maxHP = 10;
+    [SerializeField] int maxHP = 18;
     int currentHP;
 
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
+
+    /*int ArmorClass { get; }
+    int AttackBonus { get; }
+    string DamageDice { get; }
+    int DamageModifier { get; }*/
+
+    [SerializeField] int armorClass = 12;
+    [SerializeField] int attackBonus = 4;
+    [SerializeField] string damageDice = "1d6";
+    [SerializeField] int damageModifier = 2;
+
+
 
     List<Ability> abilities = new List<Ability>();
 
@@ -101,6 +113,10 @@ public class Enemy : MonoBehaviour, ICombatant
     }
 
     public int CurrentHP => currentHP;
+    public int ArmorClass => armorClass;
+    public int AttackBonus => attackBonus;
+    public string DamageDice => damageDice;
+    public int DamageModifier => damageModifier;
 
     public void TakeDamage(int amount)
     {
