@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class AttackAbility : Ability
-{
+public class AttackAbility : Ability{
     Enemy target;
 
     public AttackAbility(Enemy targetEnemy)
@@ -15,13 +14,13 @@ public class AttackAbility : Ability
       target = t as ICombatant;
     }*/
 
-    protected override void Execute(ICombatant user)
-    {
-        Debug.Log("Attack ability executed");
+    protected override void Execute(ICombatant user){
+      if(target == null) return;
 
-        //BoxMover player = user as BoxMover;
-        if(target == null) return;
+      int damage = Random.Range(3, 9);
 
-        user.SetIntent(new AttackIntent(target));
+      Debug.Log($"{user} hits {target} for {damage}");
+
+      target.TakeDamage(damage);
     }
 }

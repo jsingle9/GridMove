@@ -7,9 +7,14 @@ public interface ICombatant{
     void EndTurn();
     List<Ability> GetAbilities();
 
+    int CurrentHP { get;}
+    void TakeDamage(int amount);
+    bool IsDead();
+
     bool HasMove { get; set; }
     bool HasAction { get; set; }
     bool HasBonusAction { get; set; }
+
     void SetIntent(Intent intent);
     Vector3 GetWorldPosition();
 

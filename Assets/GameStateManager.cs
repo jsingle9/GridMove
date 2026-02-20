@@ -20,12 +20,17 @@ public class GameStateManager : MonoBehaviour
     {
         Debug.Log("Entered Combat State");
         CurrentState = GameState.Combat;
-
     }
 
     public void EnterFreeExplore()
     {
         CurrentState = GameState.FreeExplore;
         Debug.Log("Entered Free Explore State");
+    }
+
+    public void ExitCombat()
+    {
+        Debug.Log("Returning to Free Explore");
+        CurrentState = GameState.FreeExplore;
     }
 }

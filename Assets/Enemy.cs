@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour, ICombatant
 {
     DynamicObstacle dynamicObstacle;
     [SerializeField] GridController grid;
+    [SerializeField] int maxHP = 10;
+    int currentHP;
 
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
@@ -13,16 +15,15 @@ public class Enemy : MonoBehaviour, ICombatant
 
     List<Ability> abilities = new List<Ability>();
 
-    void Awake()
-    {
+    void Awake(){
+        currentHP = maxHP;
         dynamicObstacle = GetComponent<DynamicObstacle>();
 
         // Give enemy a default attack ability
         abilities.Add(new AttackAbility(null));
     }
 
-    void Start() // NOTE: capital S
-    {
+    void Start(){
         if (grid == null)
             grid = FindFirstObjectByType<GridController>();
 
@@ -97,5 +98,29 @@ public class Enemy : MonoBehaviour, ICombatant
     public Vector3 GetWorldPosition()
     {
         return transform.position;
+    }
+
+    public int CurrentHP => currentHP;
+
+    public void TakeDamage(int amount)
+    {
+      currentHP -= amount;
+      Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
+
+      if(currentHP <= 0)
+        Die();
+    }
+
+    public bool IsDead()
+    {
+      return currentHP <= 0;
+    }
+
+    void Die()
+    {
+      Debug.Log($"{name} died");
+
+      CombatManager.Instance.NotifyDeath(this);
+      gameObject.SetActive(false);
     }
 }
