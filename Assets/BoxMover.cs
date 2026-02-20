@@ -9,12 +9,17 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     IntentResolver resolver;
     Intent currentIntent;
+
+    [SerializeField] int maxHP = 20;
+    int currentHP;
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
 
+
     void Awake(){
+        currentHP = maxHP;
         abilities.Add(new AttackAbility(null));
     }
 
@@ -323,4 +328,25 @@ public class BoxMover : MonoBehaviour, ICombatant
       Gizmos.color = Color.green;
       Gizmos.DrawWireSphere(transform.position, 4f);
     }
+
+    public int CurrentHP => currentHP;
+
+    public void TakeDamage(int amount){
+      currentHP -= amount;
+      Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
+
+      if(currentHP <= 0)
+          Die();
+    }
+
+    public bool IsDead(){
+        return currentHP <= 0;
+    }
+
+  void Die(){
+      Debug.Log($"{name} died");
+
+      CombatManager.Instance.NotifyDeath(this);
+      gameObject.SetActive(false);
+ }
 }

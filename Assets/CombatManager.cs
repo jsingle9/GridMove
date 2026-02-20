@@ -50,4 +50,48 @@ public class CombatManager : MonoBehaviour{
 
     return combatants[currentIndex] == combatant;
   }
+
+  public void NotifyDeath(ICombatant dead){
+    if(combatants.Contains(dead))
+        combatants.Remove(dead);
+
+    CheckCombatEnd();
+  }
+
+  void CheckCombatEnd(){
+    bool anyPlayersAlive = false;
+    bool anyEnemiesAlive = false;
+
+    foreach(var c in combatants)
+    {
+        if(c == null) continue;
+
+        if(c is BoxMover && !c.IsDead())
+            anyPlayersAlive = true;
+
+        if(c is Enemy && !c.IsDead())
+            anyEnemiesAlive = true;
+    }
+
+    if(!anyPlayersAlive || !anyEnemiesAlive)
+        EndCombat();
+  }
+
+  void EndCombat(){
+    Debug.Log("Combat ended");
+
+    combatants.Clear();
+    currentIndex = 0;
+
+    GameStateManager.Instance.ExitCombat();
+  }
+
+  public void ExitCombat()
+  {
+    GameStateManager.Instance.ExitCombat();
+  }
+
+
+
+
 }
