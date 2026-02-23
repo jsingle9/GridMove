@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class AttackIntent : Intent
 {
-    public Enemy target;
+    public ICombatant target;
 
-    public AttackIntent(Enemy enemy)
+    public AttackIntent(ICombatant enemy)
     {
         target = enemy;
     }

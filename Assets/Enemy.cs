@@ -70,17 +70,15 @@ public class Enemy : MonoBehaviour, ICombatant
         HasAction = true;
         HasBonusAction = true;
 
-        // TEMP basic AI: wait then end turn
+
         Invoke(nameof(FinishTurn), 1f);
     }
 
-    public void EndTurn()
-    {
+    public void EndTurn(){
         Debug.Log("Enemy turn ended");
     }
 
-    void FinishTurn()
-    {
+    void FinishTurn(){
         CombatManager.Instance.EndTurn();
     }
 
@@ -88,8 +86,7 @@ public class Enemy : MonoBehaviour, ICombatant
     // ABILITIES
     // =========================
 
-    public List<Ability> GetAbilities()
-    {
+    public List<Ability> GetAbilities(){
         return abilities;
     }
 
@@ -97,8 +94,7 @@ public class Enemy : MonoBehaviour, ICombatant
     // INTENT SYSTEM
     // =========================
 
-    public void SetIntent(Intent intent)
-    {
+    public void SetIntent(Intent intent){
         // later AI will use this
         // for now you can ignore
     }
@@ -107,8 +103,7 @@ public class Enemy : MonoBehaviour, ICombatant
     // POSITION
     // =========================
 
-    public Vector3 GetWorldPosition()
-    {
+    public Vector3 GetWorldPosition(){
         return transform.position;
     }
 
@@ -118,8 +113,7 @@ public class Enemy : MonoBehaviour, ICombatant
     public string DamageDice => damageDice;
     public int DamageModifier => damageModifier;
 
-    public void TakeDamage(int amount)
-    {
+    public void TakeDamage(int amount){
       currentHP -= amount;
       Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
 
@@ -127,13 +121,30 @@ public class Enemy : MonoBehaviour, ICombatant
         Die();
     }
 
-    public bool IsDead()
-    {
+    public bool IsDead(){
       return currentHP <= 0;
     }
 
-    void Die()
-    {
+    void Think(){
+      // find player target
+      BoxMover player = FindFirstObjectByType<BoxMover>();
+
+      if(player == null){
+        FinishTurn();
+        return;
+                                  }
+
+      // use attack ability
+      AttackAbility attack = new AttackAbility(player);
+      attack.TryUse(this);
+
+      // if ability caused movement, turn will end later
+      // if already adjacent, attack already happened
+      Invoke(nameof(FinishTurn), 0.5f);
+    }
+
+
+    void Die(){
       Debug.Log($"{name} died");
 
       CombatManager.Instance.NotifyDeath(this);
