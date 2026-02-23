@@ -1,20 +1,18 @@
 using UnityEngine;
 
-public class AttackAbility : Ability{
-    Enemy target;
+public class AttackAbility : Ability
+{
+    ICombatant target;
 
-    public AttackAbility(Enemy targetEnemy)
+    public AttackAbility(ICombatant targetCombatant)
     {
         AbilityName = "Attack";
         CostType = AbilityCostType.Action;
-        target = targetEnemy;
+        target = targetCombatant;
     }
 
-    /*public override void SetTarget(object t){
-      target = t as ICombatant;
-    }*/
-
-    protected override void Execute(ICombatant user){
+    protected override void Execute(ICombatant user)
+    {
         if (target == null) return;
 
         float distance = Vector3.Distance(
@@ -22,15 +20,14 @@ public class AttackAbility : Ability{
             target.GetWorldPosition()
         );
 
-        // melee range = 1.5 grid units (adjust later)
-        if(distance > 1.5f){
+        // melee range check
+        if (distance > 1.5f)
+        {
             Debug.Log("Target out of range → moving into range");
-
             user.SetIntent(new AttackIntent(target));
             return;
         }
 
-        // ===== ACTUAL ATTACK =====
         Debug.Log($"{user} attacks {target}");
 
         int roll = DiceRoller.RollD20();
@@ -40,10 +37,12 @@ public class AttackAbility : Ability{
 
         bool crit = roll == 20;
 
-        if(total >= target.ArmorClass || crit){
+        if (total >= target.ArmorClass || crit)
+        {
             int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
 
-            if (crit){
+            if (crit)
+            {
                 Debug.Log("CRITICAL HIT!");
                 damage *= 2;
             }
@@ -51,10 +50,9 @@ public class AttackAbility : Ability{
             Debug.Log($"Hit for {damage} damage");
             target.TakeDamage(damage);
         }
-        else{
+        else
+        {
             Debug.Log("Miss");
         }
     }
-
-
 }

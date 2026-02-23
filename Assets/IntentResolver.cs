@@ -35,9 +35,9 @@ public class IntentResolver
 
     List<GridNode> ResolveAttackMove(
       GridNode actorNode,
-      Enemy enemy
+      ICombatant enemy
     ){
-        GridNode enemyNode = grid.GetNodeFromWorld(enemy.transform.position);
+        GridNode enemyNode = grid.GetNodeFromWorld(enemy.GetWorldPosition());
 
         List<GridNode> bestPath = null;
         int bestLength = int.MaxValue;
@@ -50,7 +50,7 @@ public class IntentResolver
 
         // cannot stand on another combatant
         if(GameStateManager.Instance.CurrentState == GameState.Combat){
-          if(grid.IsTileOccupied(neighbor.gridPos, enemy.gameObject))
+          if(grid.IsTileOccupied(neighbor.gridPos))
             continue;
         }
 
