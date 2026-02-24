@@ -22,24 +22,48 @@ public class CombatManager : MonoBehaviour{
   }
 
   void RollInitiative(){
-    foreach(var c in combatants){
-      c.Initiative = Random.Range(1, 21);
+      foreach(var c in combatants){
+          c.Initiative = Random.Range(1, 21);
+      }
+
       combatants = combatants
-            .OrderByDescending(c => c.Initiative)
-            .ToList();
-    }
+          .OrderByDescending(c => c.Initiative)
+          .ToList();
   }
+
+
+  bool advancingTurn = false;
 
   public void EndTurn(){
-    combatants[currentIndex].EndTurn();
 
-        currentIndex++;
+    Debug.Log("END TURN CALLED BY: " + UnityEngine.StackTraceUtility.ExtractStackTrace());
 
-        if (currentIndex >= combatants.Count)
-            currentIndex = 0;
+      if(advancingTurn){
+          Debug.LogWarning("EndTurn called while already advancing turn");
+          return;
+      }
 
-        combatants[currentIndex].StartTurn();
+      advancingTurn = true;
+
+      if(combatants.Count == 0){
+          advancingTurn = false;
+          return;
+      }
+
+      combatants[currentIndex].EndTurn();
+
+      currentIndex++;
+
+      if(currentIndex >= combatants.Count)
+          currentIndex = 0;
+
+      if(combatants.Count > 0){
+          combatants[currentIndex].StartTurn();
+      }
+
+      advancingTurn = false;
   }
+
 
   public bool IsPlayersTurn(ICombatant combatant){
     if(combatants == null || combatants.Count == 0)
@@ -52,11 +76,19 @@ public class CombatManager : MonoBehaviour{
   }
 
   public void NotifyDeath(ICombatant dead){
-    if(combatants.Contains(dead))
-        combatants.Remove(dead);
 
-    CheckCombatEnd();
+      int deadIndex = combatants.IndexOf(dead);
+
+      if(deadIndex >= 0){
+          combatants.RemoveAt(deadIndex);
+
+          if(deadIndex <= currentIndex && currentIndex > 0)
+              currentIndex--;
+      }
+
+      CheckCombatEnd();
   }
+
 
   void CheckCombatEnd(){
     bool anyPlayersAlive = false;
