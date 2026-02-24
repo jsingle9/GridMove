@@ -37,6 +37,15 @@ public class DynamicObstacle : MonoBehaviour
 
     void OnDestroy()
     {
+        // Ignore editor reload/destruction
+        if(!Application.isPlaying)
+            return;
+
+        // If grid not assigned, nothing to clean
+        if(gridController == null)
+            return;
+
         gridController.SetWalkable(currentCell, true);
     }
+
 }

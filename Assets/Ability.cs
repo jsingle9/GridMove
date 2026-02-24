@@ -41,7 +41,7 @@ public abstract class Ability
         }
     }
 
-    public void TryUse(ICombatant user)
+    public virtual void TryUse(ICombatant user)
     {
         UnityEngine.Debug.Log($"Using Ability {AbilityName}");
         if(!CanUse(user)){

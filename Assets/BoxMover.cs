@@ -12,6 +12,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     [SerializeField] int maxHP = 20;
     int currentHP;
+    //bool isMyTurn = false;
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
@@ -32,22 +33,27 @@ public class BoxMover : MonoBehaviour, ICombatant
         abilities.Add(new AttackAbility(null));
     }
 
-    void Start()
-    {
-        mover = GetComponent<UnitMover>();
-        mover.Initialize(grid);
+    void Start(){
+      if(grid == null)
+      {
+          grid = FindFirstObjectByType<GridController>();
+      }
 
-        Vector3Int startCell = grid.WorldToGrid(transform.position);
-        grid.RegisterOccupant(startCell, this);
+      if(grid == null)
+      {
+          Debug.LogError("BoxMover has no GridController!", this);
+          return;
+      }
 
-        resolver = new IntentResolver(grid);
+      mover = GetComponent<UnitMover>();
+      mover.Initialize(grid);
 
-        if(grid == null)
-        {
-            Debug.LogError("BoxMover has no GridController assigned!", this);
-            return;
-        }
+      Vector3Int startCell = grid.WorldToGrid(transform.position);
+      grid.RegisterOccupant(startCell, this);
+
+      resolver = new IntentResolver(grid);
     }
+
 
     void Update(){
         mover.Tick();
@@ -180,11 +186,16 @@ public class BoxMover : MonoBehaviour, ICombatant
         currentIntent = null;
       }
       if(GameStateManager.Instance.CurrentState == GameState.Combat){
-        if(!HasMove && !HasAction && !mover.IsMoving && currentIntent == null){
+
+        // 🔒 Only auto-end turn if player is CURRENT combatant
+        if(CombatManager.Instance.IsPlayersTurn(this)){
+          if(!HasMove && !HasAction && !mover.IsMoving && currentIntent == null){
             Debug.Log("Player turn complete → ending turn");
             FinishTurn();
+          }
         }
       }
+
 
     }
 
@@ -262,11 +273,13 @@ public class BoxMover : MonoBehaviour, ICombatant
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
+        //isMyTurn = true;
         //Invoke(nameof(FinishTurn), 1f);
     }
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
+        //isMyTurn = false;
         // Disable input
     }
 

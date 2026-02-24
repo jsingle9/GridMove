@@ -13,27 +13,47 @@ public class Enemy : MonoBehaviour, ICombatant
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
 
-    /*int ArmorClass { get; }
-    int AttackBonus { get; }
-    string DamageDice { get; }
-    int DamageModifier { get; }*/
-
     [SerializeField] int armorClass = 12;
     [SerializeField] int attackBonus = 4;
     [SerializeField] string damageDice = "1d6";
     [SerializeField] int damageModifier = 2;
 
-
+    IntentResolver resolver;
+    UnitMover mover;
+    Intent currentIntent;
 
     List<Ability> abilities = new List<Ability>();
 
-    void Awake(){
-        currentHP = maxHP;
-        dynamicObstacle = GetComponent<DynamicObstacle>();
+    void Awake()
+    {
+      currentHP = maxHP;
 
-        // Give enemy a default attack ability
-        abilities.Add(new AttackAbility(null));
+      dynamicObstacle = GetComponent<DynamicObstacle>();
+      mover = GetComponent<UnitMover>();
+
+      // 🔍 Always auto-find grid if missing
+      if (grid == null)
+          grid = FindFirstObjectByType<GridController>();
+
+      if(grid == null){
+          Debug.LogError(" ENEMY FAILED INIT: No GridController in scene");
+          enabled = false;
+          return;
+      }
+
+      if (mover == null){
+          Debug.LogError(" ENEMY FAILED INIT: Missing UnitMover");
+          enabled = false;
+          return;
+      }
+
+      mover.Initialize(grid);
+      resolver = new IntentResolver(grid);
+
+      Debug.Log("✅ Enemy initialized correctly");
     }
+
+
 
     void Start(){
         if (grid == null)
@@ -49,8 +69,37 @@ public class Enemy : MonoBehaviour, ICombatant
         dynamicObstacle.UpdateCell(transform.position);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
+    void Update(){
+        mover.Tick();
+
+        if(GameStateManager.Instance.CurrentState != GameState.Combat)
+            return;
+
+        // ONLY run during this enemy's turn
+        if(CombatManager.Instance.IsPlayersTurn(this)){
+
+            // If movement finished and still have action → attack
+            if(!mover.IsMoving && HasAction){
+                Debug.Log("Enemy finished moving → attempting attack");
+
+                BoxMover player = FindFirstObjectByType<BoxMover>();
+
+                if(player != null){
+                    AttackAbility attack = new AttackAbility(player);
+                    attack.TryUse(this);
+                }
+            }
+
+            // End turn when fully done
+            if(!HasMove && !HasAction && !mover.IsMoving){
+                Debug.Log("Enemy finished turn");
+                EndMyTurn();
+            }
+        }
+    }
+
+
+    void OnTriggerEnter2D(Collider2D other){
         Debug.Log("Trigger entered by: " + other.name);
         if (other.GetComponent<BoxMover>())
         {
@@ -62,24 +111,25 @@ public class Enemy : MonoBehaviour, ICombatant
     // TURN SYSTEM
     // =========================
 
-    public void StartTurn()
-    {
+    public void StartTurn(){
         Debug.Log("Enemy turn started");
 
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
 
-
-        Invoke(nameof(FinishTurn), 1f);
+        Invoke(nameof(Think), 0.15f);
     }
+
+
 
     public void EndTurn(){
         Debug.Log("Enemy turn ended");
     }
 
-    void FinishTurn(){
-        CombatManager.Instance.EndTurn();
+    void EndMyTurn(){
+      Debug.Log("Enemy turn ended");
+      CombatManager.Instance.EndTurn();
     }
 
     // =========================
@@ -94,9 +144,48 @@ public class Enemy : MonoBehaviour, ICombatant
     // INTENT SYSTEM
     // =========================
 
+  /*  public void SetIntent(Intent intent){
+      currentIntent = intent;
+
+      GridNode startNode = grid.GetNodeFromWorld(transform.position);
+
+      List<GridNode> path = resolver.Resolve(intent, startNode);
+
+      if(path != null && path.Count > 0)
+        mover.StartPath(path);
+    }*/
+
     public void SetIntent(Intent intent){
-        // later AI will use this
-        // for now you can ignore
+      Debug.Log("ENEMY SET INTENT CALLED");
+
+      currentIntent = intent;
+
+      if(GameStateManager.Instance.CurrentState == GameState.Combat){
+        HasMove = false; // 👈 ADD THIS
+      }
+
+      GridNode startNode = grid.GetNodeFromWorld(transform.position);
+      if(startNode == null){
+        Debug.LogError("Enemy start node null");
+        return;
+      }
+
+      List<GridNode> path = resolver.Resolve(intent, startNode);
+
+      if(path == null){
+        Debug.LogError("Enemy path returned NULL");
+        return;
+      }
+
+      Debug.Log("Enemy path length: " + path.Count);
+
+      if(path.Count == 0){
+        Debug.LogError("Enemy path empty");
+        return;
+      }
+
+      Debug.Log("Calling mover.StartPath()");
+      mover.StartPath(path);
     }
 
     // =========================
@@ -125,23 +214,59 @@ public class Enemy : MonoBehaviour, ICombatant
       return currentHP <= 0;
     }
 
-    void Think(){
-      // find player target
-      BoxMover player = FindFirstObjectByType<BoxMover>();
+    void Think()
+    {
+        Debug.Log("ENEMY THINKING");
 
-      if(player == null){
-        FinishTurn();
-        return;
-                                  }
+        BoxMover player = FindFirstObjectByType<BoxMover>();
 
-      // use attack ability
-      AttackAbility attack = new AttackAbility(player);
-      attack.TryUse(this);
+        if(player == null){
+            EndMyTurn();
+            return;
+        }
 
-      // if ability caused movement, turn will end later
-      // if already adjacent, attack already happened
-      Invoke(nameof(FinishTurn), 0.5f);
+        // Try attack
+        AttackAbility attack = new AttackAbility(player);
+        attack.TryUse(this);
+
+        // If we attacked successfully, action will be spent
+        // If we had to move, SetIntent() already started movement
     }
+
+
+    /*void Update(){
+
+        mover.Tick();
+
+        if(GameStateManager.Instance.CurrentState != GameState.Combat)
+            return;
+
+        if(!CombatManager.Instance.IsPlayersTurn(this)){
+
+            Debug.Log($"ENEMY STATE → moving:{mover.IsMoving} | hasMove:{HasMove} | hasAction:{HasAction}");
+
+            // 🔥 When movement finishes, try attack
+            if(!mover.IsMoving && HasAction){
+                Debug.Log(">>> MOVEMENT COMPLETE → TRYING ATTACK");
+
+                BoxMover player = FindFirstObjectByType<BoxMover>();
+
+                if(player != null){
+                    AttackAbility attack = new AttackAbility(player);
+                    attack.TryUse(this);
+                }
+            }
+
+            // 🔥 End turn when fully done
+            if(!HasMove && !HasAction && !mover.IsMoving){
+                Debug.Log(">>> ENEMY TURN FINISHED → END TURN");
+                EndMyTurn();
+            }
+        }
+    }*/
+
+
+
 
 
     void Die(){
