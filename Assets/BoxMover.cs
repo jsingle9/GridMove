@@ -62,8 +62,13 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(GameStateManager.Instance.CurrentState == GameState.Combat){
           if(CombatManager.Instance.IsPlayersTurn(this)){
               if(UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame){
-                  Debug.Log("Manual end turn");
-                  FinishTurn();
+                if(mover.IsMoving){
+                        Debug.Log("Cannot end turn while moving");
+                        return;
+                    }
+
+                    Debug.Log("Manual end turn");
+                    FinishTurn();
               }
           }
         }

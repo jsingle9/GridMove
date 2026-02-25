@@ -7,6 +7,7 @@ public class CombatManager : MonoBehaviour{
 
   List<ICombatant> combatants = new List<ICombatant>();
   int currentIndex = 0;
+  bool turnAdvancing = false;
 
   public void Awake(){
     Instance = this;
@@ -32,21 +33,19 @@ public class CombatManager : MonoBehaviour{
   }
 
 
-  bool advancingTurn = false;
+  
 
   public void EndTurn(){
 
-    Debug.Log("END TURN CALLED BY: " + UnityEngine.StackTraceUtility.ExtractStackTrace());
-
-      if(advancingTurn){
-          Debug.LogWarning("EndTurn called while already advancing turn");
+      if(turnAdvancing){
+          Debug.Log("Turn advance blocked (already advancing)");
           return;
       }
 
-      advancingTurn = true;
+      turnAdvancing = true;
 
-      if(combatants.Count == 0){
-          advancingTurn = false;
+      if(combatants == null || combatants.Count == 0){
+          turnAdvancing = false;
           return;
       }
 
@@ -57,11 +56,11 @@ public class CombatManager : MonoBehaviour{
       if(currentIndex >= combatants.Count)
           currentIndex = 0;
 
-      if(combatants.Count > 0){
-          combatants[currentIndex].StartTurn();
-      }
+      Debug.Log(">>> NEW TURN: " + combatants[currentIndex]);
 
-      advancingTurn = false;
+      combatants[currentIndex].StartTurn();
+
+      turnAdvancing = false;
   }
 
 

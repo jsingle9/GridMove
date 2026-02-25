@@ -71,7 +71,7 @@ public class AttackAbility : Ability
         }
 
         // spend action
-        user.HasAction = false;
+        //user.HasAction = false;
 
         Execute(user);
     }
