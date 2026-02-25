@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour, ICombatant
     [SerializeField] GridController grid;
     [SerializeField] int maxHP = 18;
     int currentHP;
+    bool turnEnding = false;
 
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
@@ -72,30 +73,6 @@ public class Enemy : MonoBehaviour, ICombatant
     void Update(){
         mover.Tick();
 
-        if(GameStateManager.Instance.CurrentState != GameState.Combat)
-            return;
-
-        // ONLY run during this enemy's turn
-        if(CombatManager.Instance.IsPlayersTurn(this)){
-
-            // If movement finished and still have action → attack
-            if(!mover.IsMoving && HasAction){
-                Debug.Log("Enemy finished moving → attempting attack");
-
-                BoxMover player = FindFirstObjectByType<BoxMover>();
-
-                if(player != null){
-                    AttackAbility attack = new AttackAbility(player);
-                    attack.TryUse(this);
-                }
-            }
-
-            // End turn when fully done
-            if(!HasMove && !HasAction && !mover.IsMoving){
-                Debug.Log("Enemy finished turn");
-                EndMyTurn();
-            }
-        }
     }
 
 
@@ -118,17 +95,17 @@ public class Enemy : MonoBehaviour, ICombatant
         HasAction = true;
         HasBonusAction = true;
 
-        Invoke(nameof(Think), 0.15f);
+        StartCoroutine(EnemyTurnRoutine());
     }
 
 
 
-    public void EndTurn(){
-        Debug.Log("Enemy turn ended");
+
+    public void EndTurn(){ // announce turn end
+        Debug.Log("Enemy EndTurn() called");
     }
 
-    void EndMyTurn(){
-      Debug.Log("Enemy turn ended");
+    void EndMyTurn(){ // make turn end
       CombatManager.Instance.EndTurn();
     }
 
@@ -139,6 +116,42 @@ public class Enemy : MonoBehaviour, ICombatant
     public List<Ability> GetAbilities(){
         return abilities;
     }
+
+    System.Collections.IEnumerator EnemyTurnRoutine(){
+
+      yield return new WaitForSeconds(0.15f);
+
+      BoxMover player = FindFirstObjectByType<BoxMover>();
+      if(player == null){
+          EndMyTurn();
+          yield break;
+      }
+
+      // Try attack first
+      AttackAbility attack = new AttackAbility(player);
+      attack.TryUse(this);
+
+      // If we moved, wait until movement finishes
+      while(mover.IsMoving){
+          yield return null;
+      }
+
+      // If still have action, try attack again
+      if(HasAction){
+          attack = new AttackAbility(player);
+          attack.TryUse(this);
+      }
+      // Wait for any final movement
+      while(mover.IsMoving){
+        yield return null;
+      }
+      // small delay so logs readable
+      yield return new WaitForSeconds(0.05f);
+
+      Debug.Log("Enemy finished turn");
+      EndMyTurn();
+    }
+
 
     // =========================
     // INTENT SYSTEM
