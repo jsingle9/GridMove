@@ -6,8 +6,15 @@ public class DynamicObstacle : MonoBehaviour
 
     Vector3Int currentCell;
 
-    void Start()
-    {
+    void Start(){
+        if(gridController == null)
+              gridController = FindObjectOfType<GridController>();
+
+          if(gridController == null)
+          {
+              Debug.LogError("NO GRID CONTROLLER FOUND for " + gameObject.name);
+              return;
+          }
         RegisterAtCurrentPosition();
         //currentCell = gridController.WorldToGrid(transform.position);
         //gridController.SetWalkable(currentCell, false);
