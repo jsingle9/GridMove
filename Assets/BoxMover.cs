@@ -10,7 +10,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     IntentResolver resolver;
     Intent currentIntent;
 
-    [SerializeField] int maxHP = 20;
+    [SerializeField] int maxHP = 45;
     int currentHP;
     //bool isMyTurn = false;
     public int Initiative { get; set; }
@@ -18,7 +18,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
 
-    [SerializeField] int armorClass = 14;
+    [SerializeField] int armorClass = 16;
     [SerializeField] int attackBonus = 5;
     [SerializeField] string damageDice = "1d8";
     [SerializeField] int damageModifier = 3;
