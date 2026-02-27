@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour, ICombatant
     void Awake()
     {
       currentHP = maxHP;
-
+       abilities.Add(new AttackAbility()); 
       dynamicObstacle = GetComponent<DynamicObstacle>();
       mover = GetComponent<UnitMover>();
 
@@ -128,8 +128,8 @@ public class Enemy : MonoBehaviour, ICombatant
       }
 
       // Try attack first
-      AttackAbility attack = new AttackAbility(player);
-      attack.TryUse(this);
+      Ability attack = abilities[0];
+      attack.TryUse(this, player);
 
       // If we moved, wait until movement finishes
       while(mover.IsMoving){
@@ -138,8 +138,8 @@ public class Enemy : MonoBehaviour, ICombatant
 
       // If still have action, try attack again
       if(HasAction){
-          attack = new AttackAbility(player);
-          attack.TryUse(this);
+      //  Ability attack = abilities[0];
+        attack.TryUse(this, player);
       }
       // Wait for any final movement
       while(mover.IsMoving){
@@ -239,8 +239,9 @@ public class Enemy : MonoBehaviour, ICombatant
         }
 
         // Try attack
-        AttackAbility attack = new AttackAbility(player);
-        attack.TryUse(this);
+        Ability attack = abilities[0];
+        attack.TryUse(this, player);
+
 
         // If we attacked successfully, action will be spent
         // If we had to move, SetIntent() already started movement

@@ -30,7 +30,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void Awake(){
         currentHP = maxHP;
-        abilities.Add(new AttackAbility(null));
+        abilities.Add(new AttackAbility());
     }
 
     void Start(){
@@ -112,8 +112,8 @@ public class BoxMover : MonoBehaviour, ICombatant
       if(GameStateManager.Instance.CurrentState == GameState.Combat){
           Debug.Log("Using AttackAbility");
 
-          AttackAbility attack = new AttackAbility(enemy);
-          attack.TryUse(this);
+          AttackAbility attack = new AttackAbility();
+          attack.TryUse(this, enemy);
           return;
         }
       }
