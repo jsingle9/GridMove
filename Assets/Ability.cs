@@ -9,6 +9,7 @@ public abstract class Ability
 {
     public string AbilityName;
     public AbilityCostType CostType;
+    public float Range = 1.5f;
 
     public virtual bool CanUse(ICombatant user)
     {
