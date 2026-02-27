@@ -41,7 +41,7 @@ public abstract class Ability
         }
     }
 
-    public virtual void TryUse(ICombatant user)
+    public virtual void TryUse(ICombatant user, ICombatant myTarget)
     {
         UnityEngine.Debug.Log($"Using Ability {AbilityName}");
         if(!CanUse(user)){
@@ -50,8 +50,8 @@ public abstract class Ability
         }
         UnityEngine.Debug.Log($"SUCCESS: {AbilityName} allowed → spending cost");
         SpendCost(user);
-        Execute(user);
+        Execute(user, myTarget);
     }
 
-    protected abstract void Execute(ICombatant user);
+    protected abstract void Execute(ICombatant user, ICombatant myTarget);
 }
