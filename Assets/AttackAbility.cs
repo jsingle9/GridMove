@@ -76,7 +76,7 @@ public class AttackAbility : Ability
         // =========================
         // OUT OF RANGE → MOVE ONLY
         // =========================
-        if(distance > 1.5f)
+        if(distance > Range)
         {
             // If no move left, can't reach
             if(!user.HasMove){

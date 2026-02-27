@@ -28,7 +28,9 @@ public class Enemy : MonoBehaviour, ICombatant
     void Awake()
     {
       currentHP = maxHP;
-       abilities.Add(new AttackAbility()); 
+      abilities.Add(new AttackAbility());
+      abilities.Add(new RangedAttackAbility());
+      Debug.Log("Enemy abilities: " + abilities.Count);
       dynamicObstacle = GetComponent<DynamicObstacle>();
       mover = GetComponent<UnitMover>();
 
@@ -128,8 +130,8 @@ public class Enemy : MonoBehaviour, ICombatant
       }
 
       // Try attack first
-      Ability attack = abilities[0];
-      attack.TryUse(this, player);
+      Ability chosen = ChooseAbility(player);
+      chosen.TryUse(this, player);
 
       // If we moved, wait until movement finishes
       while(mover.IsMoving){
@@ -139,7 +141,7 @@ public class Enemy : MonoBehaviour, ICombatant
       // If still have action, try attack again
       if(HasAction){
       //  Ability attack = abilities[0];
-        attack.TryUse(this, player);
+        chosen.TryUse(this, player);
       }
       // Wait for any final movement
       while(mover.IsMoving){
@@ -239,47 +241,58 @@ public class Enemy : MonoBehaviour, ICombatant
         }
 
         // Try attack
-        Ability attack = abilities[0];
-        attack.TryUse(this, player);
+        Ability chosen = ChooseAbility(player);
+        chosen.TryUse(this, player);
 
 
         // If we attacked successfully, action will be spent
         // If we had to move, SetIntent() already started movement
     }
 
+    /*Ability ChooseAbility(ICombatant target){
+        float dist = Vector3.Distance(
+            GetWorldPosition(),
+            target.GetWorldPosition()
+        );
 
-    /*void Update(){
-
-        mover.Tick();
-
-        if(GameStateManager.Instance.CurrentState != GameState.Combat)
-            return;
-
-        if(!CombatManager.Instance.IsPlayersTurn(this)){
-
-            Debug.Log($"ENEMY STATE → moving:{mover.IsMoving} | hasMove:{HasMove} | hasAction:{HasAction}");
-
-            // 🔥 When movement finishes, try attack
-            if(!mover.IsMoving && HasAction){
-                Debug.Log(">>> MOVEMENT COMPLETE → TRYING ATTACK");
-
-                BoxMover player = FindFirstObjectByType<BoxMover>();
-
-                if(player != null){
-                    AttackAbility attack = new AttackAbility(player);
-                    attack.TryUse(this);
-                }
-            }
-
-            // 🔥 End turn when fully done
-            if(!HasMove && !HasAction && !mover.IsMoving){
-                Debug.Log(">>> ENEMY TURN FINISHED → END TURN");
-                EndMyTurn();
-            }
+        foreach(var a in abilities){
+            if(a.Range >= dist && a.CanUse(this))
+                return a;
         }
+
+        return abilities[0]; // fallback melee
     }*/
 
+    Ability ChooseAbility(ICombatant target)
+    {
+        float dist = Vector3.Distance(
+            GetWorldPosition(),
+            target.GetWorldPosition()
+        );
 
+        Ability melee = null;
+        Ability ranged = null;
+
+        foreach(var a in abilities){
+            if(a is RangedAttackAbility) ranged = a;
+            if(a is AttackAbility) melee = a;
+        }
+
+        // PRIORITY 1: If ranged exists and usable → use it
+        if(ranged != null && ranged.CanUse(this)){
+            Debug.Log("Choosing ranged");
+            return ranged;
+        }
+
+        // PRIORITY 2: fallback melee
+        if(melee != null && melee.CanUse(this)){
+            Debug.Log("Choosing melee fallback");
+            return melee;
+        }
+
+        Debug.Log("No valid ability");
+        return melee; // final fallback
+    }
 
 
 
