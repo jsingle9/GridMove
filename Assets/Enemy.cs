@@ -13,11 +13,14 @@ public class Enemy : MonoBehaviour, ICombatant
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
+    public int RemainingMovement { get; set; }
 
     [SerializeField] int armorClass = 12;
     [SerializeField] int attackBonus = 4;
     [SerializeField] string damageDice = "1d6";
     [SerializeField] int damageModifier = 2;
+    [SerializeField] int speed = 6;
+    public int Speed => speed;
 
     IntentResolver resolver;
     UnitMover mover;
@@ -30,6 +33,7 @@ public class Enemy : MonoBehaviour, ICombatant
       currentHP = maxHP;
       abilities.Add(new AttackAbility());
       abilities.Add(new RangedAttackAbility());
+
       Debug.Log("Enemy abilities: " + abilities.Count);
       dynamicObstacle = GetComponent<DynamicObstacle>();
       mover = GetComponent<UnitMover>();
@@ -96,6 +100,7 @@ public class Enemy : MonoBehaviour, ICombatant
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
+        RemainingMovement = Speed;
 
         StartCoroutine(EnemyTurnRoutine());
     }
@@ -185,21 +190,42 @@ public class Enemy : MonoBehaviour, ICombatant
         return;
       }
 
-      List<GridNode> path = resolver.Resolve(intent, startNode);
+      List<GridNode> path = resolver.Resolve(currentIntent, startNode);
 
-      if(path == null){
-        Debug.LogError("Enemy path returned NULL");
-        return;
+      if(path == null || path.Count == 0)
+          return;
+
+      // calculate cost
+      int moveCost = path.Count - 1;
+
+      // trim if not enough movement
+      if(moveCost > RemainingMovement){
+          int allowed = RemainingMovement;
+
+          if(allowed <= 0){
+          // allow free movement outside turn (explore or before turn starts)
+            if(GameStateManager.Instance.CurrentState != GameState.Combat ||
+              !CombatManager.Instance.IsPlayersTurn(this)){
+              mover.StartPath(path);
+              return;
+            }
+
+            Debug.Log("No movement left");
+            return;
+          }
+
+          path = path.GetRange(0, allowed + 1);
+          moveCost = allowed;
       }
 
-      Debug.Log("Enemy path length: " + path.Count);
+      // spend movement
+      RemainingMovement -= moveCost;
 
-      if(path.Count == 0){
-        Debug.LogError("Enemy path empty");
-        return;
-      }
+      if(RemainingMovement <= 0)
+          HasMove = false;
 
-      Debug.Log("Calling mover.StartPath()");
+      Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
+
       mover.StartPath(path);
     }
 
@@ -294,7 +320,12 @@ public class Enemy : MonoBehaviour, ICombatant
         return melee; // final fallback
     }
 
+    int CalculateMoveCost(List<GridNode> path){
+        if(path == null || path.Count <= 1)
+            return 0;
 
+        return path.Count - 1;
+    }
 
     void Die(){
       Debug.Log($"{name} died");
