@@ -19,6 +19,8 @@ public interface ICombatant{
     int AttackBonus { get; }
     string DamageDice { get; }
     int DamageModifier { get; }
+    int Speed { get; }
+    int RemainingMovement { get; set; }
 
     void SetIntent(Intent intent);
     Vector3 GetWorldPosition();

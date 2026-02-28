@@ -17,12 +17,14 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
+    public int RemainingMovement { get; set; }
 
     [SerializeField] int armorClass = 16;
     [SerializeField] int attackBonus = 5;
     [SerializeField] string damageDice = "1d8";
     [SerializeField] int damageModifier = 3;
-
+    [SerializeField] int speed = 6;
+    public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
     public string DamageDice => damageDice;
@@ -31,16 +33,15 @@ public class BoxMover : MonoBehaviour, ICombatant
     void Awake(){
         currentHP = maxHP;
         abilities.Add(new AttackAbility());
+
     }
 
     void Start(){
-      if(grid == null)
-      {
+      if(grid == null){
           grid = FindFirstObjectByType<GridController>();
       }
 
-      if(grid == null)
-      {
+      if(grid == null){
           Debug.LogError("BoxMover has no GridController!", this);
           return;
       }
@@ -142,13 +143,42 @@ public class BoxMover : MonoBehaviour, ICombatant
         GridNode startNode = grid.GetNodeFromWorld(transform.position);
         if(startNode == null)
             return;
+            List<GridNode> path = resolver.Resolve(currentIntent, startNode);
 
-        List<GridNode> path = resolver.Resolve(currentIntent, startNode);
+            if(path == null || path.Count == 0)
+                return;
 
-        if(path == null || path.Count == 0)
-            return;
+            // calculate cost
+            int moveCost = path.Count - 1;
 
-        mover.StartPath(path);
+            // trim if not enough movement
+            if(moveCost > RemainingMovement)
+            {
+                int allowed = RemainingMovement;
+
+                if(allowed <= 0){
+                    // allow free movement outside turn (explore or before turn starts)
+                    if(GameStateManager.Instance.CurrentState != GameState.Combat ||
+                       !CombatManager.Instance.IsPlayersTurn(this)){
+                        mover.StartPath(path);
+                        return;
+                    }
+
+                    Debug.Log("No movement left");
+                    return;
+                }
+            }
+
+            // spend movement
+            RemainingMovement -= moveCost;
+
+            if(RemainingMovement <= 0)
+                HasMove = false;
+
+            Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
+
+            mover.StartPath(path);
+
     }
 
     void CheckIntentCompletion(){
@@ -200,7 +230,6 @@ public class BoxMover : MonoBehaviour, ICombatant
           }
         }
       }
-
 
     }
 
@@ -278,6 +307,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
+        RemainingMovement = Speed;
         //isMyTurn = true;
         //Invoke(nameof(FinishTurn), 1f);
     }
@@ -370,10 +400,17 @@ public class BoxMover : MonoBehaviour, ICombatant
         return currentHP <= 0;
     }
 
-  void Die(){
-      Debug.Log($"{name} died");
+    int CalculateMoveCost(List<GridNode> path){
+        if(path == null || path.Count <= 1)
+            return 0;
 
-      CombatManager.Instance.NotifyDeath(this);
-      gameObject.SetActive(false);
- }
+        return path.Count - 1;
+    }
+
+    void Die(){
+        Debug.Log($"{name} died");
+
+        CombatManager.Instance.NotifyDeath(this);
+        gameObject.SetActive(false);
+    }
 }

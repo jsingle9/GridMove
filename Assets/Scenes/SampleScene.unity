@@ -490,7 +490,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.024875412, g: 0.4056604, b: 0.024875412, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1751,8 +1751,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoxMover
   grid: {fileID: 43542802}
   mover: {fileID: 1397349966}
-  maxHP: 20
-  armorClass: 14
+  maxHP: 45
+  armorClass: 16
   attackBonus: 5
   damageDice: 1d8
   damageModifier: 3
