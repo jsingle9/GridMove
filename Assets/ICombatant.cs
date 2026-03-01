@@ -22,6 +22,8 @@ public interface ICombatant{
     int Speed { get; }
     int RemainingMovement { get; set; }
 
+    void AddStatus(StatusEffect status);
+    void RemoveStatus(StatusEffect status);
     int PreviewMoveCost(Intent intent);
     int CalculateMoveCost(List<GridNode> path);
     void SetIntent(Intent intent);
