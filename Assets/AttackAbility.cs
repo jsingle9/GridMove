@@ -88,7 +88,8 @@ public class AttackAbility : Ability
             user.SetIntent(new AttackIntent(target));
             return;
         }
-
+        
+        SpendCost(user);
         // =========================
         // IN RANGE → ATTACK
         // =========================
