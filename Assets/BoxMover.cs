@@ -55,7 +55,6 @@ public class BoxMover : MonoBehaviour, ICombatant
       resolver = new IntentResolver(grid);
     }
 
-
     void Update(){
         mover.Tick();
         CheckIntentCompletion();
@@ -66,7 +65,7 @@ public class BoxMover : MonoBehaviour, ICombatant
                 if(mover.IsMoving){
                         Debug.Log("Cannot end turn while moving");
                         return;
-                    }
+                }
 
                     Debug.Log("Manual end turn");
                     FinishTurn();
@@ -103,8 +102,11 @@ public class BoxMover : MonoBehaviour, ICombatant
 
       // FROM FREE EXPLORE → walk to enemy first
       if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+          Debug.Log("Moving toward enemy to start combat");
 
-          currentIntent = new AttackIntent(enemy);
+          Vector3Int enemyCell = grid.WorldToGrid(enemy.transform.position);
+          currentIntent = new MoveIntent(enemyCell);
+
           ResolveIntent();
           return;
       }

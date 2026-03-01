@@ -176,57 +176,50 @@ public class Enemy : MonoBehaviour, ICombatant
     }*/
 
     public void SetIntent(Intent intent){
-      Debug.Log("ENEMY SET INTENT CALLED");
+        Debug.Log("ENEMY SET INTENT CALLED");
 
-      currentIntent = intent;
+        currentIntent = intent;
 
-      if(GameStateManager.Instance.CurrentState == GameState.Combat){
-        HasMove = false; // 👈 ADD THIS
-      }
+        GridNode startNode = grid.GetNodeFromWorld(transform.position);
+        if(startNode == null){
+            Debug.LogError("Enemy start node null");
+            return;
+        }
 
-      GridNode startNode = grid.GetNodeFromWorld(transform.position);
-      if(startNode == null){
-        Debug.LogError("Enemy start node null");
-        return;
-      }
+        List<GridNode> path = resolver.Resolve(currentIntent, startNode);
 
-      List<GridNode> path = resolver.Resolve(currentIntent, startNode);
+        if(path == null || path.Count == 0)
+            return;
 
-      if(path == null || path.Count == 0)
-          return;
+        // calculate cost
+        int moveCost = path.Count - 1;
 
-      // calculate cost
-      int moveCost = path.Count - 1;
+        // trim if not enough movement
+        if(moveCost > RemainingMovement)
+        {
+            int allowed = RemainingMovement;
 
-      // trim if not enough movement
-      if(moveCost > RemainingMovement){
-          int allowed = RemainingMovement;
-
-          if(allowed <= 0){
-          // allow free movement outside turn (explore or before turn starts)
-            if(GameStateManager.Instance.CurrentState != GameState.Combat ||
-              !CombatManager.Instance.IsPlayersTurn(this)){
-              mover.StartPath(path);
-              return;
+            if(allowed <= 0){
+                Debug.Log("No movement left");
+                return;
             }
 
-            Debug.Log("No movement left");
-            return;
-          }
+            path = path.GetRange(0, allowed + 1);
+            moveCost = allowed;
+        }
 
-          path = path.GetRange(0, allowed + 1);
-          moveCost = allowed;
-      }
+        // spend movement
+        RemainingMovement -= moveCost;
 
-      // spend movement
-      RemainingMovement -= moveCost;
+        // HARD CLAMP
+        if(RemainingMovement < 0)
+            RemainingMovement = 0;
 
-      if(RemainingMovement <= 0)
-          HasMove = false;
+        HasMove = RemainingMovement > 0;
 
-      Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
+        Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 
-      mover.StartPath(path);
+        mover.StartPath(path);
     }
 
     // =========================
