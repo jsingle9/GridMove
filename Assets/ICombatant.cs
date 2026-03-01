@@ -22,6 +22,8 @@ public interface ICombatant{
     int Speed { get; }
     int RemainingMovement { get; set; }
 
+    int PreviewMoveCost(Intent intent);
+    int CalculateMoveCost(List<GridNode> path);
     void SetIntent(Intent intent);
     Vector3 GetWorldPosition();
 

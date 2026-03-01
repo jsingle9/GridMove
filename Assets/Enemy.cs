@@ -313,11 +313,21 @@ public class Enemy : MonoBehaviour, ICombatant
         return melee; // final fallback
     }
 
-    int CalculateMoveCost(List<GridNode> path){
+    int ICombatant.CalculateMoveCost(List<GridNode> path){
         if(path == null || path.Count <= 1)
             return 0;
 
         return path.Count - 1;
+    }
+
+    public int PreviewMoveCost(Intent intent){
+      GridNode startNode = grid.GetNodeFromWorld(transform.position);
+      if(startNode == null) return -1;
+
+      List<GridNode> path = resolver.Resolve(intent, startNode);
+      if(path == null || path.Count == 0) return -1;
+
+      return path.Count - 1;
     }
 
     void Die(){
