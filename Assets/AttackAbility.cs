@@ -76,19 +76,36 @@ public class AttackAbility : Ability
         // =========================
         // OUT OF RANGE → MOVE ONLY
         // =========================
+        // =========================
+        // OUT OF RANGE → TRY MOVE INTO RANGE
+        // =========================
         if(distance > Range)
         {
-            // If no move left, can't reach
+            // no movement at all
             if(!user.HasMove){
                 Debug.Log("Out of range but no move left → cannot reach target");
                 return;
             }
 
+            // preview path cost
+            AttackIntent previewIntent = new AttackIntent(target);
+            int cost = user.PreviewMoveCost(previewIntent);
+
+            if(cost <= 0){
+                Debug.Log("No valid path to target");
+                return;
+            }
+
+            if(cost > user.RemainingMovement){
+                Debug.Log($"Target too far. Need {cost} movement, have {user.RemainingMovement}");
+                return;
+            }
+
             Debug.Log("Target out of range → moving into range");
-            user.SetIntent(new AttackIntent(target));
+            user.SetIntent(previewIntent);
             return;
         }
-        
+
         SpendCost(user);
         // =========================
         // IN RANGE → ATTACK
