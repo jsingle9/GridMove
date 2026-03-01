@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BoxMover : MonoBehaviour, ICombatant
 {
@@ -24,11 +25,13 @@ public class BoxMover : MonoBehaviour, ICombatant
     [SerializeField] string damageDice = "1d8";
     [SerializeField] int damageModifier = 3;
     [SerializeField] int speed = 6;
+
     public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
     public string DamageDice => damageDice;
     public int DamageModifier => damageModifier;
+    private List<StatusEffect> activeStatuses = new List<StatusEffect>();
 
     void Awake(){
         currentHP = maxHP;
@@ -310,12 +313,20 @@ public class BoxMover : MonoBehaviour, ICombatant
         HasAction = true;
         HasBonusAction = true;
         RemainingMovement = Speed;
+
+        foreach (var status in activeStatuses.ToList()){
+          status.OnTurnStart(this);
+        }
         //isMyTurn = true;
         //Invoke(nameof(FinishTurn), 1f);
     }
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
+        foreach (var status in activeStatuses.ToList()){
+          status.OnTurnEnd(this);
+          status.Tick(this);
+        }
         //isMyTurn = false;
         // Disable input
     }
@@ -417,6 +428,16 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(path == null || path.Count == 0) return -1;
 
         return path.Count - 1;
+    }
+
+    public void AddStatus(StatusEffect status)
+    {
+      activeStatuses.Add(status);
+      status.OnApply(this);
+    }
+
+    public void RemoveStatus(StatusEffect status){
+      activeStatuses.Remove(status);
     }
 
     void Die(){

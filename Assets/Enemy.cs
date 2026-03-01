@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Enemy : MonoBehaviour, ICombatant
 {
@@ -27,9 +28,9 @@ public class Enemy : MonoBehaviour, ICombatant
     Intent currentIntent;
 
     List<Ability> abilities = new List<Ability>();
+    private List<StatusEffect> activeStatuses = new List<StatusEffect>();
 
-    void Awake()
-    {
+    void Awake(){
       currentHP = maxHP;
       abilities.Add(new AttackAbility());
       abilities.Add(new RangedAttackAbility());
@@ -101,6 +102,9 @@ public class Enemy : MonoBehaviour, ICombatant
         HasAction = true;
         HasBonusAction = true;
         RemainingMovement = Speed;
+        foreach (var status in activeStatuses.ToList()){
+            status.OnTurnStart(this);
+        }
 
         StartCoroutine(EnemyTurnRoutine());
     }
@@ -110,6 +114,7 @@ public class Enemy : MonoBehaviour, ICombatant
 
     public void EndTurn(){ // announce turn end
         Debug.Log("Enemy EndTurn() called");
+
     }
 
     void EndMyTurn(){ // make turn end
@@ -328,6 +333,17 @@ public class Enemy : MonoBehaviour, ICombatant
       if(path == null || path.Count == 0) return -1;
 
       return path.Count - 1;
+    }
+
+    public void AddStatus(StatusEffect status)
+    {
+        activeStatuses.Add(status);
+        status.OnApply(this);
+    }
+
+    public void RemoveStatus(StatusEffect status)
+    {
+        activeStatuses.Remove(status);
     }
 
     void Die(){
