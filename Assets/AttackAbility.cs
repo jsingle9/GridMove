@@ -4,68 +4,12 @@ public class AttackAbility : Ability
 {
     ICombatant target;
 
-    public AttackAbility()
-    {
+    public AttackAbility(){
         AbilityName = "Attack";
         CostType = AbilityCostType.Action;
     }
 
-    /*protected override void Execute(ICombatant user, ICombatant myTarget){
-
-      if(myTarget == null) return;
-
-      float distance = Vector3.Distance(
-          user.GetWorldPosition(),
-          target.GetWorldPosition()
-      );
-
-    // If out of range, just move — DO NOT spend action yet
-    if(distance > 1.5f){
-
-      // 🚫 If we already used movement this turn, stop trying
-      if(!user.HasMove){
-        Debug.Log("Out of range but no move left → cannot reach target");
-        return;
-      }
-
-      Debug.Log("Target out of range → moving into range");
-      user.SetIntent(new AttackIntent(myTarget));
-      return;
-    }
-
-    // Now we are in range — spend action
-    if(!user.HasAction)
-          return;
-
-      //user.HasAction = false;
-
-    Debug.Log($"{user} attacks {myTarget}");
-
-    int roll = DiceRoller.RollD20();
-    int total = roll + user.AttackBonus;
-
-    Debug.Log($"Attack roll: {roll} + {user.AttackBonus} = {total} vs AC {myTarget.ArmorClass}");
-
-    bool crit = roll == 20;
-
-    if(total >= myTarget.ArmorClass || crit){
-        int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
-
-        if(crit){
-            Debug.Log("CRITICAL HIT!");
-            damage *= 2;
-        }
-
-        Debug.Log($"Hit for {damage} damage");
-        myTarget.TakeDamage(damage);
-      }
-      else{
-        Debug.Log("Miss");
-      }
-    }*/
-
-    protected override void Execute(ICombatant user, ICombatant target)
-    {
+    protected override void Execute(ICombatant user, ICombatant target){
         if(target == null) return;
 
         float distance = Vector3.Distance(
