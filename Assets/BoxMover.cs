@@ -25,7 +25,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     [SerializeField] string damageDice = "1d8";
     [SerializeField] int damageModifier = 3;
     [SerializeField] int speed = 6;
-
+    ICombatant pendingAttackTarget;
     public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
@@ -96,9 +96,6 @@ public class BoxMover : MonoBehaviour, ICombatant
       Enemy enemy = GetClickedEnemy();
 
       // 🗡 ATTACK CLICKED
-
-
-
     // Enter combat if in explore
     if(enemy != null){
       Debug.Log("Enemy clicked");
@@ -118,8 +115,9 @@ public class BoxMover : MonoBehaviour, ICombatant
       if(GameStateManager.Instance.CurrentState == GameState.Combat){
           Debug.Log("Using AttackAbility");
 
+          pendingAttackTarget = enemy;
           AttackAbility attack = new AttackAbility();
-          attack.TryUse(this, enemy);
+          attack.TryUse(this, pendingAttackTarget);
           return;
         }
       }
@@ -156,15 +154,17 @@ public class BoxMover : MonoBehaviour, ICombatant
             // calculate cost
             int moveCost = path.Count - 1;
 
-            // trim if not enough movement
+            // trim path if not enough movement
             if(moveCost > RemainingMovement)
             {
                 int allowed = RemainingMovement;
 
-                if(allowed <= 0){
-                    // allow free movement outside turn (explore or before turn starts)
+                if(allowed <= 0)
+                {
+                    // allow free explore movement
                     if(GameStateManager.Instance.CurrentState != GameState.Combat ||
-                       !CombatManager.Instance.IsPlayersTurn(this)){
+                       !CombatManager.Instance.IsPlayersTurn(this))
+                    {
                         mover.StartPath(path);
                         return;
                     }
@@ -172,13 +172,19 @@ public class BoxMover : MonoBehaviour, ICombatant
                     Debug.Log("No movement left");
                     return;
                 }
+
+                // 🔥 THIS WAS MISSING
+                path = path.GetRange(0, allowed + 1);
+                moveCost = allowed;
             }
 
             // spend movement
             RemainingMovement -= moveCost;
 
-            if(RemainingMovement <= 0)
-                HasMove = false;
+            if(RemainingMovement < 0)
+                RemainingMovement = 0;
+
+            HasMove = RemainingMovement > 0;
 
             Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 

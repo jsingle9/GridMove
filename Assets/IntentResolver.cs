@@ -44,14 +44,14 @@ public class IntentResolver
 
         foreach(GridNode neighbor in grid.GetNeighbors(enemyNode)){
 
-        // must be walkable
-        if(!neighbor.walkable)
+          // must be walkable
+          if(!neighbor.walkable)
             continue;
 
-        // cannot stand on another combatant
-        if(GameStateManager.Instance.CurrentState == GameState.Combat){
-          if(grid.IsTileOccupied(neighbor.gridPos))
-            continue;
+          // cannot stand on another combatant
+          if(GameStateManager.Instance.CurrentState == GameState.Combat){
+            if(grid.IsTileOccupied(neighbor.gridPos))
+              continue;
         }
 
         List<GridNode> path = pathfinder.FindPath(actorNode, neighbor);
@@ -70,6 +70,10 @@ public class IntentResolver
         Debug.Log("No valid adjacent path to enemy");
     }
 
+    Debug.Log("Attack path:");
+    foreach(var n in bestPath)
+    Debug.Log(n.gridPos);
+    
     return bestPath;
   }
 
