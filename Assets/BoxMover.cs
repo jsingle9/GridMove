@@ -193,55 +193,84 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     void CheckIntentCompletion(){
-      if(currentIntent == null)
-        return;
+        if(currentIntent == null)
+            return;
 
-      if(!mover.IsMoving){
+        // ===============================
+        // MOVEMENT FINISHED
+        // ===============================
+        if(!mover.IsMoving){
+            // =========================================
+            // If we were moving to attack something
+            // =========================================
+            if(currentIntent is AttackIntent attackIntent){
+                // 🔥 ENTER COMBAT if we started from explore
+                if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+                    Debug.Log("Attack resolved → entering combat");
 
-        if(currentIntent is AttackIntent attack){
-          if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-            Debug.Log("Attack resolved → entering combat");
-            GameStateManager.Instance.EnterCombat();
-            float combatRadius = 4f;
+                    GameStateManager.Instance.EnterCombat();
+                    float combatRadius = 4f;
 
-            List<ICombatant> participants = new List<ICombatant>();
+                    List<ICombatant> participants = new List<ICombatant>();
 
-            // Always add player
-            participants.Add(GetComponent<ICombatant>());
+                    // Always add player
+                    participants.Add(GetComponent<ICombatant>());
 
-            // Find nearby enemies
-            Collider2D[] hits = Physics2D.OverlapCircleAll(
-              transform.position,
-              combatRadius
-            );
+                    // Find nearby enemies
+                    Collider2D[] hits = Physics2D.OverlapCircleAll(
+                        transform.position,
+                        combatRadius
+                    );
 
-            foreach(Collider2D hit in hits){
-              Enemy enemy = hit.GetComponent<Enemy>();
-              if(enemy == null) continue;
+                    foreach(Collider2D hit in hits){
+                        Enemy enemy = hit.GetComponent<Enemy>();
+                        if(enemy == null) continue;
 
-              ICombatant combatant = enemy.GetComponent<ICombatant>();
-                if(combatant != null && !participants.Contains(combatant)){
-                  participants.Add(combatant);
+                        ICombatant combatant = enemy.GetComponent<ICombatant>();
+                        if(combatant != null && !participants.Contains(combatant))
+                            participants.Add(combatant);
+                    }
+
+                    CombatManager.Instance.StartCombat(participants);
                 }
-              }CombatManager.Instance.StartCombat(participants);
-          }
 
+                // =========================================
+                // AFTER MOVEMENT → FINISH ATTACK
+                // =========================================
+                if(pendingAttackTarget != null &&
+                   GameStateManager.Instance.CurrentState == GameState.Combat){
+                    float dist = Vector3.Distance(
+                        GetWorldPosition(),
+                        pendingAttackTarget.GetWorldPosition()
+                    );
 
-      }
+                    // melee range check
+                    if(dist <= 1.6f){
+                        Debug.Log("Reached target → finishing queued attack");
 
-        currentIntent = null;
-      }
-      if(GameStateManager.Instance.CurrentState == GameState.Combat){
+                        AttackAbility attack = new AttackAbility();
+                        attack.TryUse(this, pendingAttackTarget);
 
-        // 🔒 Only auto-end turn if player is CURRENT combatant
-        if(CombatManager.Instance.IsPlayersTurn(this)){
-          if(!HasMove && !HasAction && !mover.IsMoving && currentIntent == null){
-            Debug.Log("Player turn complete → ending turn");
-            FinishTurn();
-          }
+                        pendingAttackTarget = null;
+                    }
+                }
+            }
+
+            // clear intent once resolved
+            currentIntent = null;
         }
-      }
 
+        // =========================================
+        // AUTO END TURN (only if current combatant)
+        // =========================================
+        if(GameStateManager.Instance.CurrentState == GameState.Combat){
+            if(CombatManager.Instance.IsPlayersTurn(this)){
+                if(!HasMove && !HasAction && !mover.IsMoving && currentIntent == null){
+                    Debug.Log("Player turn complete → ending turn");
+                    FinishTurn();
+                }
+            }
+        }
     }
 
     Vector3 GetMouseWorld(){

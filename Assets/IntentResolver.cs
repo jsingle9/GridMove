@@ -34,48 +34,62 @@ public class IntentResolver
     }
 
     List<GridNode> ResolveAttackMove(
-      GridNode actorNode,
-      ICombatant enemy
+        GridNode actorNode,
+        ICombatant enemy
     ){
         GridNode enemyNode = grid.GetNodeFromWorld(enemy.GetWorldPosition());
 
         List<GridNode> bestPath = null;
         int bestLength = int.MaxValue;
 
-        foreach(GridNode neighbor in grid.GetNeighbors(enemyNode)){
+        // all adjacent tiles to clicked enemy
+        List<GridNode> adjacent = grid.GetNeighbors(enemyNode);
 
-          // must be walkable
-          if(!neighbor.walkable)
-            continue;
+        foreach(GridNode neighbor in adjacent)
+        {
+            if(!neighbor.walkable)
+                continue;
 
-          // cannot stand on another combatant
-          if(GameStateManager.Instance.CurrentState == GameState.Combat){
-            if(grid.IsTileOccupied(neighbor.gridPos))
-              continue;
+            // cannot stand on occupied tile
+            if(GameStateManager.Instance.CurrentState == GameState.Combat)
+            {
+                if(grid.IsTileOccupied(neighbor.gridPos))
+                    continue;
+            }
+
+            List<GridNode> path = pathfinder.FindPath(actorNode, neighbor);
+            if(path == null || path.Count == 0)
+                continue;
+
+            int length = path.Count;
+
+            if(length < bestLength)
+            {
+                bestLength = length;
+                bestPath = path;
+            }
         }
 
-        List<GridNode> path = pathfinder.FindPath(actorNode, neighbor);
+        // ✔ Found reachable adjacent tile
+        if(bestPath != null)
+        {
+            Debug.Log("Attack path chosen (adjacent to clicked enemy):");
+            foreach(var n in bestPath)
+                Debug.Log(n.gridPos);
 
-        if(path == null || path.Count == 0)
-            continue;
-
-        // choose shortest valid path
-        if(path.Count < bestLength){
-            bestLength = path.Count;
-            bestPath = path;
+            return bestPath;
         }
+
+        // ❗ No adjacent tile reachable
+        // Move toward enemy instead (5e behavior)
+        Debug.Log("No adjacent tile reachable → moving toward enemy");
+
+        List<GridNode> fallback = pathfinder.FindPath(actorNode, enemyNode);
+
+        if(fallback == null || fallback.Count == 0)
+            return null;
+
+        return fallback;
     }
-
-    if(bestPath == null){
-        Debug.Log("No valid adjacent path to enemy");
-    }
-
-    Debug.Log("Attack path:");
-    foreach(var n in bestPath)
-    Debug.Log(n.gridPos);
-    
-    return bestPath;
-  }
-
 
 }
