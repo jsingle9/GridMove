@@ -23,6 +23,7 @@ public class UnitMover : MonoBehaviour
     }
 
     public void StartPath(List<GridNode> path){
+      Debug.Log("STARTPATH CALLED. Path length: " + path.Count);
         if (path == null || path.Count == 0)
             return;
 
@@ -38,11 +39,19 @@ public class UnitMover : MonoBehaviour
             transform.position,
             targetPosition,
             moveSpeed * Time.deltaTime
+
         );
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.01f){
             transform.position = targetPosition;
+            Debug.Log("---- SNAP EVENT ----");
+            Debug.Log("Snapped world position: " + transform.position);
+            Debug.Log("Target position: " + targetPosition);
+
             Vector3Int newCell = grid.WorldToGrid(transform.position);
+            Debug.Log("WorldToGrid result: " + newCell);
+            Debug.Log("CurrentCell before update: " + currentCell);
+            Debug.Log("--------------------");
 
             if(newCell != currentCell){
               grid.UnregisterOccupant(currentCell);
@@ -54,11 +63,13 @@ public class UnitMover : MonoBehaviour
             if (pathIndex >= currentPath.Count){
                 isMoving = false;
                 currentPath = null;
+                return;
             }
             else{
                 SetNextTarget();
             }
         }
+
     }
 
     public void Stop(){
@@ -77,5 +88,6 @@ public class UnitMover : MonoBehaviour
         GridNode nextNode = currentPath[pathIndex];
         targetPosition = grid.GridToWorld(nextNode.gridPos);
         isMoving = true;
+        Debug.Log("Setting next target to: " + currentPath[pathIndex]);
     }
 }

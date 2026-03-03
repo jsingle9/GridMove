@@ -10,8 +10,17 @@ public class Pathfinder{
     }
 
     public List<GridNode> FindPath(GridNode startNode, GridNode targetNode){
-      if (startNode == null || targetNode == null)
+        if (startNode == null || targetNode == null)
             return null;
+
+        for (int x = 0; x < grid.grid.GetLength(0); x++){
+          for (int y = 0; y < grid.grid.GetLength(1); y++){
+            GridNode node = grid.grid[x, y];
+            node.gCost = int.MaxValue;
+            node.hCost = 0;
+            node.parent = null;
+          }
+        }
 
         if (!targetNode.walkable)
             return null;
@@ -49,6 +58,7 @@ public class Pathfinder{
 
             foreach (GridNode neighbor in grid.GetNeighbors(currentNode))
             {
+                //Debug.Log("Neighbor instance ID: " + neighbor.GetHashCode());
                 if (!neighbor.walkable || closedSet.Contains(neighbor))
                     continue;
 
@@ -63,17 +73,17 @@ public class Pathfinder{
                 }
               }
               int newCostToNeighbor =
-                    currentNode.gCost + GetDistance(currentNode, neighbor);
+                  currentNode.gCost + GetDistance(currentNode, neighbor);
 
-                if (newCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
-                {
-                    neighbor.gCost = newCostToNeighbor;
-                    neighbor.hCost = GetDistance(neighbor, targetNode);
-                    neighbor.parent = currentNode;
+              if (newCostToNeighbor < neighbor.gCost)
+              {
+                  neighbor.gCost = newCostToNeighbor;
+                  neighbor.hCost = GetDistance(neighbor, targetNode);
+                  neighbor.parent = currentNode;
 
-                    if (!openSet.Contains(neighbor))
-                        openSet.Add(neighbor);
-                }
+                  if (!openSet.Contains(neighbor))
+                      openSet.Add(neighbor);
+              }
             }
         }
 
