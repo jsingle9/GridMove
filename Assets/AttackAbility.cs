@@ -9,7 +9,7 @@ public class AttackAbility : Ability
         CostType = AbilityCostType.Action;
     }
 
-    protected override void Execute(ICombatant user, ICombatant target){
+/*    protected override void Execute(ICombatant user, ICombatant target){
         if(target == null) return;
 
         float distance = Vector3.Distance(
@@ -79,8 +79,59 @@ public class AttackAbility : Ability
         {
             Debug.Log("Miss");
         }
-    }
+    }*/
 
+    protected override void Execute(ICombatant user, ICombatant target){
+        if(target == null) return;
+
+        float distance = Vector3.Distance(
+            user.GetWorldPosition(),
+            target.GetWorldPosition()
+        );
+
+        // Not in melee range → do nothing
+        /*if(distance > Range + 0.1f){
+            Debug.Log("Target not in melee range");
+            return;
+        }*/
+        if(distance > Range){
+            if(!user.HasMove){
+                Debug.Log("Out of range and no movement");
+                return;
+            }
+
+            AttackIntent intent = new AttackIntent(target);
+            user.SetIntent(intent);
+            // DO NOT attack yet
+            return;
+        }
+
+        SpendCost(user);
+
+        Debug.Log($"{user} attacks {target}");
+
+        int roll = DiceRoller.RollD20();
+        int total = roll + user.AttackBonus;
+
+        Debug.Log($"Attack roll: {roll} + {user.AttackBonus} = {total} vs AC {target.ArmorClass}");
+
+        bool crit = roll == 20;
+
+        if(total >= target.ArmorClass || crit){
+            int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
+
+            if(crit){
+                Debug.Log("CRITICAL HIT!");
+                damage *= 2;
+            }
+
+            Debug.Log($"Hit for {damage} damage");
+            target.TakeDamage(damage);
+        }
+        else{
+            Debug.Log("Miss");
+        }
+    }
 
     public override void TryUse(ICombatant user, ICombatant myTarget){
         if(!user.HasAction){

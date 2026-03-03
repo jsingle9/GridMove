@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour, ICombatant
     [SerializeField] GridController grid;
     [SerializeField] int maxHP = 18;
     int currentHP;
-    bool turnEnding = false;
+    //bool turnEnding = false;
 
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
