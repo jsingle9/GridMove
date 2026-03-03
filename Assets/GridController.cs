@@ -142,7 +142,12 @@ public class GridController : MonoBehaviour
 
     return true;
 }
+  public ICombatant GetOccupant(Vector3Int cell){
+      if (occupiedTiles.TryGetValue(cell, out ICombatant unit))
+          return unit;
 
+      return null;
+  }
     /*void OnDrawGizmos(){
       Gizmos.color = Color.red;
 
@@ -154,5 +159,4 @@ public class GridController : MonoBehaviour
           }
       }
     }*/
-
 }

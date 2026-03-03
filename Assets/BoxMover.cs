@@ -52,8 +52,8 @@ public class BoxMover : MonoBehaviour, ICombatant
       mover = GetComponent<UnitMover>();
       mover.Initialize(grid);
 
-      Vector3Int startCell = grid.WorldToGrid(transform.position);
-      grid.RegisterOccupant(startCell, this);
+      //Vector3Int startCell = grid.WorldToGrid(transform.position);
+      //grid.RegisterOccupant(startCell, this);
 
       resolver = new IntentResolver(grid);
     }
@@ -99,7 +99,8 @@ public class BoxMover : MonoBehaviour, ICombatant
 
       // FROM FREE EXPLORE → walk to enemy first
       if(enemy != null){
-          Debug.Log("Enemy clicked");
+          //Debug.Log("Enemy clicked");
+          Debug.Log("Clicked enemy: " + enemy.name);
 
           AttackAbility attack = new AttackAbility();
 
@@ -182,8 +183,25 @@ public class BoxMover : MonoBehaviour, ICombatant
                 {
                     // allow free explore movement
                     if(GameStateManager.Instance.CurrentState != GameState.Combat ||
-                       !CombatManager.Instance.IsPlayersTurn(this))
-                    {
+                       !CombatManager.Instance.IsPlayersTurn(this)){
+                         Debug.Log("====== FINAL PATH BEGIN ======");
+
+                         if (path == null)
+                         {
+                             Debug.Log("PATH IS NULL");
+                         }
+                         else
+                         {
+                             for (int i = 0; i < path.Count; i++)
+                             {
+                                 Debug.Log($"Step {i}: {path[i].gridPos}");
+                             }
+
+                             Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
+                         }
+
+                         Debug.Log("====== FINAL PATH END ======");
+                         Debug.Log("START PATH (FreeExplore bypass)");
                         mover.StartPath(path);
                         return;
                     }
@@ -192,7 +210,6 @@ public class BoxMover : MonoBehaviour, ICombatant
                     return;
                 }
 
-                //  THIS WAS MISSING
                 path = path.GetRange(0, allowed + 1);
                 moveCost = allowed;
             }
@@ -207,6 +224,24 @@ public class BoxMover : MonoBehaviour, ICombatant
 
             Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 
+            Debug.Log("====== FINAL PATH BEGIN ======");
+
+            if (path == null)
+            {
+                Debug.Log("PATH IS NULL");
+            }
+            else
+            {
+                for (int i = 0; i < path.Count; i++)
+                {
+                    Debug.Log($"Step {i}: {path[i].gridPos}");
+                }
+
+                Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
+            }
+
+            Debug.Log("====== FINAL PATH END ======");
+            Debug.Log("START PATH (ResolveIntent)");
             mover.StartPath(path);
 
     }
@@ -303,20 +338,39 @@ public class BoxMover : MonoBehaviour, ICombatant
         return world;
     }
 
-    Enemy GetClickedEnemy(){
-        if(Camera.main == null)
+    Enemy GetClickedEnemy()
+    {
+        if (Camera.main == null)
             return null;
 
-        Ray ray = Camera.main.ScreenPointToRay(
-            UnityEngine.InputSystem.Mouse.current.position.ReadValue()
-        );
+        // Get mouse world position
+        Vector2 screenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+        // Convert to grid cell
+        Vector3Int clickedCell = grid.WorldToGrid(worldPos);
 
-        if (hit.collider == null)
+        Debug.Log("Clicked world position: " + worldPos);
+        Debug.Log("Clicked grid cell: " + clickedCell);
+
+        // Ask grid who occupies this tile
+        ICombatant occupant = grid.GetOccupant(clickedCell);
+
+        if (occupant == null)
+        {
+            Debug.Log("No occupant at this cell.");
             return null;
+        }
 
-        return hit.collider.GetComponent<Enemy>();
+        if (occupant is Enemy enemy)
+        {
+            Debug.Log("Grid selected enemy: " + enemy.name);
+            Debug.Log("Enemy instance ID: " + enemy.GetInstanceID());
+            return enemy;
+        }
+
+        Debug.Log("Occupant is not an enemy: " + occupant);
+        return null;
     }
 
     void HandleExploreClick(){
@@ -422,6 +476,8 @@ public class BoxMover : MonoBehaviour, ICombatant
 
       Debug.Log("Proximity combat triggered");
 
+      Vector3Int cell = grid.WorldToGrid(transform.position);
+      transform.position = grid.GridToWorld(cell);
       mover.Stop();
       currentIntent = null;
       GameStateManager.Instance.EnterCombat();
