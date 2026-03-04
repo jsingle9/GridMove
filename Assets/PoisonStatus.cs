@@ -18,6 +18,9 @@ public class PoisonStatus : StatusEffect
 
     public override void OnTurnStart(ICombatant target)
     {
+        if (target.IsDead()) return;
+
+        //Debug.Log($"{target} takes {damagePerTurn} poison damage.")
         Debug.Log($"{target} takes {damagePerTurn} poison damage.");
         target.TakeDamage(damagePerTurn);
     }

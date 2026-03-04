@@ -103,6 +103,7 @@ public class Enemy : MonoBehaviour, ICombatant
         HasBonusAction = true;
         RemainingMovement = Speed;
         foreach (var status in activeStatuses.ToList()){
+            if (IsDead()) return;
             status.OnTurnStart(this);
         }
 
@@ -112,9 +113,16 @@ public class Enemy : MonoBehaviour, ICombatant
 
 
 
-    public void EndTurn(){ // announce turn end
+    public void EndTurn(){
         Debug.Log("Enemy EndTurn() called");
 
+        foreach (var status in activeStatuses.ToList()){
+            if (IsDead()) return;
+
+            status.OnTurnEnd(this);
+            status.Tick(this);
+        }
+      
     }
 
     void EndMyTurn(){ // make turn end
@@ -337,8 +345,17 @@ public class Enemy : MonoBehaviour, ICombatant
 
     public void AddStatus(StatusEffect status)
     {
-        activeStatuses.Add(status);
-        status.OnApply(this);
+      StatusEffect existing = activeStatuses
+          .FirstOrDefault(s => s.Name == status.Name);
+
+      if (existing != null)
+      {
+          existing.Refresh(status.RemainingTurns);
+          return;
+      }
+
+      activeStatuses.Add(status);
+      status.OnApply(this);
     }
 
     public void RemoveStatus(StatusEffect status)
