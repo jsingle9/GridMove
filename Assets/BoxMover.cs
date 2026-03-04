@@ -413,6 +413,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     public void StartTurn(){
+
         Debug.Log("Player turn started");
 
         HasMove = true;
@@ -421,6 +422,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         RemainingMovement = Speed;
 
         foreach (var status in activeStatuses.ToList()){
+          if (IsDead()) return;
           status.OnTurnStart(this);
         }
         //isMyTurn = true;
@@ -540,6 +542,15 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     public void AddStatus(StatusEffect status)
     {
+      StatusEffect existing = activeStatuses
+          .FirstOrDefault(s => s.Name == status.Name);
+
+      if (existing != null)
+      {
+          existing.Refresh(status.RemainingTurns);
+          return;
+      }
+
       activeStatuses.Add(status);
       status.OnApply(this);
     }

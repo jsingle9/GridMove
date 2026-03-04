@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class StatusEffect
 {
     public string Name { get; private set; }
@@ -23,5 +25,10 @@ public abstract class StatusEffect
             OnExpire(target);
             target.RemoveStatus(this);
         }
+    }
+
+    public void Refresh(int newDuration)
+    {
+        RemainingTurns = Mathf.Max(RemainingTurns, newDuration);
     }
 }

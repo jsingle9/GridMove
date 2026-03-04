@@ -127,6 +127,9 @@ public class AttackAbility : Ability
 
             Debug.Log($"Hit for {damage} damage");
             target.TakeDamage(damage);
+            if (user is BoxMover){
+                target.AddStatus(new PoisonStatus(3, 2));
+            }
         }
         else{
             Debug.Log("Miss");
