@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class StatusEffect
 {
     public string Name { get; private set; }
-    public int RemainingTurns { get; private set; }
+    public int RemainingTurns { get; protected set; }
 
     public StatusEffect(string name, int duration)
     {

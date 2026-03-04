@@ -26,9 +26,10 @@ public class Enemy : MonoBehaviour, ICombatant
     IntentResolver resolver;
     UnitMover mover;
     Intent currentIntent;
+    StatusManager statusManager;
 
     List<Ability> abilities = new List<Ability>();
-    private List<StatusEffect> activeStatuses = new List<StatusEffect>();
+    //private List<StatusEffect> activeStatuses = new List<StatusEffect>();
 
     void Awake(){
       currentHP = maxHP;
@@ -57,6 +58,7 @@ public class Enemy : MonoBehaviour, ICombatant
 
       mover.Initialize(grid);
       resolver = new IntentResolver(grid);
+      statusManager = new StatusManager(this);
 
       Debug.Log("✅ Enemy initialized correctly");
     }
@@ -102,10 +104,7 @@ public class Enemy : MonoBehaviour, ICombatant
         HasAction = true;
         HasBonusAction = true;
         RemainingMovement = Speed;
-        foreach (var status in activeStatuses.ToList()){
-            if (IsDead()) return;
-            status.OnTurnStart(this);
-        }
+        statusManager.ProcessTurnStart();
 
         StartCoroutine(EnemyTurnRoutine());
     }
@@ -116,13 +115,8 @@ public class Enemy : MonoBehaviour, ICombatant
     public void EndTurn(){
         Debug.Log("Enemy EndTurn() called");
 
-        foreach (var status in activeStatuses.ToList()){
-            if (IsDead()) return;
+        statusManager.ProcessTurnEnd();
 
-            status.OnTurnEnd(this);
-            status.Tick(this);
-        }
-      
     }
 
     void EndMyTurn(){ // make turn end
@@ -343,29 +337,17 @@ public class Enemy : MonoBehaviour, ICombatant
       return path.Count - 1;
     }
 
-    public void AddStatus(StatusEffect status)
-    {
-      StatusEffect existing = activeStatuses
-          .FirstOrDefault(s => s.Name == status.Name);
-
-      if (existing != null)
-      {
-          existing.Refresh(status.RemainingTurns);
-          return;
-      }
-
-      activeStatuses.Add(status);
-      status.OnApply(this);
+    public void AddStatus(StatusEffect status){
+        statusManager.AddStatus(status);
     }
 
-    public void RemoveStatus(StatusEffect status)
-    {
-        activeStatuses.Remove(status);
+    public void RemoveStatus(StatusEffect status){
+        statusManager.RemoveStatus(status);
     }
 
     void Die(){
       Debug.Log($"{name} died");
-
+      statusManager.Clear();
       CombatManager.Instance.NotifyDeath(this);
       gameObject.SetActive(false);
     }

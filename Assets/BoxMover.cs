@@ -31,11 +31,13 @@ public class BoxMover : MonoBehaviour, ICombatant
     public int AttackBonus => attackBonus;
     public string DamageDice => damageDice;
     public int DamageModifier => damageModifier;
-    private List<StatusEffect> activeStatuses = new List<StatusEffect>();
+    //private List<StatusEffect> activeStatuses = new List<StatusEffect>();
+    private StatusManager statusManager;
 
     void Awake(){
         currentHP = maxHP;
         abilities.Add(new AttackAbility());
+        statusManager = new StatusManager(this);
 
     }
 
@@ -51,9 +53,6 @@ public class BoxMover : MonoBehaviour, ICombatant
 
       mover = GetComponent<UnitMover>();
       mover.Initialize(grid);
-
-      //Vector3Int startCell = grid.WorldToGrid(transform.position);
-      //grid.RegisterOccupant(startCell, this);
 
       resolver = new IntentResolver(grid);
     }
@@ -421,20 +420,14 @@ public class BoxMover : MonoBehaviour, ICombatant
         HasBonusAction = true;
         RemainingMovement = Speed;
 
-        foreach (var status in activeStatuses.ToList()){
-          if (IsDead()) return;
-          status.OnTurnStart(this);
-        }
+        statusManager.ProcessTurnStart();
         //isMyTurn = true;
         //Invoke(nameof(FinishTurn), 1f);
     }
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
-        foreach (var status in activeStatuses.ToList()){
-          status.OnTurnEnd(this);
-          status.Tick(this);
-        }
+        statusManager.ProcessTurnEnd();
         //isMyTurn = false;
         // Disable input
     }
@@ -540,28 +533,17 @@ public class BoxMover : MonoBehaviour, ICombatant
         return path.Count - 1;
     }
 
-    public void AddStatus(StatusEffect status)
-    {
-      StatusEffect existing = activeStatuses
-          .FirstOrDefault(s => s.Name == status.Name);
-
-      if (existing != null)
-      {
-          existing.Refresh(status.RemainingTurns);
-          return;
-      }
-
-      activeStatuses.Add(status);
-      status.OnApply(this);
+    public void AddStatus(StatusEffect status){
+        statusManager.AddStatus(status);
     }
 
     public void RemoveStatus(StatusEffect status){
-      activeStatuses.Remove(status);
+        statusManager.RemoveStatus(status);
     }
 
     void Die(){
         Debug.Log($"{name} died");
-
+        statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);
     }
