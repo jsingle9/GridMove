@@ -19,6 +19,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
     public int RemainingMovement { get; set; }
+    public bool turnStarted = false;
 
     [SerializeField] int armorClass = 16;
     [SerializeField] int attackBonus = 5;
@@ -36,7 +37,9 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void Awake(){
         currentHP = maxHP;
-        abilities.Add(new AttackAbility());
+        abilities.Add(new AttackAbility());        // slot 1
+        abilities.Add(new RangedAttackAbility());  // slot 2
+        Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
 
     }
@@ -77,7 +80,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
 
-    public void HandleLeftClick(){
+    /*public void HandleLeftClick(){
     // Only current combatant can act
       if(GameStateManager.Instance.CurrentState == GameState.Combat){
           if(!CombatManager.Instance.IsPlayersTurn(this))
@@ -150,6 +153,60 @@ public class BoxMover : MonoBehaviour, ICombatant
               Debug.Log("Move already used");
               return;
           }
+
+              HandleCombatClick();
+          }
+      }*/
+
+      public void HandleLeftClick()
+      {
+          // Only current combatant can act
+          if(GameStateManager.Instance.CurrentState == GameState.Combat)
+          {
+              if(!CombatManager.Instance.IsPlayersTurn(this))
+                  return;
+
+              if(!HasMove && !HasAction)
+              {
+                  Debug.Log("No actions left");
+                  return;
+              }
+          }
+
+          Debug.Log("HandleLeftClick - Current State: " +
+              GameStateManager.Instance.CurrentState);
+
+          Enemy enemy = GetClickedEnemy();
+
+          // =========================
+          // ENEMY CLICKED
+          // =========================
+          if(enemy != null)
+          {
+              Debug.Log("Clicked enemy: " + enemy.name);
+              if(AbilityUI.Instance == null){
+                Debug.Log("No AbilityUI Instance created");
+              }
+
+              // Let AbilityUI handle what ability is used
+              AbilityUI.Instance.TryUseSelected(enemy);
+              return;
+          }
+
+          // =========================
+          // MOVEMENT
+          // =========================
+          if(GameStateManager.Instance.CurrentState == GameState.FreeExplore)
+          {
+              HandleExploreClick();
+          }
+          else if(GameStateManager.Instance.CurrentState == GameState.Combat)
+          {
+              if(!HasMove)
+              {
+                  Debug.Log("Move already used");
+                  return;
+              }
 
               HandleCombatClick();
           }
@@ -412,21 +469,26 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     public void StartTurn(){
+        if(turnStarted) return;
 
         Debug.Log("Player turn started");
+        turnStarted = true;
 
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
         RemainingMovement = Speed;
 
+        AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForAction;
+
+        Debug.Log("Choose Action: [1] Melee  [2] Ranged  [3] Item");
+
         statusManager.ProcessTurnStart();
-        //isMyTurn = true;
-        //Invoke(nameof(FinishTurn), 1f);
     }
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
+        turnStarted = false;
         statusManager.ProcessTurnEnd();
         //isMyTurn = false;
         // Disable input
@@ -547,4 +609,13 @@ public class BoxMover : MonoBehaviour, ICombatant
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);
     }
-}
+
+    public Ability GetAbility(int slot)
+    {
+        if (slot < 0 || slot >= abilities.Count)
+            return null;
+
+        return abilities[slot];
+    }
+
+  }
