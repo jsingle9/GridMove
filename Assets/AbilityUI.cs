@@ -57,16 +57,19 @@ public class AbilityUI : MonoBehaviour
     public void TryUseSelected(ICombatant target){
         if(selectedAbility == null)
             return;
+
         Ability ability = selectedAbility;
         //var player = CombatManager.Instance.CurrentPlayer;
         if(ability == null){
                 ability = player.GetAbility(0); // default attack
         }
-
         if(ability == null){
                 Debug.LogError("No ability available");
                 return;
         }
+
         selectedAbility.TryUse(player, target);
+        CurrentPhase = PlayerTurnPhase.WaitingForAction;
+        selectedAbility = null;    
     }
 }
