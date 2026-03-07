@@ -79,86 +79,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
     }
 
-
-    /*public void HandleLeftClick(){
-    // Only current combatant can act
-      if(GameStateManager.Instance.CurrentState == GameState.Combat){
-          if(!CombatManager.Instance.IsPlayersTurn(this))
-              return;
-
-          if(!HasMove && !HasAction){
-            Debug.Log("No actions left");
-            return;
-          }
-      }
-
-      Debug.Log("HandleLeftClick - Current State: " +
-        GameStateManager.Instance.CurrentState);
-
-      Enemy enemy = GetClickedEnemy();
-
-
-
-      // FROM FREE EXPLORE → walk to enemy first
-      if(enemy != null){
-          //Debug.Log("Enemy clicked");
-          Debug.Log("Clicked enemy: " + enemy.name);
-
-          AttackAbility attack = new AttackAbility();
-
-          float dist = Vector3.Distance(
-              GetWorldPosition(),
-              enemy.GetWorldPosition()
-          );
-
-          // =========================
-          // IN RANGE → ATTACK NOW
-          // =========================
-          if(dist <= attack.Range + 0.1f){
-              Debug.Log("Target in melee → attacking");
-              attack.TryUse(this, enemy);
-              return;
-          }
-
-          // =========================
-          // OUT OF RANGE → CAN WE WALK THERE?
-          // =========================
-          AttackIntent previewIntent = new AttackIntent(enemy);
-          int cost = PreviewMoveCost(previewIntent);
-
-          if(cost <= 0){
-              Debug.Log("No valid path to target");
-              return;
-          }
-
-          if(cost > RemainingMovement){
-              Debug.Log($"Target too far. Need {cost}, have {RemainingMovement}");
-              return;
-          }
-
-          Debug.Log("Moving into melee to attack");
-
-          pendingAttackTarget = enemy;   // 🔥 CRITICAL
-          SetIntent(previewIntent);      // move toward THIS enemy only
-          return;
-        }
-
-        // 🚶 MOVEMENT
-        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-            HandleExploreClick();
-        }
-        else if(GameStateManager.Instance.CurrentState == GameState.Combat){
-
-          if(!HasMove){
-              Debug.Log("Move already used");
-              return;
-          }
-
-              HandleCombatClick();
-          }
-      }*/
-
-      public void HandleLeftClick()
+    /*  public void HandleLeftClick()
       {
           // Only current combatant can act
           if(GameStateManager.Instance.CurrentState == GameState.Combat)
@@ -210,10 +131,23 @@ public class BoxMover : MonoBehaviour, ICombatant
 
               HandleCombatClick();
           }
+      }*/
+
+      public void HandleLeftClick(){
+        Debug.Log("HandleLeftClick - State: " +
+            GameStateManager.Instance.CurrentState);
+
+      // EXPLORE MODE
+        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
+          HandleExploreClick();
+          return;
+        }
+
+      // COMBAT MODE
+        if(GameStateManager.Instance.CurrentState == GameState.Combat){
+            HandleCombatClickRouter();
+        }
       }
-
-
-
 
     void ResolveIntent(){
         if(currentIntent == null)
@@ -610,12 +544,55 @@ public class BoxMover : MonoBehaviour, ICombatant
         gameObject.SetActive(false);
     }
 
-    public Ability GetAbility(int slot)
-    {
+    public Ability GetAbility(int slot){
         if (slot < 0 || slot >= abilities.Count)
             return null;
 
         return abilities[slot];
+    }
+
+    void HandleCombatClickRouter(){
+        if(!CombatManager.Instance.IsPlayersTurn(this))
+            return;
+
+        if(mover.IsMoving)
+            return;
+
+        var phase = AbilityUI.Instance.CurrentPhase;
+
+        if(phase == PlayerTurnPhase.WaitingForTarget){
+            HandleAbilityTargetClick();
+        }
+        else{
+            HandleCombatMovementClick();
+        }
+    }
+
+    void HandleAbilityTargetClick(){
+        Enemy enemy = GetClickedEnemy();
+
+        if(enemy == null){
+            Debug.Log("No enemy selected");
+            return;
+        }
+
+        AbilityUI.Instance.TryUseSelected(enemy);
+    }
+
+    void HandleCombatMovementClick(){
+        if(!HasMove){
+            Debug.Log("Move already used");
+            return;
+        }
+
+        Vector3 worldClick = GetMouseWorld();
+        Vector3Int gridPos = grid.WorldToGrid(worldClick);
+
+        if(!grid.IsWalkable(gridPos))
+            return;
+
+        currentIntent = new MoveIntent(gridPos);
+        ResolveIntent();
     }
 
   }
