@@ -10,6 +10,9 @@ public abstract class Ability
     public string AbilityName;
     public AbilityCostType CostType;
     public float Range = 1.5f;
+    public TargetingMode targetingMode;
+    public int range = 1;
+    public int radius = 0;
 
     public virtual bool CanUse(ICombatant user)
     {
@@ -42,7 +45,7 @@ public abstract class Ability
         }
     }
 
-    public virtual void TryUse(ICombatant user, ICombatant myTarget)
+    /*public virtual void TryUse(ICombatant user, ICombatant myTarget)
     {
         UnityEngine.Debug.Log($"Using Ability {AbilityName}");
         if(!CanUse(user)){
@@ -52,7 +55,30 @@ public abstract class Ability
         UnityEngine.Debug.Log($"SUCCESS: {AbilityName} allowed → spending cost");
         SpendCost(user);
         Execute(user, myTarget);
+    }*/
+    public virtual void TryUse(ICombatant user, TargetData targetData){
+        UnityEngine.Debug.Log($"Using Ability {AbilityName}");
+
+        if(!CanUse(user)){
+            UnityEngine.Debug.Log($"Cannot use {AbilityName}");
+            return;
+        }
+
+        if(targetData == null){
+            UnityEngine.Debug.Log("Invalid target");
+            return;
+        }
+
+        // Most abilities still use a primary target
+        ICombatant myTarget = targetData.primaryTarget;
+
+        UnityEngine.Debug.Log($"SUCCESS: {AbilityName} allowed → spending cost");
+
+        SpendCost(user);
+
+        Execute(user, myTarget);
     }
+
 
     protected abstract void Execute(ICombatant user, ICombatant myTarget);
 }

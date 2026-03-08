@@ -54,7 +54,7 @@ public class AbilityUI : MonoBehaviour
         Debug.Log("Ability canceled");
     }
 
-    public void TryUseSelected(ICombatant target){
+    public void TryUseSelected(TargetData target){
         if(selectedAbility == null)
             return;
 
@@ -70,6 +70,6 @@ public class AbilityUI : MonoBehaviour
 
         selectedAbility.TryUse(player, target);
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
-        selectedAbility = null;    
+        selectedAbility = null;
     }
 }

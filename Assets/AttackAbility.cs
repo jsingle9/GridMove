@@ -136,7 +136,7 @@ public class AttackAbility : Ability
         }
     }
 
-    public override void TryUse(ICombatant user, ICombatant myTarget){
+    public override void TryUse(ICombatant user, TargetData myTarget){
         if(!user.HasAction){
             Debug.Log("No action available");
             return;
@@ -145,7 +145,7 @@ public class AttackAbility : Ability
         // spend action
         //user.HasAction = false;
 
-        Execute(user, myTarget);
+        Execute(user, myTarget.primaryTarget);
     }
 
 

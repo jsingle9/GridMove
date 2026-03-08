@@ -7,6 +7,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     [SerializeField] GridController grid;
     [SerializeField] UnitMover mover;
     List<Ability> abilities = new List<Ability>();
+    TargetingSystem targeting;
 
     IntentResolver resolver;
     Intent currentIntent;
@@ -54,6 +55,7 @@ public class BoxMover : MonoBehaviour, ICombatant
           return;
       }
 
+      targeting = new TargetingSystem(grid);
       mover = GetComponent<UnitMover>();
       mover.Initialize(grid);
 
@@ -174,7 +176,7 @@ public class BoxMover : MonoBehaviour, ICombatant
                     // allow free explore movement
                     if(GameStateManager.Instance.CurrentState != GameState.Combat ||
                        !CombatManager.Instance.IsPlayersTurn(this)){
-                         Debug.Log("====== FINAL PATH BEGIN ======");
+                         //Debug.Log("====== FINAL PATH BEGIN ======");
 
                          if (path == null)
                          {
@@ -184,13 +186,13 @@ public class BoxMover : MonoBehaviour, ICombatant
                          {
                              for (int i = 0; i < path.Count; i++)
                              {
-                                 Debug.Log($"Step {i}: {path[i].gridPos}");
+                                // Debug.Log($"Step {i}: {path[i].gridPos}");
                              }
 
-                             Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
+                            // Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
                          }
 
-                         Debug.Log("====== FINAL PATH END ======");
+                         //Debug.Log("====== FINAL PATH END ======");
                          Debug.Log("START PATH (FreeExplore bypass)");
                         mover.StartPath(path);
                         return;
@@ -214,7 +216,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
             Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 
-            Debug.Log("====== FINAL PATH BEGIN ======");
+            //Debug.Log("====== FINAL PATH BEGIN ======");
 
             if (path == null)
             {
@@ -230,8 +232,8 @@ public class BoxMover : MonoBehaviour, ICombatant
                 Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
             }
 
-            Debug.Log("====== FINAL PATH END ======");
-            Debug.Log("START PATH (ResolveIntent)");
+            //Debug.Log("====== FINAL PATH END ======");
+            //Debug.Log("START PATH (ResolveIntent)");
             mover.StartPath(path);
 
     }
@@ -289,7 +291,7 @@ public class BoxMover : MonoBehaviour, ICombatant
                     Debug.Log("Reached target → executing queued attack");
 
                     AttackAbility attack = new AttackAbility();
-                    attack.TryUse(this, pendingAttackTarget);
+                    attack.TryUse(this, new TargetData(pendingAttackTarget));
                 }
                 else{
                     Debug.Log("Arrived but not in range — no attack");
@@ -569,14 +571,27 @@ public class BoxMover : MonoBehaviour, ICombatant
     }
 
     void HandleAbilityTargetClick(){
-        Enemy enemy = GetClickedEnemy();
+        var ability = AbilityUI.Instance.selectedAbility;
 
-        if(enemy == null){
-            Debug.Log("No enemy selected");
+        if(ability == null){
+            Debug.Log("No ability selected");
             return;
         }
 
-        AbilityUI.Instance.TryUseSelected(enemy);
+        Vector3 click = GetMouseWorld();
+
+        TargetData target = targeting.ResolveTarget(
+            ability,
+            this,
+            click
+        );
+
+        if(target == null){
+            Debug.Log("Invalid target");
+            return;
+        }
+
+        AbilityUI.Instance.TryUseSelected(target);
     }
 
     void HandleCombatMovementClick(){
