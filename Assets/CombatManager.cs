@@ -32,11 +32,7 @@ public class CombatManager : MonoBehaviour{
           .ToList();
   }
 
-
-  
-
   public void EndTurn(){
-
       if(turnAdvancing){
           Debug.Log("Turn advance blocked (already advancing)");
           return;
@@ -49,12 +45,38 @@ public class CombatManager : MonoBehaviour{
           return;
       }
 
-      combatants[currentIndex].EndTurn();
+      // End current combatant turn safely
+      if(currentIndex >= 0 && currentIndex < combatants.Count)
+      {
+          var current = combatants[currentIndex];
+          if(current != null && !current.IsDead())
+              current.EndTurn();
+      }
 
-      currentIndex++;
+      int safety = 0;
 
-      if(currentIndex >= combatants.Count)
-          currentIndex = 0;
+      do
+      {
+          currentIndex++;
+
+          if(currentIndex >= combatants.Count)
+              currentIndex = 0;
+
+          safety++;
+
+          if(safety > combatants.Count)
+          {
+              Debug.LogWarning("No valid combatants left.");
+              turnAdvancing = false;
+              return;
+          }
+
+      }
+      while(
+          combatants[currentIndex] == null ||
+          combatants[currentIndex].IsDead() ||
+          !((MonoBehaviour)combatants[currentIndex]).gameObject.activeInHierarchy
+      );
 
       Debug.Log(">>> NEW TURN: " + combatants[currentIndex]);
 
@@ -62,7 +84,6 @@ public class CombatManager : MonoBehaviour{
 
       turnAdvancing = false;
   }
-
 
   public bool IsPlayersTurn(ICombatant combatant){
     if(combatants == null || combatants.Count == 0)

@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour, ICombatant
 {
     DynamicObstacle dynamicObstacle;
     [SerializeField] GridController grid;
-    [SerializeField] int maxHP = 18;
+    [SerializeField] int maxHP = 10;
     int currentHP;
     //bool turnEnding = false;
 
@@ -73,8 +73,7 @@ public class Enemy : MonoBehaviour, ICombatant
         grid.RegisterOccupant(startCell, this);
     }
 
-    public void MoveTo(Vector3 worldTargetPosition)
-    {
+    public void MoveTo(Vector3 worldTargetPosition){
         transform.position = worldTargetPosition;
         dynamicObstacle.UpdateCell(transform.position);
     }
@@ -100,11 +99,19 @@ public class Enemy : MonoBehaviour, ICombatant
     public void StartTurn(){
         Debug.Log("Enemy turn started");
 
+        //if(IsDead()) return;
+
+        if(!gameObject.activeInHierarchy)
+        return;
+
+
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
         RemainingMovement = Speed;
         statusManager.ProcessTurnStart();
+
+        if(IsDead()) return;
 
         StartCoroutine(EnemyTurnRoutine());
     }
@@ -132,6 +139,7 @@ public class Enemy : MonoBehaviour, ICombatant
     }
 
     System.Collections.IEnumerator EnemyTurnRoutine(){
+      if(IsDead()) yield break;
 
       yield return new WaitForSeconds(0.15f);
 
@@ -143,7 +151,7 @@ public class Enemy : MonoBehaviour, ICombatant
 
       // Try attack first
       Ability chosen = ChooseAbility(player);
-      chosen.TryUse(this, player);
+      chosen.TryUse(this, new TargetData(player));
 
       // If we moved, wait until movement finishes
       while(mover.IsMoving){
@@ -153,7 +161,7 @@ public class Enemy : MonoBehaviour, ICombatant
       // If still have action, try attack again
       if(HasAction){
       //  Ability attack = abilities[0];
-        chosen.TryUse(this, player);
+        chosen.TryUse(this, new TargetData(player));
       }
       // Wait for any final movement
       while(mover.IsMoving){
@@ -171,16 +179,6 @@ public class Enemy : MonoBehaviour, ICombatant
     // INTENT SYSTEM
     // =========================
 
-  /*  public void SetIntent(Intent intent){
-      currentIntent = intent;
-
-      GridNode startNode = grid.GetNodeFromWorld(transform.position);
-
-      List<GridNode> path = resolver.Resolve(intent, startNode);
-
-      if(path != null && path.Count > 0)
-        mover.StartPath(path);
-    }*/
 
     public void SetIntent(Intent intent){
         Debug.Log("ENEMY SET INTENT CALLED");
@@ -255,8 +253,7 @@ public class Enemy : MonoBehaviour, ICombatant
       return currentHP <= 0;
     }
 
-    void Think()
-    {
+    void Think(){
         Debug.Log("ENEMY THINKING");
 
         BoxMover player = FindFirstObjectByType<BoxMover>();
@@ -268,29 +265,11 @@ public class Enemy : MonoBehaviour, ICombatant
 
         // Try attack
         Ability chosen = ChooseAbility(player);
-        chosen.TryUse(this, player);
+        chosen.TryUse(this, new TargetData(player));
 
-
-        // If we attacked successfully, action will be spent
-        // If we had to move, SetIntent() already started movement
     }
 
-    /*Ability ChooseAbility(ICombatant target){
-        float dist = Vector3.Distance(
-            GetWorldPosition(),
-            target.GetWorldPosition()
-        );
-
-        foreach(var a in abilities){
-            if(a.Range >= dist && a.CanUse(this))
-                return a;
-        }
-
-        return abilities[0]; // fallback melee
-    }*/
-
-    Ability ChooseAbility(ICombatant target)
-    {
+    Ability ChooseAbility(ICombatant target){
         float dist = Vector3.Distance(
             GetWorldPosition(),
             target.GetWorldPosition()

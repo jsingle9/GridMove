@@ -159,4 +159,34 @@ public class GridController : MonoBehaviour
           }
       }
     }*/
+
+    public List<GridNode> GetNodesInRadius(Vector3Int center, int radius)
+    {
+        List<GridNode> nodes = new List<GridNode>();
+
+        for(int x = -radius; x <= radius; x++)
+        {
+            for(int y = -radius; y <= radius; y++)
+            {
+                Vector3Int pos = new Vector3Int(
+                    center.x + x,
+                    center.y + y,
+                    center.z
+                );
+
+                float dist = Mathf.Sqrt(x * x + y * y);
+
+                if(dist <= radius)
+                {
+                    GridNode node = GetNodeFromWorld(GridToWorld(pos));
+
+                    if(node != null)
+                        nodes.Add(node);
+                }
+            }
+        }
+
+        return nodes;
+    }
+        
 }
