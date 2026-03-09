@@ -6,5 +6,5 @@ public abstract class Item : ScriptableObject
     public string description;
     public bool consumable = true;
 
-    public abstract void Use(Unit user, Unit target);
+    public abstract void Use(ICombatant user, ICombatant target);
 }

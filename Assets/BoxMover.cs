@@ -21,13 +21,14 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool HasBonusAction { get; set; }
     public int RemainingMovement { get; set; }
     public bool turnStarted = false;
-
+    //public string name;
     [SerializeField] int armorClass = 16;
     [SerializeField] int attackBonus = 5;
     [SerializeField] string damageDice = "1d8";
     [SerializeField] int damageModifier = 3;
     [SerializeField] int speed = 6;
     ICombatant pendingAttackTarget;
+    public string Name => name;
     public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
@@ -40,6 +41,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         currentHP = maxHP;
         abilities.Add(new AttackAbility());        // slot 1
         abilities.Add(new RangedAttackAbility());  // slot 2
+
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
 
@@ -81,61 +83,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
     }
 
-    /*  public void HandleLeftClick()
-      {
-          // Only current combatant can act
-          if(GameStateManager.Instance.CurrentState == GameState.Combat)
-          {
-              if(!CombatManager.Instance.IsPlayersTurn(this))
-                  return;
-
-              if(!HasMove && !HasAction)
-              {
-                  Debug.Log("No actions left");
-                  return;
-              }
-          }
-
-          Debug.Log("HandleLeftClick - Current State: " +
-              GameStateManager.Instance.CurrentState);
-
-          Enemy enemy = GetClickedEnemy();
-
-          // =========================
-          // ENEMY CLICKED
-          // =========================
-          if(enemy != null)
-          {
-              Debug.Log("Clicked enemy: " + enemy.name);
-              if(AbilityUI.Instance == null){
-                Debug.Log("No AbilityUI Instance created");
-              }
-
-              // Let AbilityUI handle what ability is used
-              AbilityUI.Instance.TryUseSelected(enemy);
-              return;
-          }
-
-          // =========================
-          // MOVEMENT
-          // =========================
-          if(GameStateManager.Instance.CurrentState == GameState.FreeExplore)
-          {
-              HandleExploreClick();
-          }
-          else if(GameStateManager.Instance.CurrentState == GameState.Combat)
-          {
-              if(!HasMove)
-              {
-                  Debug.Log("Move already used");
-                  return;
-              }
-
-              HandleCombatClick();
-          }
-      }*/
-
-      public void HandleLeftClick(){
+    public void HandleLeftClick(){
         Debug.Log("HandleLeftClick - State: " +
             GameStateManager.Instance.CurrentState);
 
@@ -608,6 +556,15 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         currentIntent = new MoveIntent(gridPos);
         ResolveIntent();
+    }
+
+    public void Heal(int amount){
+        currentHP += amount;
+
+        if(currentHP > maxHP)
+            currentHP = maxHP;
+
+        Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
 
   }
