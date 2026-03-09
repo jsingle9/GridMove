@@ -9,8 +9,9 @@ public interface ICombatant{
 
     int CurrentHP { get;}
     void TakeDamage(int amount);
+    void Heal(int amount);
     bool IsDead();
-
+    string Name { get; }
     bool HasMove { get; set; }
     bool HasAction { get; set; }
     bool HasBonusAction { get; set; }

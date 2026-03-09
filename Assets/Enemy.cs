@@ -22,7 +22,8 @@ public class Enemy : MonoBehaviour, ICombatant
     [SerializeField] int damageModifier = 2;
     [SerializeField] int speed = 6;
     public int Speed => speed;
-
+    public string Name => name;
+    public int MaxHP => maxHP;
     IntentResolver resolver;
     UnitMover mover;
     Intent currentIntent;
@@ -329,5 +330,14 @@ public class Enemy : MonoBehaviour, ICombatant
       statusManager.Clear();
       CombatManager.Instance.NotifyDeath(this);
       gameObject.SetActive(false);
+    }
+
+    public void Heal(int amount){
+        currentHP += amount;
+
+        if(currentHP > maxHP)
+            currentHP = maxHP;
+
+        Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
 }
