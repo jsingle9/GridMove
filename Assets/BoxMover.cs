@@ -41,7 +41,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         currentHP = maxHP;
         abilities.Add(new AttackAbility());        // slot 1
         abilities.Add(new RangedAttackAbility());  // slot 2
-
+        abilities.Add(new HealAbility());          // slot 3
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
 

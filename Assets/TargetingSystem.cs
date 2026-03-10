@@ -19,6 +19,13 @@ public class TargetingSystem
         TargetData data = new TargetData();
 
         Vector3Int gridPos = grid.WorldToGrid(worldClick);
+        // SELF TARGET SHORTCUT
+        if(ability.targetingMode == TargetingMode.Self)
+        {
+            data.primaryTarget = user;
+            data.unitsInArea.Add(user);
+            return data;
+        }        
 
         Vector3 world = grid.GridToWorld(gridPos);
         GridNode node = grid.GetNodeFromWorld(world);
@@ -29,7 +36,24 @@ public class TargetingSystem
 
         if(occupant != null)
         {
-            data.primaryTarget = occupant;
+            switch(ability.targetingMode)
+            {
+                case TargetingMode.Self:
+                    if(occupant == user)
+                        data.primaryTarget = occupant;
+                    break;
+
+                case TargetingMode.Ally:
+                    if(IsAlly(user, occupant))
+                        data.primaryTarget = occupant;
+                    break;
+
+                case TargetingMode.Enemy:
+                    if(IsEnemy(user, occupant))
+                        data.primaryTarget = occupant;
+                    break;
+
+            }
         }
 
         if(ability.radius > 0)
@@ -57,5 +81,15 @@ public class TargetingSystem
         }
 
         return units;
+    }
+
+    bool IsEnemy(ICombatant a, ICombatant b)
+    {
+        return a.GetType() != b.GetType();
+    }
+
+    bool IsAlly(ICombatant a, ICombatant b)
+    {
+        return a.GetType() == b.GetType();
     }
 }
