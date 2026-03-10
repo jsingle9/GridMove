@@ -2,18 +2,17 @@ public class HealAbility : Ability
 {
     public int healAmount = 10;
 
-    public HealAbility()
-    {
+    public HealAbility(){
         AbilityName = "Heal";
         CostType = AbilityCostType.BonusAction;
         range = 3;
-        targetingMode = TargetingMode.Ally;
+        targetingMode = TargetingMode.Self;
     }
 
-    protected override void Execute(ICombatant user, ICombatant myTarget)
-    {
-        if(myTarget == null)
-        {
+    protected override void Execute(ICombatant user, ICombatant myTarget){
+        UnityEngine.Debug.Log("HealAbility Execute fired");
+
+        if(myTarget == null){
             UnityEngine.Debug.Log("Heal failed: no target.");
             return;
         }

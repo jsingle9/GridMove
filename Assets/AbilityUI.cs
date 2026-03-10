@@ -35,6 +35,10 @@ public class AbilityUI : MonoBehaviour
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
       }
+      if(Keyboard.current.digit3Key.wasPressedThisFrame){
+          selectedAbility = player.GetAbility(2);
+          CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+      }
     }
 
     public void SelectAbility(int slot){
