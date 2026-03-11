@@ -1,14 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum PlayerTurnPhase
-{
-    WaitingForAction,
-    WaitingForTarget,
-    Resolving
-}
-
-
 public class AbilityUI : MonoBehaviour
 {
     public static AbilityUI Instance;

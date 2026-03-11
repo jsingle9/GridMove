@@ -3,9 +3,9 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     GridController grid;
-    //public GameObject box;
-    //public GameObject obstacle;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
+    // Start is called once before the first execution of
+    //Update after the MonoBehaviour is created
     void Start()
     {
       grid = FindFirstObjectByType<GridController>();

@@ -1,4 +1,6 @@
 public enum GameState{
   FreeExplore,
-  Combat
+  Combat,
+  Dialog,
+  Busy
 }
