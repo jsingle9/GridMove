@@ -29,5 +29,6 @@ public interface ICombatant{
     int CalculateMoveCost(List<GridNode> path);
     void SetIntent(Intent intent);
     Vector3 GetWorldPosition();
+    bool IsPlayerControlled();
 
 }

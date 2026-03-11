@@ -4,6 +4,9 @@ using System.Linq;
 
 public class CombatManager : MonoBehaviour{
   public static CombatManager Instance;
+  public CombatState currentCombatState;
+  public PlayerTurnPhase currentPlayerPhase;
+  //public BoxMover Player;
 
   List<ICombatant> combatants = new List<ICombatant>();
   int currentIndex = 0;
@@ -14,12 +17,25 @@ public class CombatManager : MonoBehaviour{
   }
 
   public void StartCombat(List<ICombatant> participants){
-    combatants = participants;
+      combatants = participants;
 
-    RollInitiative();
-    currentIndex = 0;
+      GameStateManager.Instance.EnterCombat();
 
-    combatants[currentIndex].StartTurn();
+      RollInitiative();
+
+      currentIndex = 0;
+
+      ICombatant current = combatants[currentIndex];
+
+      if(current.IsPlayerControlled()){
+          SetCombatState(CombatState.PlayerTurn);
+          SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
+      }
+      else{
+          SetCombatState(CombatState.EnemyTurn);
+      }
+
+      current.StartTurn();
   }
 
   void RollInitiative(){
@@ -64,8 +80,7 @@ public class CombatManager : MonoBehaviour{
 
           safety++;
 
-          if(safety > combatants.Count)
-          {
+          if(safety > combatants.Count){
               Debug.LogWarning("No valid combatants left.");
               turnAdvancing = false;
               return;
@@ -109,7 +124,6 @@ public class CombatManager : MonoBehaviour{
       CheckCombatEnd();
   }
 
-
   void CheckCombatEnd(){
     bool anyPlayersAlive = false;
     bool anyEnemiesAlive = false;
@@ -143,7 +157,16 @@ public class CombatManager : MonoBehaviour{
     GameStateManager.Instance.ExitCombat();
   }
 
+  public void SetCombatState(CombatState newState)
+  {
+      currentCombatState = newState;
+      Debug.Log("Combat State → " + newState);
+  }
 
-
+  public void SetPlayerPhase(PlayerTurnPhase newPhase)
+  {
+      currentPlayerPhase = newPhase;
+      Debug.Log("Player Phase → " + newPhase);
+  }
 
 }

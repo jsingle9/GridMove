@@ -567,4 +567,8 @@ public class BoxMover : MonoBehaviour, ICombatant
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
 
-  }
+    public bool IsPlayerControlled(){
+        return true;
+    }
+
+}

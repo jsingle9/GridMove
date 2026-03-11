@@ -340,4 +340,8 @@ public class Enemy : MonoBehaviour, ICombatant
 
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
+
+    public bool IsPlayerControlled(){
+        return false;
+    }
 }

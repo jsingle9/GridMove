@@ -33,4 +33,28 @@ public class GameStateManager : MonoBehaviour
         Debug.Log("Returning to Free Explore");
         CurrentState = GameState.FreeExplore;
     }
+
+    public void EnterBusy()
+    {
+        Debug.Log("Entered Busy State");
+        CurrentState = GameState.Busy;
+    }
+
+    public void ExitBusy()
+    {
+        Debug.Log("Exiting Busy State");
+        CurrentState = GameState.FreeExplore;
+    }
+
+    public void EnterDialog()
+    {
+        Debug.Log("Entering Dialog");
+        CurrentState = GameState.Dialog;
+    }
+
+    public void ExitDialog()
+    {
+        Debug.Log("Exiting Busy State");
+        CurrentState = GameState.FreeExplore;
+    }
 }
