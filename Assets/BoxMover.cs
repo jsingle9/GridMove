@@ -567,6 +567,16 @@ public class BoxMover : MonoBehaviour, ICombatant
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
 
+    public void ShowTargetingHighlights(Ability ability)
+    {
+        targeting.HighlightValidTargets(ability, this);
+    }
+
+    public void ClearTargetingHighlights()
+    {
+        targeting.ClearTargetHighlights();
+    }
+
     public bool IsPlayerControlled(){
         return true;
     }
