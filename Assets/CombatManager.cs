@@ -169,4 +169,9 @@ public class CombatManager : MonoBehaviour{
       Debug.Log("Player Phase → " + newPhase);
   }
 
+  public bool IsPlayerActive()
+  {
+      return currentCombatState == CombatState.PlayerTurn;
+  }
+
 }
