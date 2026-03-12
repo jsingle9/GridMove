@@ -34,8 +34,13 @@ public class GridController : MonoBehaviour
             );
             grid[x, y] = new GridNode(cellPos, true);
 
-            // VISUAL TILE
-            GameObject tileObj = Instantiate(tilePrefab, cellPos, Quaternion.identity, transform);
+            // Visual tile overlay
+            Vector3 visualPos = new Vector3(cellPos.x + 0.5f,
+              cellPos.y + 0.5f, 0
+            );
+            GameObject tileObj = Instantiate(tilePrefab, visualPos,
+              Quaternion.identity, transform
+            );
             TileVisual visual = tileObj.GetComponent<TileVisual>();
 
             tileVisuals[x, y] = visual;
@@ -46,7 +51,7 @@ public class GridController : MonoBehaviour
         }
       }
     }
-    // constructor
+
     void Start(){
 
     }
