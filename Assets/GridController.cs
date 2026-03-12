@@ -9,6 +9,8 @@ public class GridController : MonoBehaviour
 
     Dictionary<Vector3Int, ICombatant> occupiedTiles =
     new Dictionary<Vector3Int, ICombatant>();
+    public GameObject tilePrefab;
+    TileVisual[,] tileVisuals;
 
     public GridNode[,] grid;
     [SerializeField] int width = 256;   // -5 to +5
@@ -19,6 +21,7 @@ public class GridController : MonoBehaviour
     void Awake(){
 
       grid = new GridNode[width, height];
+      tileVisuals = new TileVisual[width, height];
 
       for (int x = 0; x < width; x++)
       {
@@ -28,21 +31,27 @@ public class GridController : MonoBehaviour
                 x + gridOrigin.x,
                 y + gridOrigin.y,
                 0
-              );
-
+            );
             grid[x, y] = new GridNode(cellPos, true);
+
+            // VISUAL TILE
+            GameObject tileObj = Instantiate(tilePrefab, cellPos, Quaternion.identity, transform);
+            TileVisual visual = tileObj.GetComponent<TileVisual>();
+
+            tileVisuals[x, y] = visual;
+            Color tileColor = ((x + y) % 2 == 0)
+            ? new Color(0.35f, 0.65f, 0.35f)
+            : new Color(0.3f, 0.6f, 0.3f);
+            visual.GetComponent<SpriteRenderer>().color = tileColor;
         }
       }
     }
     // constructor
     void Start(){
 
-
     }
 
     void Update(){
-
-
 
     }
 
@@ -159,6 +168,8 @@ public class GridController : MonoBehaviour
           }
       }
     }*/
+    //  the above method is being left in as a comment because
+    //  it might come in useful for debugging again at some point
 
     public List<GridNode> GetNodesInRadius(Vector3Int center, int radius)
     {
@@ -188,5 +199,15 @@ public class GridController : MonoBehaviour
 
         return nodes;
     }
-        
+
+    public TileVisual GetTileVisual(Vector3Int pos){
+        int x = pos.x - gridOrigin.x;
+        int y = pos.y - gridOrigin.y;
+
+        if (x >= 0 && x < width && y >= 0 && y < height)
+            return tileVisuals[x, y];
+
+        return null;
+    }
+
 }
