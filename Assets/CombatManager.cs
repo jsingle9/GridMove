@@ -174,4 +174,9 @@ public class CombatManager : MonoBehaviour{
       return currentCombatState == CombatState.PlayerTurn;
   }
 
+  public List<ICombatant> GetCombatants()
+  {
+      return new List<ICombatant>(combatants);
+  }
+
 }
