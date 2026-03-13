@@ -53,6 +53,7 @@ public class AbilityUI : MonoBehaviour
     }
 
     public void CancelAbility(){
+        player.ClearTargetingHighlights();
         selectedAbility = null;
         Debug.Log("Ability canceled");
     }
@@ -72,6 +73,7 @@ public class AbilityUI : MonoBehaviour
         }
 
         selectedAbility.TryUse(player, target);
+        player.ClearTargetingHighlights();
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
         selectedAbility = null;
     }
