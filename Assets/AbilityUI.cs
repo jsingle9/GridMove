@@ -24,17 +24,26 @@ public class AbilityUI : MonoBehaviour
       if(Keyboard.current.digit1Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(0);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+<<<<<<< HEAD
           grid.HighlightEnemyTiles();
+=======
+          player.ShowTargetingHighlights(selectedAbility);
+>>>>>>> cedc26cc2119649456ccc6de8ab21f41b656477f
       }
 
       if(Keyboard.current.digit2Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+<<<<<<< HEAD
           grid.HighlightEnemyTiles();
+=======
+          player.ShowTargetingHighlights(selectedAbility);
+>>>>>>> cedc26cc2119649456ccc6de8ab21f41b656477f
       }
       if(Keyboard.current.digit3Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(2);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+          player.ShowTargetingHighlights(selectedAbility);
       }
     }
 
@@ -51,6 +60,7 @@ public class AbilityUI : MonoBehaviour
     }
 
     public void CancelAbility(){
+        player.ClearTargetingHighlights();
         selectedAbility = null;
         Debug.Log("Ability canceled");
     }
@@ -70,6 +80,7 @@ public class AbilityUI : MonoBehaviour
         }
 
         selectedAbility.TryUse(player, target);
+        player.ClearTargetingHighlights();
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
         selectedAbility = null;
     }
