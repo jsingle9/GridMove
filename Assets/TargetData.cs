@@ -11,7 +11,7 @@ public class TargetData
     public TargetData(){
 
     }
-    
+
     public TargetData(ICombatant target){
         primaryTarget = target;
         unitsInArea.Add(target);
