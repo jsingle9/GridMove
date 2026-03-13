@@ -24,8 +24,12 @@ public class AbilityUI : MonoBehaviour
           selectedAbility = player.GetAbility(0);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
 <<<<<<< HEAD
+          //player.ShowTargetingHighlights(selectedAbility);
+=======
+<<<<<<< HEAD
 =======
           player.ShowTargetingHighlights(selectedAbility);
+>>>>>>> 620f8a321270ebd367cc75188bf225327b6853cf
           grid.HighlightEnemyTiles();
 >>>>>>> 9b2a0d3049a68202ea0589c9969d922f4f067010
       }
@@ -34,8 +38,12 @@ public class AbilityUI : MonoBehaviour
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
 <<<<<<< HEAD
+          //player.ShowTargetingHighlights(selectedAbility);
+=======
+<<<<<<< HEAD
 =======
           player.ShowTargetingHighlights(selectedAbility);
+>>>>>>> 620f8a321270ebd367cc75188bf225327b6853cf
           grid.HighlightEnemyTiles();
 >>>>>>> 9b2a0d3049a68202ea0589c9969d922f4f067010
       }
