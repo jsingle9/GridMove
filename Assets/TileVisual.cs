@@ -8,11 +8,18 @@ public class TileVisual : MonoBehaviour
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        baseColor = sr.color;
+    }
+
+    public void SetBaseColor(Color color)
+    {
+        baseColor = color;
+        sr.color = color;
     }
 
     public void Highlight()
     {
+        Debug.Log("Highlight called on " + gameObject.name);
+        Debug.Log("Highlighting tile " + transform.position);
         sr.color = Color.yellow;
     }
 
