@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class AbilityUI : MonoBehaviour
 {
+    GridController grid;
     public static AbilityUI Instance;
     public PlayerTurnPhase CurrentPhase;
     public Ability selectedAbility;
@@ -10,6 +11,7 @@ public class AbilityUI : MonoBehaviour
 
     void Awake(){
       Instance = this;
+      grid = FindFirstObjectByType<GridController>();
       CurrentPhase = PlayerTurnPhase.WaitingForAction;
       Debug.Log("AbilityUI Awake() fired");
     }
@@ -21,11 +23,21 @@ public class AbilityUI : MonoBehaviour
       if(Keyboard.current.digit1Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(0);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+<<<<<<< HEAD
+=======
+          player.ShowTargetingHighlights(selectedAbility);
+          grid.HighlightEnemyTiles();
+>>>>>>> 9b2a0d3049a68202ea0589c9969d922f4f067010
       }
 
       if(Keyboard.current.digit2Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+<<<<<<< HEAD
+=======
+          player.ShowTargetingHighlights(selectedAbility);
+          grid.HighlightEnemyTiles();
+>>>>>>> 9b2a0d3049a68202ea0589c9969d922f4f067010
       }
       if(Keyboard.current.digit3Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(2);

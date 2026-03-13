@@ -183,11 +183,14 @@ public class BoxMover : MonoBehaviour, ICombatant
             //Debug.Log("====== FINAL PATH END ======");
             //Debug.Log("START PATH (ResolveIntent)");
             mover.StartPath(path);
+            if(currentIntent is AttackIntent attackIntent){
+                pendingAttackTarget = attackIntent.target;
+                Debug.Log($"Set pending attack target to: {pendingAttackTarget}");
 
+            }
     }
 
-    void CheckIntentCompletion()
-    {
+    void CheckIntentCompletion(){
         if(currentIntent == null)
             return;
 

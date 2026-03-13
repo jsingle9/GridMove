@@ -47,7 +47,7 @@ public class GridController : MonoBehaviour
             Color tileColor = ((x + y) % 2 == 0)
             ? new Color(0.35f, 0.65f, 0.35f)
             : new Color(0.3f, 0.6f, 0.3f);
-            visual.GetComponent<SpriteRenderer>().color = tileColor;
+            visual.SetBaseColor(tileColor);
         }
       }
     }
@@ -93,6 +93,9 @@ public class GridController : MonoBehaviour
 
     public bool IsWalkable(Vector3Int cell){
       if (!InBounds(cell)) return false;
+
+      if(occupiedTiles.ContainsKey(cell))
+          return false;      
 
       int x = cell.x - gridOrigin.x;
       int y = cell.y - gridOrigin.y;
@@ -213,6 +216,31 @@ public class GridController : MonoBehaviour
             return tileVisuals[x, y];
 
         return null;
+    }
+
+    public void HighlightEnemyTiles()
+    {
+        foreach(var kvp in occupiedTiles)
+        {
+            if(kvp.Value is Enemy)
+            {
+                TileVisual tv = GetTileVisual(kvp.Key);
+
+                if(tv != null)
+                    tv.Highlight();
+            }
+        }
+    }
+
+    public void ClearAllHighlights()
+    {
+        for(int x = 0; x < width; x++)
+        {
+            for(int y = 0; y < height; y++)
+            {
+                tileVisuals[x,y].ClearHighlight();
+            }
+        }
     }
 
 }
