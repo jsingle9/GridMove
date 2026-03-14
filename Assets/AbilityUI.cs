@@ -23,37 +23,25 @@ public class AbilityUI : MonoBehaviour
       if(Keyboard.current.digit1Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(0);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-<<<<<<< HEAD
           //player.ShowTargetingHighlights(selectedAbility);
-=======
-<<<<<<< HEAD
-=======
-          player.ShowTargetingHighlights(selectedAbility);
->>>>>>> 620f8a321270ebd367cc75188bf225327b6853cf
           grid.HighlightEnemyTiles();
->>>>>>> 9b2a0d3049a68202ea0589c9969d922f4f067010
       }
 
       if(Keyboard.current.digit2Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-<<<<<<< HEAD
           //player.ShowTargetingHighlights(selectedAbility);
-=======
-<<<<<<< HEAD
-=======
-          player.ShowTargetingHighlights(selectedAbility);
->>>>>>> 620f8a321270ebd367cc75188bf225327b6853cf
           grid.HighlightEnemyTiles();
->>>>>>> 9b2a0d3049a68202ea0589c9969d922f4f067010
       }
       if(Keyboard.current.digit3Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(2);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+        //  player.ShowTargetingHighlights(selectedAbility);
       }
     }
 
     public void SelectAbility(int slot){
+
         // the following line is commented out because the context of player changed
         //var player = CombatManager.Instance.CurrentPlayer;
         selectedAbility = player.GetAbility(slot);
@@ -83,8 +71,9 @@ public class AbilityUI : MonoBehaviour
                 Debug.LogError("No ability available");
                 return;
         }
-
+        grid.ClearAllHighlights();
         selectedAbility.TryUse(player, target);
+
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
         selectedAbility = null;
     }

@@ -26,7 +26,7 @@ public class TargetingSystem
             data.primaryTarget = user;
             data.unitsInArea.Add(user);
             return data;
-        }        
+        }
 
         Vector3 world = grid.GridToWorld(gridPos);
         GridNode node = grid.GetNodeFromWorld(world);
@@ -149,8 +149,7 @@ public class TargetingSystem
     {
         foreach (TileVisual visual in highlightedVisuals)
         {
-            if (visual != null)
-                visual.ClearHighlight();
+              visual.ClearHighlight();
         }
 
         highlightedVisuals.Clear();

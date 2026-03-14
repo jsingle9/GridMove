@@ -375,7 +375,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
-        turnStarted = false;
+        turnStarted = false;                                                                
         statusManager.ProcessTurnEnd();
         //isMyTurn = false;
         // Disable input
@@ -570,13 +570,11 @@ public class BoxMover : MonoBehaviour, ICombatant
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
 
-    public void ShowTargetingHighlights(Ability ability)
-    {
+    public void ShowTargetingHighlights(Ability ability){
         targeting.HighlightValidTargets(ability, this);
     }
 
-    public void ClearTargetingHighlights()
-    {
+    public void ClearTargetingHighlights(){
         targeting.ClearTargetHighlights();
     }
 

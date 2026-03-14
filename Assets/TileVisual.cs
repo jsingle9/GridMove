@@ -4,6 +4,7 @@ public class TileVisual : MonoBehaviour
 {
     SpriteRenderer sr;
     Color baseColor;
+    public bool isHighlighted;
 
     void Awake()
     {
@@ -13,18 +14,25 @@ public class TileVisual : MonoBehaviour
     public void SetBaseColor(Color color)
     {
         baseColor = color;
-        sr.color = color;
+
+        if(!isHighlighted)
+          sr.color = color;
+
     }
 
     public void Highlight()
     {
         Debug.Log("Highlight called on " + gameObject.name);
         Debug.Log("Highlighting tile " + transform.position);
+        isHighlighted = true;
         sr.color = Color.yellow;
+
     }
 
     public void ClearHighlight()
     {
+        Debug.Log("TileVisual.ClearHighlight() Called");
+        isHighlighted = false;
         sr.color = baseColor;
     }
 }
