@@ -22,8 +22,8 @@ public class TileVisual : MonoBehaviour
 
     public void Highlight()
     {
-        Debug.Log("Highlight called on " + gameObject.name);
-        Debug.Log("Highlighting tile " + transform.position);
+        //Debug.Log("Highlight called on " + gameObject.name);
+        //Debug.Log("Highlighting tile " + transform.position);
         isHighlighted = true;
         sr.color = Color.yellow;
 
@@ -31,7 +31,7 @@ public class TileVisual : MonoBehaviour
 
     public void ClearHighlight()
     {
-        Debug.Log("TileVisual.ClearHighlight() Called");
+        //Debug.Log("TileVisual.ClearHighlight() Called");
         isHighlighted = false;
         sr.color = baseColor;
     }

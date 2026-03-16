@@ -34,37 +34,25 @@ public class IntentResolver
     }
 
     public List<GridNode> ResolveAttackMove(GridNode actorNode, ICombatant target){
-
-      GridNode targetNode = grid.GetNodeFromWorld(target.GetWorldPosition());
-      Debug.Log($"TARGET WORLD POSITION: {target.GetWorldPosition()}");
-      Debug.Log($"CALCULATED TARGET GRID: {targetNode.gridPos}");
-
-      if(grid.IsTileOccupied(targetNode.gridPos) == false){
-        Debug.LogWarning("Resolver thinks target tile is empty!");
-      }
-        Debug.Log("Target passed to resolver: " + target);
-        Debug.Log("Target node instance ID: " + targetNode.GetHashCode());
-        if(targetNode == null)
+      GridNode targetNode = grid.GetNodeFromWorld(
+            grid.GridToWorld(grid.WorldToGrid(target.GetWorldPosition()))
+      );
+      //Debug.Log("Target passed to resolver: " + target);
+      //Debug.Log("Target node instance ID: " + targetNode.GetHashCode());
+        if (targetNode == null)
             return null;
 
         List<GridNode> neighbors = grid.GetNeighbors(targetNode);
-        //Debug.Log($"Found {neighbors.Count} neighbor tiles");
+
         GridNode bestTile = null;
         List<GridNode> bestPath = null;
         int bestCost = int.MaxValue;
 
         foreach (GridNode tile in neighbors){
-            Debug.Log($"Checking neighbor: {tile.gridPos}, walkable: {tile.walkable}, occupied: {grid.IsTileOccupied(tile.gridPos)}");
 
-            if(tile.gridPos == targetNode.gridPos) continue;
-            if(tile == null) continue;
-            if(!tile.walkable) continue;
-            //if (grid.IsTileOccupied(tile.gridPos)) continue;
-            if(grid.IsTileOccupied(tile.gridPos)){
-                // Allow if this tile contains only the target
-                ICombatant occupant = grid.GetOccupant(tile.gridPos);
-                if (occupant != target) continue;
-            }
+            if (tile == null) continue;
+            if (!tile.walkable) continue;
+            if (grid.IsTileOccupied(tile.gridPos)) continue;
 
             List<GridNode> path = pathfinder.FindPath(actorNode, tile);
             if (path == null || path.Count == 0) continue;
@@ -79,7 +67,7 @@ public class IntentResolver
         }
 
         if (bestPath != null){
-            Debug.Log($"Attack move chosen tile: {bestTile.gridPos} with cost {bestCost}");
+            //Debug.Log($"Attack move chosen tile: {bestTile.gridPos} with cost {bestCost}");
             return bestPath;
         }
 

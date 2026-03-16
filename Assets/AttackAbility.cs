@@ -142,8 +142,6 @@ public class AttackAbility : Ability
             return;
         }
 
-        // spend action
-        //user.HasAction = false;
 
         Execute(user, myTarget.primaryTarget);
     }

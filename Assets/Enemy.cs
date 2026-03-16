@@ -112,7 +112,10 @@ public class Enemy : MonoBehaviour, ICombatant
         RemainingMovement = Speed;
         statusManager.ProcessTurnStart();
 
-        if(IsDead()) return;
+        if(IsDead()){
+          CombatManager.Instance.EndTurn();
+          return;
+        }
 
         StartCoroutine(EnemyTurnRoutine());
     }

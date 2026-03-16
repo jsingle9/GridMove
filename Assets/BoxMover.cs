@@ -141,7 +141,7 @@ public class BoxMover : MonoBehaviour, ICombatant
                          }
 
                          //Debug.Log("====== FINAL PATH END ======");
-                         Debug.Log("START PATH (FreeExplore bypass)");
+                         //Debug.Log("START PATH (FreeExplore bypass)");
                         mover.StartPath(path);
                         return;
                     }
@@ -174,10 +174,10 @@ public class BoxMover : MonoBehaviour, ICombatant
             {
                 for (int i = 0; i < path.Count; i++)
                 {
-                    Debug.Log($"Step {i}: {path[i].gridPos}");
+                    //Debug.Log($"Step {i}: {path[i].gridPos}");
                 }
 
-                Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
+                //Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
             }
 
             //Debug.Log("====== FINAL PATH END ======");
@@ -293,8 +293,8 @@ public class BoxMover : MonoBehaviour, ICombatant
         // Convert to grid cell
         Vector3Int clickedCell = grid.WorldToGrid(worldPos);
 
-        Debug.Log("Clicked world position: " + worldPos);
-        Debug.Log("Clicked grid cell: " + clickedCell);
+        //Debug.Log("Clicked world position: " + worldPos);
+        //Debug.Log("Clicked grid cell: " + clickedCell);
 
         // Ask grid who occupies this tile
         ICombatant occupant = grid.GetOccupant(clickedCell);
@@ -375,7 +375,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     public void EndTurn(){
         Debug.Log("Player turn ended");
-        turnStarted = false;                                                                
+        turnStarted = false;
         statusManager.ProcessTurnEnd();
         //isMyTurn = false;
         // Disable input

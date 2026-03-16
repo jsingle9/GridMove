@@ -154,4 +154,36 @@ public class TargetingSystem
 
         highlightedVisuals.Clear();
     }
+
+    public void RemoveHighlightAt(Vector3Int gridPos)
+    {
+        TileVisual visual = grid.GetTileVisual(gridPos);
+
+        if (visual == null)
+            return;
+
+        if (highlightedVisuals.Contains(visual))
+        {
+            visual.ClearHighlight();
+            highlightedVisuals.Remove(visual);
+        }
+    }
+
+    public void HighlightAOE(Vector3Int center, int radius)
+    {
+        ClearTargetHighlights();
+
+        List<GridNode> nodes = grid.GetNodesInRadius(center, radius);
+
+        foreach (GridNode node in nodes)
+        {
+            TileVisual visual = grid.GetTileVisual(node.gridPos);
+
+            if (visual != null)
+            {
+                visual.Highlight();
+                highlightedVisuals.Add(visual);
+            }
+        }
+    }        
 }
