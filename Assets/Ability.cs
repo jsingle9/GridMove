@@ -78,9 +78,9 @@ public abstract class Ability
 
         SpendCost(user);
 
-        Execute(user, myTarget);
+        Execute(targetData);
     }
 
 
-    protected abstract void Execute(ICombatant user, ICombatant myTarget);
+    protected abstract void Execute(TargetData targetData);
 }

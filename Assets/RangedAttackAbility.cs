@@ -9,44 +9,62 @@ public class RangedAttackAbility : Ability
         Range = 6f;
     }
 
-    protected override void Execute(ICombatant user, ICombatant target)
+    protected override void Execute(TargetData targetData)
     {
-        if(target == null) return;
+      if (targetData == null)
+      {
+          Debug.LogError("TargetData is null");
+          return;
+      }
+
+      if (targetData.user == null)
+      {
+          Debug.LogError("TargetData.user is null");
+          return;
+      }
+
+      if (targetData.primaryTarget == null)
+      {
+          Debug.LogError("TargetData.primaryTarget is null");
+          return;
+      }
+        if(targetData.primaryTarget == null) return;
 
         float distance = UnityEngine.Vector3.Distance(
-            user.GetWorldPosition(),
-            target.GetWorldPosition()
+            targetData.user.GetWorldPosition(),
+            targetData.primaryTarget.GetWorldPosition()
         );
 
         // Move closer if somehow out of range
         if(distance > Range)
         {
-            if(!user.HasMove){
+            if(!targetData.user.HasMove){
                 Debug.Log("Too far and no move left");
                 return;
             }
 
             Debug.Log("Ranged unit moving into range");
-            user.SetIntent(new AttackIntent(target));
+            targetData.user.SetIntent(new AttackIntent(targetData.primaryTarget));
             return;
         }
 
         int roll = DiceRoller.RollD20();
-        int total = roll + user.AttackBonus;
+        int total = roll + targetData.user.AttackBonus;
 
         bool crit = roll == 20;
 
-        if(total >= target.ArmorClass || crit)
+        if(total >= targetData.primaryTarget.ArmorClass || crit)
         {
-            int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
+            int damage = DiceRoller.Roll(targetData.user.DamageDice) +
+              targetData.user.DamageModifier;
             if(crit) damage *= 2;
 
-            target.TakeDamage(damage);
-            UnityEngine.Debug.Log($"{user} shoots {target} for {damage}");
+            targetData.primaryTarget.TakeDamage(damage);
+            UnityEngine.Debug.Log($"{targetData.user} shoots {targetData.primaryTarget} for {damage}");
         }
         else
         {
-            UnityEngine.Debug.Log($"{user} missed ranged attack");
+            UnityEngine.Debug.Log($"{targetData.user} missed ranged attack");
         }
     }
 }

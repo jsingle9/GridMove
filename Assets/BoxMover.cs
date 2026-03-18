@@ -42,6 +42,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         abilities.Add(new AttackAbility());        // slot 1
         abilities.Add(new RangedAttackAbility());  // slot 2
         abilities.Add(new HealAbility());          // slot 3
+        abilities.Add(new FireballAbility());
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
 

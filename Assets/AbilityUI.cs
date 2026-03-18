@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class AbilityUI : MonoBehaviour
 {
     GridController grid;
+    TargetingSystem targetingSystem;
     public static AbilityUI Instance;
     public PlayerTurnPhase CurrentPhase;
     public Ability selectedAbility;
@@ -12,6 +13,7 @@ public class AbilityUI : MonoBehaviour
     void Awake(){
       Instance = this;
       grid = FindFirstObjectByType<GridController>();
+      targetingSystem = new TargetingSystem(grid);
       CurrentPhase = PlayerTurnPhase.WaitingForAction;
       Debug.Log("AbilityUI Awake() fired");
     }
@@ -37,6 +39,13 @@ public class AbilityUI : MonoBehaviour
           selectedAbility = player.GetAbility(2);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
         //  player.ShowTargetingHighlights(selectedAbility);
+
+      }
+      if(Keyboard.current.digit4Key.wasPressedThisFrame){
+          selectedAbility = player.GetAbility(3);
+          CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+          targetingSystem.HighlightValidTargets(selectedAbility, player);
+
       }
     }
 

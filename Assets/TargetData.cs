@@ -5,6 +5,7 @@ public class TargetData
     public GridNode tile;
 
     public ICombatant primaryTarget;
+    public ICombatant user;
 
     public List<ICombatant> unitsInArea = new List<ICombatant>();
 

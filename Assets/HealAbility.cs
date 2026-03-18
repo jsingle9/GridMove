@@ -9,16 +9,16 @@ public class HealAbility : Ability
         targetingMode = TargetingMode.Self;
     }
 
-    protected override void Execute(ICombatant user, ICombatant myTarget){
+    protected override void Execute(TargetData targetData){
         UnityEngine.Debug.Log("HealAbility Execute fired");
 
-        if(myTarget == null){
+        if(targetData.primaryTarget == null){
             UnityEngine.Debug.Log("Heal failed: no target.");
             return;
         }
 
-        myTarget.Heal(healAmount);
+        targetData.primaryTarget.Heal(healAmount);
 
-        UnityEngine.Debug.Log($"{user} heals {myTarget} for {healAmount}");
+        UnityEngine.Debug.Log($"{targetData.user} heals {targetData.primaryTarget} for {healAmount}");
     }
 }

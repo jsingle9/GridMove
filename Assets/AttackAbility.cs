@@ -3,7 +3,7 @@ using UnityEngine;
 public class AttackAbility : Ability
 {
     ICombatant target;
-
+    //ICombatant user;
     public AttackAbility(){
         AbilityName = "Attack";
         CostType = AbilityCostType.Action;
@@ -81,12 +81,12 @@ public class AttackAbility : Ability
         }
     }*/
 
-    protected override void Execute(ICombatant user, ICombatant target){
-        if(target == null) return;
+    protected override void Execute(TargetData targetData){
+        if(targetData == null) return;
 
         float distance = Vector3.Distance(
-            user.GetWorldPosition(),
-            target.GetWorldPosition()
+            targetData.user.GetWorldPosition(),
+            targetData.primaryTarget.GetWorldPosition()
         );
 
         // Not in melee range → do nothing
@@ -95,30 +95,30 @@ public class AttackAbility : Ability
             return;
         }*/
         if(distance > Range){
-            if(!user.HasMove){
+            if(!targetData.user.HasMove){
                 Debug.Log("Out of range and no movement");
                 return;
             }
 
-            AttackIntent intent = new AttackIntent(target);
-            user.SetIntent(intent);
+            AttackIntent intent = new AttackIntent(targetData.primaryTarget);
+            targetData.user.SetIntent(intent);
             // DO NOT attack yet
             return;
         }
 
-        SpendCost(user);
+        SpendCost(targetData.user);
 
-        Debug.Log($"{user} attacks {target}");
+        Debug.Log($"{targetData.user} attacks {targetData.primaryTarget}");
 
         int roll = DiceRoller.RollD20();
-        int total = roll + user.AttackBonus;
+        int total = roll + targetData.user.AttackBonus;
 
-        Debug.Log($"Attack roll: {roll} + {user.AttackBonus} = {total} vs AC {target.ArmorClass}");
+        Debug.Log($"Attack roll: {roll} + {targetData.user.AttackBonus} = {total} vs AC {target.ArmorClass}");
 
         bool crit = roll == 20;
 
-        if(total >= target.ArmorClass || crit){
-            int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
+        if(total >= targetData.primaryTarget.ArmorClass || crit){
+            int damage = DiceRoller.Roll(targetData.user.DamageDice) + targetData.user.DamageModifier;
 
             if(crit){
                 Debug.Log("CRITICAL HIT!");
@@ -126,9 +126,9 @@ public class AttackAbility : Ability
             }
 
             Debug.Log($"Hit for {damage} damage");
-            target.TakeDamage(damage);
-            if (user is BoxMover){
-                target.AddStatus(new PoisonStatus(3, 2));
+            targetData.primaryTarget.TakeDamage(damage);
+            if (targetData.user is BoxMover){
+                targetData.primaryTarget.AddStatus(new PoisonStatus(3, 2));
             }
         }
         else{
@@ -136,14 +136,14 @@ public class AttackAbility : Ability
         }
     }
 
-    public override void TryUse(ICombatant user, TargetData myTarget){
-        if(!user.HasAction){
+    public override void TryUse(ICombatant user, TargetData targetData){
+        if(!targetData.user.HasAction){
             Debug.Log("No action available");
             return;
         }
 
 
-        Execute(user, myTarget.primaryTarget);
+        Execute(targetData);
     }
 
 
