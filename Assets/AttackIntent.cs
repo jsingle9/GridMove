@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class AttackIntent : Intent
 {
-    public ICombatant target;
+    public TargetData data;
 
-    public AttackIntent(ICombatant enemy)
+    public AttackIntent(TargetData tData)
     {
-        target = enemy;
+        this.data = tData;
     }
 }

@@ -9,62 +9,56 @@ public class RangedAttackAbility : Ability
         Range = 6f;
     }
 
-    protected override void Execute(TargetData targetData)
+    public override AbilityResult TryUse(ICombatant user, TargetData targetData)
     {
-      if (targetData == null)
-      {
-          Debug.LogError("TargetData is null");
-          return;
-      }
-
-      if (targetData.user == null)
-      {
-          Debug.LogError("TargetData.user is null");
-          return;
-      }
-
-      if (targetData.primaryTarget == null)
-      {
-          Debug.LogError("TargetData.primaryTarget is null");
-          return;
-      }
-        if(targetData.primaryTarget == null) return;
-
-        float distance = UnityEngine.Vector3.Distance(
-            targetData.user.GetWorldPosition(),
-            targetData.primaryTarget.GetWorldPosition()
-        );
-
-        // Move closer if somehow out of range
-        if(distance > Range)
+        if(!CanUse(user))
         {
-            if(!targetData.user.HasMove){
-                Debug.Log("Too far and no move left");
-                return;
-            }
-
-            Debug.Log("Ranged unit moving into range");
-            targetData.user.SetIntent(new AttackIntent(targetData.primaryTarget));
-            return;
+            return AbilityResult.CreateFailure("No action available");
         }
 
+        if(targetData?.primaryTarget == null)
+        {
+            return AbilityResult.CreateFailure("No target");
+        }
+
+        ICombatant target = targetData.primaryTarget;
+        float distance = Vector3.Distance(
+            user.GetWorldPosition(),
+            target.GetWorldPosition()
+        );
+
+        // Check range
+        if(distance > Range)
+        {
+            return AbilityResult.CreateFailure("Target out of range");
+        }
+
+        // In range → execute
+        SpendCost(user);
+        Execute(user, target);
+        return AbilityResult.CreateSuccess();
+    }
+
+    protected override void Execute(ICombatant user, ICombatant target)
+    {
+        if(target == null) return;
+
         int roll = DiceRoller.RollD20();
-        int total = roll + targetData.user.AttackBonus;
+        int total = roll + user.AttackBonus;
 
         bool crit = roll == 20;
 
-        if(total >= targetData.primaryTarget.ArmorClass || crit)
+        if(total >= target.ArmorClass || crit)
         {
-            int damage = DiceRoller.Roll(targetData.user.DamageDice) +
-              targetData.user.DamageModifier;
+            int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
             if(crit) damage *= 2;
 
-            targetData.primaryTarget.TakeDamage(damage);
-            UnityEngine.Debug.Log($"{targetData.user} shoots {targetData.primaryTarget} for {damage}");
+            target.TakeDamage(damage);
+            Debug.Log($"{user} shoots {target} for {damage}");
         }
         else
         {
-            UnityEngine.Debug.Log($"{targetData.user} missed ranged attack");
+            Debug.Log($"{user} missed ranged attack");
         }
     }
 }

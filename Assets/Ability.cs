@@ -1,5 +1,3 @@
-
-
 public enum AbilityCostType
 {
     Action,
@@ -47,40 +45,10 @@ public abstract class Ability
         }
     }
 
-    /*public virtual void TryUse(ICombatant user, ICombatant myTarget)
-    {
-        UnityEngine.Debug.Log($"Using Ability {AbilityName}");
-        if(!CanUse(user)){
-            UnityEngine.Debug.Log($"Cannot use {AbilityName}");
-            return;
-        }
-        UnityEngine.Debug.Log($"SUCCESS: {AbilityName} allowed → spending cost");
-        SpendCost(user);
-        Execute(user, myTarget);
-    }*/
-    public virtual void TryUse(ICombatant user, TargetData targetData){
-        UnityEngine.Debug.Log($"Using Ability {AbilityName}");
+    // CONTRACT: TargetData in → AbilityResult out
+    // Ability returns success or failure reason
+    // NO MOVEMENT LOGIC IN ABILITY
+    public abstract AbilityResult TryUse(ICombatant user, TargetData targetData);
 
-        if(!CanUse(user)){
-            UnityEngine.Debug.Log($"Cannot use {AbilityName}");
-            return;
-        }
-
-        if(targetData == null){
-            UnityEngine.Debug.Log("Invalid target");
-            return;
-        }
-
-        // Most abilities still use a primary target
-        ICombatant myTarget = targetData.primaryTarget;
-
-        UnityEngine.Debug.Log($"SUCCESS: {AbilityName} allowed → spending cost");
-
-        SpendCost(user);
-
-        Execute(targetData);
-    }
-
-
-    protected abstract void Execute(TargetData targetData);
+    protected abstract void Execute(ICombatant user, ICombatant myTarget);
 }
