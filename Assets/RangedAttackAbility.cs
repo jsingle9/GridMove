@@ -9,27 +9,39 @@ public class RangedAttackAbility : Ability
         Range = 6f;
     }
 
-    protected override void Execute(ICombatant user, ICombatant target)
+    public override AbilityResult TryUse(ICombatant user, TargetData targetData)
     {
-        if(target == null) return;
+        if(!CanUse(user))
+        {
+            return AbilityResult.CreateFailure("No action available");
+        }
 
-        float distance = UnityEngine.Vector3.Distance(
+        if(targetData?.primaryTarget == null)
+        {
+            return AbilityResult.CreateFailure("No target");
+        }
+
+        ICombatant target = targetData.primaryTarget;
+        float distance = Vector3.Distance(
             user.GetWorldPosition(),
             target.GetWorldPosition()
         );
 
-        // Move closer if somehow out of range
+        // Check range
         if(distance > Range)
         {
-            if(!user.HasMove){
-                Debug.Log("Too far and no move left");
-                return;
-            }
-
-            Debug.Log("Ranged unit moving into range");
-            user.SetIntent(new AttackIntent(target));
-            return;
+            return AbilityResult.CreateFailure("Target out of range");
         }
+
+        // In range → execute
+        SpendCost(user);
+        Execute(user, target);
+        return AbilityResult.CreateSuccess();
+    }
+
+    protected override void Execute(ICombatant user, ICombatant target)
+    {
+        if(target == null) return;
 
         int roll = DiceRoller.RollD20();
         int total = roll + user.AttackBonus;
@@ -42,11 +54,11 @@ public class RangedAttackAbility : Ability
             if(crit) damage *= 2;
 
             target.TakeDamage(damage);
-            UnityEngine.Debug.Log($"{user} shoots {target} for {damage}");
+            Debug.Log($"{user} shoots {target} for {damage}");
         }
         else
         {
-            UnityEngine.Debug.Log($"{user} missed ranged attack");
+            Debug.Log($"{user} missed ranged attack");
         }
     }
 }

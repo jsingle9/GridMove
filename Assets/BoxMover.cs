@@ -8,354 +8,229 @@ public class BoxMover : MonoBehaviour, ICombatant
     [SerializeField] UnitMover mover;
     List<Ability> abilities = new List<Ability>();
     TargetingSystem targeting;
+    IntentExecutor intentExecutor;
 
     IntentResolver resolver;
     Intent currentIntent;
 
     [SerializeField] int maxHP = 45;
     int currentHP;
-    //bool isMyTurn = false;
     public int Initiative { get; set; }
     public bool HasMove { get; set; }
     public bool HasAction { get; set; }
     public bool HasBonusAction { get; set; }
     public int RemainingMovement { get; set; }
     public bool turnStarted = false;
-    //public string name;
     [SerializeField] int armorClass = 16;
     [SerializeField] int attackBonus = 5;
     [SerializeField] string damageDice = "1d8";
     [SerializeField] int damageModifier = 3;
     [SerializeField] int speed = 6;
-    ICombatant pendingAttackTarget;
     public string Name => name;
     public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
     public string DamageDice => damageDice;
     public int DamageModifier => damageModifier;
-    //private List<StatusEffect> activeStatuses = new List<StatusEffect>();
     private StatusManager statusManager;
 
-    void Awake(){
+    void Awake()
+    {
         currentHP = maxHP;
         abilities.Add(new AttackAbility());        // slot 1
         abilities.Add(new RangedAttackAbility());  // slot 2
         abilities.Add(new HealAbility());          // slot 3
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
-
     }
 
-    void Start(){
-      if(grid == null){
-          grid = FindFirstObjectByType<GridController>();
-      }
+    void Start()
+    {
+        if(grid == null)
+        {
+            grid = FindFirstObjectByType<GridController>();
+        }
 
-      if(grid == null){
-          Debug.LogError("BoxMover has no GridController!", this);
-          return;
-      }
+        if(grid == null)
+        {
+            Debug.LogError("BoxMover has no GridController!", this);
+            return;
+        }
 
-      targeting = new TargetingSystem(grid);
-      mover = GetComponent<UnitMover>();
-      mover.Initialize(grid);
+        targeting = new TargetingSystem(grid);
+        mover = GetComponent<UnitMover>();
+        mover.Initialize(grid);
 
-      resolver = new IntentResolver(grid);
+        resolver = new IntentResolver(grid);
+
+        // Initialize IntentExecutor
+        intentExecutor = new IntentExecutor();
+        intentExecutor.Initialize(grid, mover);
     }
 
-    void Update(){
+    void Update()
+    {
         mover.Tick();
-        CheckIntentCompletion();
+
+        // Check if a queued ability is ready to execute after movement
+        intentExecutor.CheckPendingAbilityExecution();
+
         CheckForProximityCombat();
-        if(GameStateManager.Instance.CurrentState == GameState.Combat){
-          if(CombatManager.Instance.IsPlayersTurn(this)){
-              if(UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame){
-                if(mover.IsMoving){
+
+        if(GameStateManager.Instance.CurrentState == GameState.Combat)
+        {
+            if(CombatManager.Instance.IsPlayersTurn(this))
+            {
+                if(UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                    if(mover.IsMoving)
+                    {
                         Debug.Log("Cannot end turn while moving");
                         return;
-                }
+                    }
 
                     Debug.Log("Manual end turn");
                     FinishTurn();
-              }
-          }
+                }
+            }
         }
     }
 
-    public void HandleLeftClick(){
-        Debug.Log("HandleLeftClick - State: " +
-            GameStateManager.Instance.CurrentState);
+    public void HandleLeftClick()
+    {
+        Debug.Log("HandleLeftClick - State: " + GameStateManager.Instance.CurrentState);
 
-      // EXPLORE MODE
-        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-          HandleExploreClick();
-          return;
+        // EXPLORE MODE
+        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore)
+        {
+            HandleExploreClick();
+            return;
         }
 
-      // COMBAT MODE
-        if(GameStateManager.Instance.CurrentState == GameState.Combat){
+        // COMBAT MODE
+        if(GameStateManager.Instance.CurrentState == GameState.Combat)
+        {
             HandleCombatClickRouter();
         }
-      }
+    }
 
-    void ResolveIntent(){
+    void HandleExploreClick()
+    {
+        if(mover.IsMoving)
+            return;
+
+        Vector3 worldClick = GetMouseWorld();
+        Vector3Int gridPos = grid.WorldToGrid(worldClick);
+
+        if(!grid.IsWalkable(gridPos))
+            return;
+
+        currentIntent = new MoveIntent(gridPos);
+        ResolveIntent();
+    }
+
+    void ResolveIntent()
+    {
         if(currentIntent == null)
             return;
 
         GridNode startNode = grid.GetNodeFromWorld(transform.position);
         if(startNode == null)
             return;
-            List<GridNode> path = resolver.Resolve(currentIntent, startNode);
 
-            if(path == null || path.Count == 0)
-                return;
+        List<GridNode> path = resolver.Resolve(currentIntent, startNode);
 
-            // calculate cost
-            int moveCost = path.Count - 1;
+        if(path == null || path.Count == 0)
+            return;
 
-            // trim path if not enough movement
-            if(moveCost > RemainingMovement)
+        int moveCost = path.Count - 1;
+
+        if(moveCost > RemainingMovement)
+        {
+            int allowed = RemainingMovement;
+
+            if(allowed <= 0)
             {
-                int allowed = RemainingMovement;
-
-                if(allowed <= 0)
+                if(GameStateManager.Instance.CurrentState != GameState.Combat ||
+                   !CombatManager.Instance.IsPlayersTurn(this))
                 {
-                    // allow free explore movement
-                    if(GameStateManager.Instance.CurrentState != GameState.Combat ||
-                       !CombatManager.Instance.IsPlayersTurn(this)){
-                         //Debug.Log("====== FINAL PATH BEGIN ======");
-
-                         if (path == null)
-                         {
-                             Debug.Log("PATH IS NULL");
-                         }
-                         else
-                         {
-                             for (int i = 0; i < path.Count; i++)
-                             {
-                                // Debug.Log($"Step {i}: {path[i].gridPos}");
-                             }
-
-                            // Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
-                         }
-
-                         //Debug.Log("====== FINAL PATH END ======");
-                         //Debug.Log("START PATH (FreeExplore bypass)");
-                        mover.StartPath(path);
-                        return;
-                    }
-
-                    Debug.Log("No movement left");
+                    mover.StartPath(path);
                     return;
                 }
 
-                path = path.GetRange(0, allowed + 1);
-                moveCost = allowed;
+                Debug.Log("No movement left");
+                return;
             }
 
-            // spend movement
-            RemainingMovement -= moveCost;
+            path = path.GetRange(0, allowed + 1);
+            moveCost = allowed;
+        }
 
-            if(RemainingMovement < 0)
-                RemainingMovement = 0;
+        RemainingMovement -= moveCost;
 
-            HasMove = RemainingMovement > 0;
+        if(RemainingMovement < 0)
+            RemainingMovement = 0;
 
-            Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
+        HasMove = RemainingMovement > 0;
 
-            //Debug.Log("====== FINAL PATH BEGIN ======");
+        Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 
-            if (path == null)
-            {
-                Debug.Log("PATH IS NULL");
-            }
-            else
-            {
-                for (int i = 0; i < path.Count; i++)
-                {
-                    //Debug.Log($"Step {i}: {path[i].gridPos}");
-                }
-
-                //Debug.Log($"FINAL STEP SHOULD BE: {path[path.Count - 1].gridPos}");
-            }
-
-            //Debug.Log("====== FINAL PATH END ======");
-            //Debug.Log("START PATH (ResolveIntent)");
-            mover.StartPath(path);
-            if(currentIntent is AttackIntent attackIntent){
-                pendingAttackTarget = attackIntent.target;
-                Debug.Log($"Set pending attack target to: {pendingAttackTarget}");
-
-            }
+        mover.StartPath(path);
+        currentIntent = null;
     }
 
-    void CheckIntentCompletion(){
-        if(currentIntent == null)
+    void CheckForProximityCombat()
+    {
+        if(GameStateManager.Instance.CurrentState != GameState.FreeExplore)
             return;
 
         if(mover.IsMoving)
             return;
 
-        // ===============================
-        // FINISHED MOVING FOR ATTACK
-        // ===============================
-        if(currentIntent is AttackIntent){
-            // Enter combat if coming from explore
-            if(GameStateManager.Instance.CurrentState == GameState.FreeExplore){
-                Debug.Log("Attack resolved → entering combat");
+        float combatRadius = 4f;
 
-                GameStateManager.Instance.EnterCombat();
-                float combatRadius = 4f;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            transform.position,
+            combatRadius
+        );
 
-                List<ICombatant> participants = new List<ICombatant>();
-                participants.Add(GetComponent<ICombatant>());
+        List<ICombatant> participants = new List<ICombatant>();
+        bool enemyFound = false;
 
-                Collider2D[] hits = Physics2D.OverlapCircleAll(
-                    transform.position,
-                    combatRadius
-                );
+        participants.Add(GetComponent<ICombatant>());
 
-                foreach(Collider2D hit in hits){
-                    Enemy enemy = hit.GetComponent<Enemy>();
-                    if(enemy == null) continue;
-
-                    ICombatant c = enemy.GetComponent<ICombatant>();
-                    if(c != null && !participants.Contains(c))
-                        participants.Add(c);
-                }
-
-                CombatManager.Instance.StartCombat(participants);
-            }
-
-            // ===============================
-            // EXECUTE QUEUED ATTACK
-            // ===============================
-            if(pendingAttackTarget != null &&
-               GameStateManager.Instance.CurrentState == GameState.Combat){
-                float dist = Vector3.Distance(
-                    GetWorldPosition(),
-                    pendingAttackTarget.GetWorldPosition()
-                );
-
-                if(dist <= 1.6f){
-                    Debug.Log("Reached target → executing queued attack");
-
-                    AttackAbility attack = new AttackAbility();
-                    attack.TryUse(this, new TargetData(pendingAttackTarget));
-                }
-                else{
-                    Debug.Log("Arrived but not in range — no attack");
-                }
-
-                pendingAttackTarget = null;
-            }
-        }
-
-        currentIntent = null;
-
-        // ===============================
-        // AUTO END TURN
-        // ===============================
-        if(GameStateManager.Instance.CurrentState == GameState.Combat &&
-           CombatManager.Instance.IsPlayersTurn(this))
+        foreach(Collider2D hit in hits)
         {
-            if(!HasMove && !HasAction && !mover.IsMoving && currentIntent == null)
-            {
-                Debug.Log("Player turn complete → ending turn");
-                FinishTurn();
-            }
-        }
-    }
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if(enemy == null) continue;
 
-    Vector3 GetMouseWorld(){
-        if (Camera.main == null)
-            return Vector3.zero;
+            enemyFound = true;
 
-        Vector3 mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-        mousePos.z = -Camera.main.transform.position.z;
-
-        Vector3 world = Camera.main.ScreenToWorldPoint(mousePos);
-        world.z = 0;
-
-        return world;
-    }
-
-    Enemy GetClickedEnemy()
-    {
-        if (Camera.main == null)
-            return null;
-
-        // Get mouse world position
-        Vector2 screenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-
-        // Convert to grid cell
-        Vector3Int clickedCell = grid.WorldToGrid(worldPos);
-
-        //Debug.Log("Clicked world position: " + worldPos);
-        //Debug.Log("Clicked grid cell: " + clickedCell);
-
-        // Ask grid who occupies this tile
-        ICombatant occupant = grid.GetOccupant(clickedCell);
-
-        if (occupant == null)
-        {
-            Debug.Log("No occupant at this cell.");
-            return null;
+            ICombatant combatant = enemy.GetComponent<ICombatant>();
+            if(combatant != null && !participants.Contains(combatant))
+                participants.Add(combatant);
         }
 
-        if (occupant is Enemy enemy)
-        {
-            Debug.Log("Grid selected enemy: " + enemy.name);
-            Debug.Log("Enemy instance ID: " + enemy.GetInstanceID());
-            return enemy;
-        }
-
-        Debug.Log("Occupant is not an enemy: " + occupant);
-        return null;
-    }
-
-    void HandleExploreClick(){
-      if(mover.IsMoving)
-          return;
-
-      Vector3 worldClick = GetMouseWorld();
-      Vector3Int gridPos = grid.WorldToGrid(worldClick);
-
-      if(!grid.IsWalkable(gridPos))
-        return;
-
-      currentIntent = new MoveIntent(gridPos);
-      ResolveIntent();
-    }
-
-    void HandleCombatClick(){
-      if(!CombatManager.Instance.IsPlayersTurn(this))
-        return;
-
-      if(mover.IsMoving)
-        return;
-
-      Enemy enemy = GetClickedEnemy();
-
-      if (enemy != null){
-        currentIntent = new AttackIntent(enemy);
-      }
-      else{
-        Vector3 worldClick = GetMouseWorld();
-        Vector3Int gridPos = grid.WorldToGrid(worldClick);
-
-        if (!grid.IsWalkable(gridPos))
+        if(!enemyFound)
             return;
 
-        currentIntent = new MoveIntent(gridPos);
-      }
+        Debug.Log("Proximity combat triggered");
 
-      ResolveIntent();
+        Vector3Int cell = grid.WorldToGrid(transform.position);
+        transform.position = grid.GridToWorld(cell);
+        mover.Stop();
+        currentIntent = null;
+        GameStateManager.Instance.EnterCombat();
+        CombatManager.Instance.StartCombat(participants);
     }
 
-    public void StartTurn(){
+    void FinishTurn()
+    {
+        CombatManager.Instance.EndTurn();
+    }
+
+    public void StartTurn()
+    {
         if(turnStarted) return;
 
         Debug.Log("Player turn started");
@@ -373,138 +248,57 @@ public class BoxMover : MonoBehaviour, ICombatant
         statusManager.ProcessTurnStart();
     }
 
-    public void EndTurn(){
+    public void EndTurn()
+    {
         Debug.Log("Player turn ended");
         turnStarted = false;
         statusManager.ProcessTurnEnd();
-        //isMyTurn = false;
-        // Disable input
     }
 
-    void CheckForProximityCombat(){
-      // If already in combat return
-      if(GameStateManager.Instance.CurrentState != GameState.FreeExplore)
-          return;
+    Vector3 GetMouseWorld()
+    {
+        if(Camera.main == null)
+            return Vector3.zero;
 
-      if(currentIntent is AttackIntent)
-          return;
+        Vector3 mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+        mousePos.z = -Camera.main.transform.position.z;
 
-      if(mover.IsMoving)
-          return;
+        Vector3 world = Camera.main.ScreenToWorldPoint(mousePos);
+        world.z = 0;
 
-      float combatRadius = 4f;
-
-      Collider2D[] hits = Physics2D.OverlapCircleAll(
-          transform.position,
-          combatRadius
-      );
-
-      List<ICombatant> participants = new List<ICombatant>();
-      bool enemyFound = false;
-
-      participants.Add(GetComponent<ICombatant>());
-
-      foreach (Collider2D hit in hits){
-          Enemy enemy = hit.GetComponent<Enemy>();
-          if(enemy == null) continue;
-
-          enemyFound = true;
-
-          ICombatant combatant = enemy.GetComponent<ICombatant>();
-          if(combatant != null && !participants.Contains(combatant))
-              participants.Add(combatant);
-      }
-
-      if(!enemyFound)
-        return;
-
-      Debug.Log("Proximity combat triggered");
-
-      Vector3Int cell = grid.WorldToGrid(transform.position);
-      transform.position = grid.GridToWorld(cell);
-      mover.Stop();
-      currentIntent = null;
-      GameStateManager.Instance.EnterCombat();
-      CombatManager.Instance.StartCombat(participants);
+        return world;
     }
 
-
-    void FinishTurn(){
-      CombatManager.Instance.EndTurn();
-    }
-
-    public void SetIntent(Intent intent){
-      currentIntent = intent;
-      ResolveIntent();
-    }
-
-    public List<Ability> GetAbilities(){
-      return abilities;
-    }
-
-    public Vector3 GetWorldPosition(){
-      return transform.position;
-    }
-
-    void OnDrawGizmosSelected(){
-      Gizmos.color = Color.green;
-      Gizmos.DrawWireSphere(transform.position, 4f);
-    }
-
-    public int CurrentHP => currentHP;
-
-    public void TakeDamage(int amount){
-      currentHP -= amount;
-      Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
-
-      if(currentHP <= 0)
-          Die();
-    }
-
-    public bool IsDead(){
-        return currentHP <= 0;
-    }
-
-    int ICombatant.CalculateMoveCost(List<GridNode> path){
-        if(path == null || path.Count <= 1)
-            return 0;
-
-        return path.Count - 1;
-    }
-
-    public int PreviewMoveCost(Intent intent){
-        GridNode startNode = grid.GetNodeFromWorld(transform.position);
-        if(startNode == null) return -1;
-
-        List<GridNode> path = resolver.Resolve(intent, startNode);
-        if(path == null || path.Count == 0) return -1;
-
-        return path.Count - 1;
-    }
-
-    public void AddStatus(StatusEffect status){
-        statusManager.AddStatus(status);
-    }
-
-    public void RemoveStatus(StatusEffect status){
-        statusManager.RemoveStatus(status);
-    }
-
-    void Die(){
-        Debug.Log($"{name} died");
-        statusManager.Clear();
-        CombatManager.Instance.NotifyDeath(this);
-        gameObject.SetActive(false);
-    }
-
-    public Ability GetAbility(int slot){
-        if (slot < 0 || slot >= abilities.Count)
+    Enemy GetClickedEnemy()
+    {
+        if(Camera.main == null)
             return null;
 
-        return abilities[slot];
+        Vector2 screenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+
+        Vector3Int clickedCell = grid.WorldToGrid(worldPos);
+
+        ICombatant occupant = grid.GetOccupant(clickedCell);
+
+        if(occupant == null)
+        {
+            Debug.Log("No occupant at this cell.");
+            return null;
+        }
+
+        if(occupant is Enemy enemy)
+        {
+            Debug.Log("Grid selected enemy: " + enemy.name);
+            return enemy;
+        }
+
+        Debug.Log("Occupant is not an enemy: " + occupant);
+        return null;
     }
 
-    void HandleCombatClickRouter(){
+    void HandleCombatClickRouter()
+    {
         if(!CombatManager.Instance.IsPlayersTurn(this))
             return;
 
@@ -513,18 +307,22 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         var phase = AbilityUI.Instance.CurrentPhase;
 
-        if(phase == PlayerTurnPhase.WaitingForTarget){
+        if(phase == PlayerTurnPhase.WaitingForTarget)
+        {
             HandleAbilityTargetClick();
         }
-        else{
+        else
+        {
             HandleCombatMovementClick();
         }
     }
 
-    void HandleAbilityTargetClick(){
+    void HandleAbilityTargetClick()
+    {
         var ability = AbilityUI.Instance.selectedAbility;
 
-        if(ability == null){
+        if(ability == null)
+        {
             Debug.Log("No ability selected");
             return;
         }
@@ -537,16 +335,33 @@ public class BoxMover : MonoBehaviour, ICombatant
             click
         );
 
-        if(target == null){
+        if(target == null)
+        {
             Debug.Log("Invalid target");
             return;
         }
 
-        AbilityUI.Instance.TryUseSelected(target);
+        // Use IntentExecutor to handle ability with movement support
+        AbilityResult result = intentExecutor.ExecuteAbilityWithMovement(this, ability, target);
+
+        if(!result.Success && !intentExecutor.IsExecutingAbilityWithMovement())
+        {
+            Debug.Log($"Ability failed: {result.FailureReason}");
+        }
+
+        grid.ClearAllHighlights();
+
+        if(result.Success && !intentExecutor.IsExecutingAbilityWithMovement())
+        {
+            AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForAction;
+            AbilityUI.Instance.selectedAbility = null;
+        }
     }
 
-    void HandleCombatMovementClick(){
-        if(!HasMove){
+    void HandleCombatMovementClick()
+    {
+        if(!HasMove)
+        {
             Debug.Log("Move already used");
             return;
         }
@@ -561,7 +376,106 @@ public class BoxMover : MonoBehaviour, ICombatant
         ResolveIntent();
     }
 
-    public void Heal(int amount){
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 4f);
+    }
+
+    public int CurrentHP => currentHP;
+
+    public void TakeDamage(int amount)
+    {
+        currentHP -= amount;
+        Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
+
+        if(currentHP <= 0)
+            Die();
+    }
+
+    public bool IsDead()
+    {
+        return currentHP <= 0;
+    }
+
+    int ICombatant.CalculateMoveCost(List<GridNode> path)
+    {
+        if(path == null || path.Count <= 1)
+            return 0;
+
+        return path.Count - 1;
+    }
+
+    public int PreviewMoveCost(Intent intent)
+    {
+        GridNode startNode = grid.GetNodeFromWorld(transform.position);
+        if(startNode == null) return -1;
+
+        List<GridNode> path = resolver.Resolve(intent, startNode);
+        if(path == null || path.Count == 0) return -1;
+
+        return path.Count - 1;
+    }
+
+    public void AddStatus(StatusEffect status)
+    {
+        statusManager.AddStatus(status);
+    }
+
+    public void RemoveStatus(StatusEffect status)
+    {
+        statusManager.RemoveStatus(status);
+    }
+
+    void Die()
+    {
+        Debug.Log($"{name} died");
+        statusManager.Clear();
+        CombatManager.Instance.NotifyDeath(this);
+        gameObject.SetActive(false);
+    }
+
+    public List<Ability> GetAbilities()
+    {
+        return abilities;
+    }
+
+    public Ability GetAbility(int slot)
+    {
+        if(slot < 0 || slot >= abilities.Count)
+            return null;
+
+        return abilities[slot];
+    }
+
+    public Vector3 GetWorldPosition()
+    {
+        return transform.position;
+    }
+
+    public void ShowTargetingHighlights(Ability ability)
+    {
+        targeting.HighlightValidTargets(ability, this);
+    }
+
+    public void ClearTargetingHighlights()
+    {
+        targeting.ClearTargetHighlights();
+    }
+
+    public void SetIntent(Intent intent)
+    {
+        currentIntent = intent;
+        ResolveIntent();
+    }
+
+    public bool IsPlayerControlled()
+    {
+        return true;
+    }
+
+    public void Heal(int amount)
+    {
         currentHP += amount;
 
         if(currentHP > maxHP)
@@ -569,17 +483,4 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
-
-    public void ShowTargetingHighlights(Ability ability){
-        targeting.HighlightValidTargets(ability, this);
-    }
-
-    public void ClearTargetingHighlights(){
-        targeting.ClearTargetHighlights();
-    }
-
-    public bool IsPlayerControlled(){
-        return true;
-    }
-
 }

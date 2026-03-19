@@ -27,7 +27,7 @@ public class IntentResolver
 
         if(intent is AttackIntent attack){
             Debug.Log("intent = attack intent");
-            return ResolveAttackMove(actorNode, attack.target);
+            return ResolveAttackMove(actorNode, attack.data.primaryTarget);
         }
 
         return null;

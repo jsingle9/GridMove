@@ -18,6 +18,7 @@ public class TargetingSystem
     )
     {
         TargetData data = new TargetData();
+        data.user = user;
 
         Vector3Int gridPos = grid.WorldToGrid(worldClick);
         // SELF TARGET SHORTCUT
@@ -185,5 +186,5 @@ public class TargetingSystem
                 highlightedVisuals.Add(visual);
             }
         }
-    }        
+    }
 }
