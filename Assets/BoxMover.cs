@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class BoxMover : MonoBehaviour, ICombatant
 {
@@ -11,7 +10,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     IntentExecutor intentExecutor;
 
     IntentResolver resolver;
-    Intent currentIntent;
+    MoveIntent currentMoveIntent; // Only for exploration movement
 
     [SerializeField] int maxHP = 45;
     int currentHP;
@@ -37,9 +36,9 @@ public class BoxMover : MonoBehaviour, ICombatant
     void Awake()
     {
         currentHP = maxHP;
-        abilities.Add(new AttackAbility());        // slot 1
-        abilities.Add(new RangedAttackAbility());  // slot 2
-        abilities.Add(new HealAbility());          // slot 3
+        abilities.Add(new AttackAbility());
+        abilities.Add(new RangedAttackAbility());
+        abilities.Add(new HealAbility());
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
     }
@@ -125,20 +124,23 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(!grid.IsWalkable(gridPos))
             return;
 
-        currentIntent = new MoveIntent(gridPos);
-        ResolveIntent();
+        currentMoveIntent = new MoveIntent(gridPos);
+        ResolveMoveIntent();
     }
 
-    void ResolveIntent()
+    /// <summary>
+    /// Handle pure movement intents (exploration mode only)
+    /// </summary>
+    void ResolveMoveIntent()
     {
-        if(currentIntent == null)
+        if(currentMoveIntent == null)
             return;
 
         GridNode startNode = grid.GetNodeFromWorld(transform.position);
         if(startNode == null)
             return;
 
-        List<GridNode> path = resolver.Resolve(currentIntent, startNode);
+        List<GridNode> path = resolver.Resolve(currentMoveIntent, startNode);
 
         if(path == null || path.Count == 0)
             return;
@@ -176,7 +178,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 
         mover.StartPath(path);
-        currentIntent = null;
+        currentMoveIntent = null;
     }
 
     void CheckForProximityCombat()
@@ -219,7 +221,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         Vector3Int cell = grid.WorldToGrid(transform.position);
         transform.position = grid.GridToWorld(cell);
         mover.Stop();
-        currentIntent = null;
+        currentMoveIntent = null;
         GameStateManager.Instance.EnterCombat();
         CombatManager.Instance.StartCombat(participants);
     }
@@ -372,8 +374,8 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(!grid.IsWalkable(gridPos))
             return;
 
-        currentIntent = new MoveIntent(gridPos);
-        ResolveIntent();
+        currentMoveIntent = new MoveIntent(gridPos);
+        ResolveMoveIntent();
     }
 
     void OnDrawGizmosSelected()
@@ -461,12 +463,6 @@ public class BoxMover : MonoBehaviour, ICombatant
     public void ClearTargetingHighlights()
     {
         targeting.ClearTargetHighlights();
-    }
-
-    public void SetIntent(Intent intent)
-    {
-        currentIntent = intent;
-        ResolveIntent();
     }
 
     public bool IsPlayerControlled()

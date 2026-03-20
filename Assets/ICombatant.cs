@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public interface ICombatant{
+public interface ICombatant
+{
     int Initiative { get; set; }
     void StartTurn();
     void EndTurn();
     List<Ability> GetAbilities();
 
-    int CurrentHP { get;}
+    int CurrentHP { get; }
     void TakeDamage(int amount);
     void Heal(int amount);
     bool IsDead();
@@ -27,8 +28,6 @@ public interface ICombatant{
     void RemoveStatus(StatusEffect status);
     int PreviewMoveCost(Intent intent);
     int CalculateMoveCost(List<GridNode> path);
-    void SetIntent(Intent intent);
     Vector3 GetWorldPosition();
     bool IsPlayerControlled();
-
 }
