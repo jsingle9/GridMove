@@ -290,11 +290,11 @@ public class Enemy : MonoBehaviour, ICombatant
         return false;
     }
 
-    public void SetIntent(Intent intent)
+  /*  public void SetIntent(Intent intent)
     {
         // DEPRECATED: No longer used. Abilities now use IntentExecutor.
         Debug.LogWarning("SetIntent() called but no longer used. Use IntentExecutor instead.");
-    }
+    }*/
 
     public void MoveTo(Vector3 worldTargetPosition)
     {
