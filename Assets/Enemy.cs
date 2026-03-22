@@ -270,6 +270,10 @@ public class Enemy : MonoBehaviour, ICombatant
     void Die()
     {
         Debug.Log($"{name} died");
+        // Unregister dead occupant from grid
+        Vector3Int deathCell = grid.WorldToGrid(transform.position);
+        grid.UnregisterOccupant(deathCell);
+
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);
