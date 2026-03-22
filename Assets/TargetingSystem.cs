@@ -135,6 +135,9 @@ public class TargetingSystem
 
         foreach (ICombatant target in targets)
         {
+            if(target == null || target.IsDead())
+              continue;
+
             Vector3Int pos = grid.WorldToGrid(target.GetWorldPosition());
             TileVisual visual = grid.GetTileVisual(pos);
 
