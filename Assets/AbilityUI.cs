@@ -44,7 +44,7 @@ public class AbilityUI : MonoBehaviour
       if(Keyboard.current.digit4Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(3);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          targetingSystem.HighlightValidTargets(selectedAbility, player);
+          Debug.Log($"Selected: {selectedAbility.AbilityName}");
 
       }
     }
