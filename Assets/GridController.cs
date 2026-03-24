@@ -23,10 +23,10 @@ public class GridController : MonoBehaviour
       grid = new GridNode[width, height];
       tileVisuals = new TileVisual[width, height];
 
-      for (int x = 0; x < width; x++)
-      {
-        for (int y = 0; y < height; y++)
-        {
+      for (int x = 0; x < width; x++){
+
+        for (int y = 0; y < height; y++){
+          
             Vector3Int cellPos = new Vector3Int(
                 x + gridOrigin.x,
                 y + gridOrigin.y,
@@ -95,7 +95,7 @@ public class GridController : MonoBehaviour
       if (!InBounds(cell)) return false;
 
       if(occupiedTiles.ContainsKey(cell))
-          return false;      
+          return false;
 
       int x = cell.x - gridOrigin.x;
       int y = cell.y - gridOrigin.y;
