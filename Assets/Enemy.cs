@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour, ICombatant
     [SerializeField] int armorClass = 12;
     [SerializeField] int attackBonus = 4;
     [SerializeField] string damageDice = "1d6";
-    [SerializeField] int damageModifier = 2;
+    [SerializeField] int damageModifier = 0;
     [SerializeField] int speed = 6;
     public int Speed => speed;
     public string Name => name;
@@ -28,12 +28,19 @@ public class Enemy : MonoBehaviour, ICombatant
     UnitMover mover;
     IntentExecutor intentExecutor;
     StatusManager statusManager;
+    private Weapon equippedWeapon;
+    public Weapon EquippedWeapon {
+      get => equippedWeapon;
+      set => EquippedWeapon = value;
+    }
 
     List<Ability> abilities = new List<Ability>();
 
     void Awake()
     {
         currentHP = maxHP;
+        equippedWeapon = new Weapon("Short Sword", 0, "1d6");
+
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
 
@@ -273,7 +280,16 @@ public class Enemy : MonoBehaviour, ICombatant
         // Unregister dead occupant from grid
         Vector3Int deathCell = grid.WorldToGrid(transform.position);
         grid.UnregisterOccupant(deathCell);
+        // Drop weapon
+        if(equippedWeapon != null)
+        {
+            GameObject dropObj = new GameObject($"Loot_{equippedWeapon.WeaponName}");
+            dropObj.transform.position = transform.position;
 
+            LootDrop loot = dropObj.AddComponent<LootDrop>();
+            loot.SetWeapon(equippedWeapon);
+        }
+                
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);

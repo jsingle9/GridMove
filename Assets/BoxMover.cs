@@ -32,10 +32,17 @@ public class BoxMover : MonoBehaviour, ICombatant
     public string DamageDice => damageDice;
     public int DamageModifier => damageModifier;
     private StatusManager statusManager;
+    private Weapon equippedWeapon;
+    public Weapon EquippedWeapon {
+      get => equippedWeapon;
+      set => EquippedWeapon = value;
+    }
 
     void Awake()
     {
         currentHP = maxHP;
+        equippedWeapon = new Weapon("Iron Sword", 3, "1d8");
+
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
         abilities.Add(new HealAbility());
@@ -479,5 +486,13 @@ public class BoxMover : MonoBehaviour, ICombatant
             currentHP = maxHP;
 
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
+    }
+
+    public void EquipWeapon(Weapon weapon)
+    {
+        if(weapon == null) return;
+
+        equippedWeapon = weapon;
+        Debug.Log($"Equipped: {weapon.WeaponName} (+{weapon.DamageBonus} damage)");
     }
 }
