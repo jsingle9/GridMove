@@ -94,6 +94,6 @@ public class MiniBossEnemy : Enemy
         }
 
         yield return new WaitForSeconds(0.1f);
-        CombatManager.Instance.EndTurn();
+        EndMyTurn();
     }
 }
