@@ -63,7 +63,7 @@ public class AttackAbility : Ability
 
             Debug.Log($"Hit for {damage} damage");
             target.TakeDamage(damage);
-            target.AddStatus(new PoisonStatus(3, 2));
+            
         }
         else
         {
