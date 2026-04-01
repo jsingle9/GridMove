@@ -49,7 +49,7 @@ public class FireballAbility : Ability
             {
                 if(target != null && target != user)
                 {
-                    int damage = DiceRoller.Roll("2d6");
+                    int damage = DiceRoller.Roll("2d8");
                     target.TakeDamage(damage);
                     Debug.Log($"Fireball hits {target} for {damage} damage");
                 }
