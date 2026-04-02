@@ -150,6 +150,11 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         currentHP -= amount;
         Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
 
+        if (DamagePopupManager.Instance != null)
+        {
+            DamagePopupManager.Instance.ShowDamage(amount, transform.position);
+        }        
+
         if(currentHP <= 0)
             Die();
     }

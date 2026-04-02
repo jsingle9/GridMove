@@ -5,7 +5,7 @@ public class DamagePopupManager : MonoBehaviour
 {
     public static DamagePopupManager Instance { get; private set; }
 
-    [SerializeField] private DamagePopup damagePopupPrefab;
+    [SerializeField] private GameObject damagePopupPrefab;
     private Queue<DamagePopup> popupPool = new Queue<DamagePopup>();
     private int poolSize = 10;
 
@@ -28,7 +28,8 @@ public class DamagePopupManager : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
         {
-            DamagePopup popup = Instantiate(damagePopupPrefab, transform);
+            GameObject popupObj = Instantiate(damagePopupPrefab, transform);
+            DamagePopup popup = popupObj.GetComponent<DamagePopup>();
             popup.gameObject.SetActive(false);
             popupPool.Enqueue(popup);
         }
@@ -44,7 +45,8 @@ public class DamagePopupManager : MonoBehaviour
         }
         else
         {
-            popup = Instantiate(damagePopupPrefab, transform);
+            GameObject popupObj = Instantiate(damagePopupPrefab, transform);
+            popup = popupObj.GetComponent<DamagePopup>();
         }
 
         popup.gameObject.SetActive(true);
