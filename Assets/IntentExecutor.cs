@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class IntentExecutor : MonoBehaviour
+public class IntentExecutor 
 {
     private GridController grid;
     private IntentResolver intentResolver;

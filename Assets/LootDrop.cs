@@ -3,6 +3,8 @@ using UnityEngine;
 public class LootDrop : MonoBehaviour
 {
     private Weapon droppedWeapon;
+    private HealingPotion droppedPotion;
+    private bool isWeapon;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
 
@@ -27,15 +29,30 @@ public class LootDrop : MonoBehaviour
     public void SetWeapon(Weapon weapon)
     {
         droppedWeapon = weapon;
+        isWeapon = true;
         Debug.Log($"Loot drop: {weapon.WeaponName}");
+    }
+
+    public void SetPotion(HealingPotion potion)
+    {
+        droppedPotion = potion;
+        isWeapon = false;
+        Debug.Log($"Loot drop: Healing Potion");
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         BoxMover player = collision.GetComponent<BoxMover>();
-        if(player != null && droppedWeapon != null)
+        if(player != null)
         {
-            player.EquipWeapon(droppedWeapon);
+            if (isWeapon && droppedWeapon != null)
+            {
+                Inventory.Instance.AddWeapon(droppedWeapon);
+            }
+            else if (!isWeapon && droppedPotion != null)
+            {
+                Inventory.Instance.AddPotion(droppedPotion);
+            }
             Destroy(gameObject);
         }
     }
