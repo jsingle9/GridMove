@@ -44,13 +44,13 @@ public class UnitMover : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.01f){
             transform.position = targetPosition;
-            Debug.Log("---- SNAP EVENT ----");
-            Debug.Log("Snapped world position: " + transform.position);
-            Debug.Log("Target position: " + targetPosition);
+            //Debug.Log("---- SNAP EVENT ----");
+            //Debug.Log("Snapped world position: " + transform.position);
+            //Debug.Log("Target position: " + targetPosition);
 
             Vector3Int newCell = grid.WorldToGrid(transform.position);
-            Debug.Log("WorldToGrid result: " + newCell);
-            Debug.Log("CurrentCell before update: " + currentCell);
+            //Debug.Log("WorldToGrid result: " + newCell);
+            //Debug.Log("CurrentCell before update: " + currentCell);
             Debug.Log("--------------------");
 
             if(newCell != currentCell){
