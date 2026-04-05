@@ -96,4 +96,22 @@ public class MiniBossEnemy : Enemy
         yield return new WaitForSeconds(0.1f);
         EndMyTurn();
     }
+    
+    protected override void Die()
+    {
+        Debug.Log($"{name} died");
+        Vector3Int deathCell = grid.WorldToGrid(transform.position);
+        grid.UnregisterOccupant(deathCell);
+
+        // Mini boss drops 2H sword
+        GameObject weaponDropObj = new GameObject("Loot_TwoHandedSword");
+        weaponDropObj.transform.position = transform.position;
+        LootDrop weaponLoot = weaponDropObj.AddComponent<LootDrop>();
+        Weapon twoHandedSword = new Weapon("Two Handed Sword", 3, "1d12");
+        weaponLoot.SetWeapon(twoHandedSword);
+
+        statusManager.Clear();
+        CombatManager.Instance.NotifyDeath(this);
+        gameObject.SetActive(false);
+    }
 }
