@@ -24,6 +24,9 @@ public class LootDrop : MonoBehaviour
         // Visual feedback
         spriteRenderer.color = Color.yellow;
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+
+        Debug.Log($"LootDrop ready at {transform.position}");
+        Debug.Log($"BoxMover layer: {LayerMask.LayerToName(gameObject.layer)}");
     }
 
     public void SetWeapon(Weapon weapon)
