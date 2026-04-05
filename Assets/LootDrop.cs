@@ -42,18 +42,33 @@ public class LootDrop : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("LootDrop triggered by: " + collision.gameObject.name);
+
         BoxMover player = collision.GetComponent<BoxMover>();
         if(player != null)
         {
+            Debug.Log("Player detected! Attempting to add loot...");
+
             if (isWeapon && droppedWeapon != null)
             {
+                Debug.Log($"Adding weapon: {droppedWeapon.WeaponName}");
                 Inventory.Instance.AddWeapon(droppedWeapon);
             }
             else if (!isWeapon && droppedPotion != null)
             {
+                Debug.Log("Adding potion to inventory");
                 Inventory.Instance.AddPotion(droppedPotion);
             }
+            else
+            {
+                Debug.LogError("No loot to add! isWeapon: " + isWeapon);
+            }
+
             Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("No BoxMover found on collision object");
         }
     }
 }

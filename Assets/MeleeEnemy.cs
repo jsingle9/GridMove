@@ -95,4 +95,23 @@ public class MeleeEnemy : Enemy
         Debug.Log("No valid ability");
         return melee;
     }
+
+    protected override void Die()
+    {
+        Debug.Log($"{name} died");
+        Vector3Int deathCell = grid.WorldToGrid(transform.position);
+        grid.UnregisterOccupant(deathCell);
+
+        // Melee enemies drop healing potions
+        GameObject potionDropObj = new GameObject("Loot_HealingPotion");
+        potionDropObj.transform.position = transform.position;
+        LootDrop potionLoot = potionDropObj.AddComponent<LootDrop>();
+        HealingPotion potion = ScriptableObject.CreateInstance<HealingPotion>();
+        potionLoot.SetPotion(potion);
+
+        statusManager.Clear();
+        CombatManager.Instance.NotifyDeath(this);
+        gameObject.SetActive(false);
+    }
+        
 }

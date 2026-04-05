@@ -20,12 +20,19 @@ public class InventoryInputHandler : MonoBehaviour
     void HandlePotionConsumption()
     {
         var items = Inventory.Instance.GetItems();
+        BoxMover player = FindFirstObjectByType<BoxMover>();
+
+        if (player == null)
+        {
+            Debug.LogError("Player not found!");
+            return;
+        }
 
         foreach (var item in items)
         {
-            if (!item.isWeapon)
+            if (!item.isWeapon && item.potion != null)
             {
-                item.potion.Use(null, null); // You may need to adjust this based on your Use() method
+                item.potion.Use(player, player);
                 Inventory.Instance.RemoveItem(item);
                 Debug.Log("Consumed Healing Potion");
                 break;
