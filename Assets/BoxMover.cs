@@ -183,7 +183,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         HasMove = RemainingMovement > 0;
 
-        Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
+        //Debug.Log($"Movement spent: {moveCost}, remaining: {RemainingMovement}");
 
         mover.StartPath(path);
         currentMoveIntent = null;

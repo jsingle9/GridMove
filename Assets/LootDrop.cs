@@ -22,11 +22,20 @@ public class LootDrop : MonoBehaviour
         circleCollider.isTrigger = true;
 
         // Visual feedback
-        spriteRenderer.color = Color.yellow;
+        spriteRenderer.sortingOrder = 3;
+        spriteRenderer.color = new Color(0.68f, 0.85f, 1f);
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+spriteRenderer.sprite = Resources.Load<Sprite>("karsiori/Pixel Chest Pack - Animated/Sprites/Wooden Chest 1/Wooden Chest 1 Sprites/Wooden Chest 1 - frame  01");
+        // Built-in Unity sprite
 
         Debug.Log($"LootDrop ready at {transform.position}");
         Debug.Log($"BoxMover layer: {LayerMask.LayerToName(gameObject.layer)}");
+        Debug.Log($"LootDrop sprite renderer: {spriteRenderer}");
+        Debug.Log($"LootDrop sprite: {spriteRenderer.sprite}");
+        Debug.Log($"LootDrop color: {spriteRenderer.color}");
+        Debug.Log($"LootDrop sorting order: {spriteRenderer.sortingOrder}");
+        Debug.Log($"LootDrop position: {transform.position}");
+        Debug.Log($"LootDrop scale: {transform.localScale}");
     }
 
     public void SetWeapon(Weapon weapon)
