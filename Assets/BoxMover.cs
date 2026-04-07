@@ -11,7 +11,6 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     IntentResolver resolver;
     MoveIntent currentMoveIntent; // Only for exploration movement
-
     [SerializeField] int maxHP = 45;
     int currentHP;
     public int Initiative { get; set; }
@@ -22,22 +21,44 @@ public class BoxMover : MonoBehaviour, ICombatant
     public bool turnStarted = false;
     [SerializeField] int armorClass = 16;
     [SerializeField] int attackBonus = 5;
-    [SerializeField] string damageDice = "1d8";
-    [SerializeField] int damageModifier = 3;
+    [SerializeField] string baseDamageDice = "1d8";      // Base damage without weapon
+    [SerializeField] int baseDamageModifier = 3;         // Base modifier without weapon
     [SerializeField] int speed = 6;
     public string Name => name;
     public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
-    public string DamageDice => damageDice;
-    public int DamageModifier => damageModifier;
+
+    // These now factor in equipped weapons
+    public string DamageDice
+    {
+        get
+        {
+            Weapon equippedMelee = Inventory.Instance.GetEquippedMeleeWeapon();
+            if (equippedMelee != null)
+                return equippedMelee.DamageDice;
+            return baseDamageDice;
+        }
+    }
+
+    public int DamageModifier
+    {
+        get
+        {
+            Weapon equippedMelee = Inventory.Instance.GetEquippedMeleeWeapon();
+            if (equippedMelee != null)
+                return equippedMelee.DamageBonus;
+            return baseDamageModifier;
+        }
+    }
+
     private StatusManager statusManager;
     private Weapon equippedWeapon;
     public Weapon EquippedWeapon {
-      get => equippedWeapon;
-      set => EquippedWeapon = value;
+        get => equippedWeapon;
+        set => EquippedWeapon = value;
     }
-
+    
     void Awake()
     {
         currentHP = maxHP;
@@ -253,7 +274,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForAction;
 
-        Debug.Log("Choose Action: [1] Melee  [2] Ranged  [3] Item");
+        Debug.Log("Choose Action: [1] Melee  [2] Ranged  [3] HealSpell [4] Fireball");
 
         statusManager.ProcessTurnStart();
     }
