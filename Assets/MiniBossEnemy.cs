@@ -10,7 +10,7 @@ public class MiniBossEnemy : Enemy
         // Override to mini boss-specific stats
         maxHP = 25;
         currentHP = maxHP;
-        equippedWeapon = new Weapon("Legendary Blade", 4, "1d10");
+        equippedWeapon = new Weapon("Legendary Blade", 4, "1d10", WeaponType.Melee);
         armorClass = 14;
         attackBonus = 5;
         damageDice = "1d8";
@@ -96,7 +96,7 @@ public class MiniBossEnemy : Enemy
         yield return new WaitForSeconds(0.1f);
         EndMyTurn();
     }
-    
+
     protected override void Die()
     {
         Debug.Log($"{name} died");

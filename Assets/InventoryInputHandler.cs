@@ -4,22 +4,88 @@ public class InventoryInputHandler : MonoBehaviour
 {
     void Update()
     {
-        // C key to consume potion
-        if (UnityEngine.InputSystem.Keyboard.current.cKey.wasPressedThisFrame)
+        // I key to toggle inventory menu
+        if (UnityEngine.InputSystem.Keyboard.current.iKey.wasPressedThisFrame)
         {
-            HandlePotionConsumption();
+            ToggleInventoryMenu();
         }
 
-        // E key to equip weapon
-        if (UnityEngine.InputSystem.Keyboard.current.eKey.wasPressedThisFrame)
+        // Only process inventory actions if menu is open
+        if (InventoryMenuUI.Instance.IsMenuOpen())
         {
-            HandleWeaponEquip();
+            // Arrow keys to navigate
+            if (UnityEngine.InputSystem.Keyboard.current.upArrowKey.wasPressedThisFrame)
+            {
+                InventoryMenuUI.Instance.SelectPrevious();
+            }
+
+            if (UnityEngine.InputSystem.Keyboard.current.downArrowKey.wasPressedThisFrame)
+            {
+                InventoryMenuUI.Instance.SelectNext();
+            }
+
+            // E key to equip weapon
+            if (UnityEngine.InputSystem.Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                HandleWeaponEquip();
+            }
+
+            // C key to consume potion
+            if (UnityEngine.InputSystem.Keyboard.current.cKey.wasPressedThisFrame)
+            {
+                HandlePotionConsumption();
+            }
         }
+    }
+
+    void ToggleInventoryMenu()
+    {
+        if (InventoryMenuUI.Instance.IsMenuOpen())
+        {
+            InventoryMenuUI.Instance.CloseMenu();
+        }
+        else
+        {
+            InventoryMenuUI.Instance.OpenMenu();
+        }
+    }
+
+    void HandleWeaponEquip()
+    {
+        InventoryItem selectedItem = InventoryMenuUI.Instance.GetSelectedItem();
+
+        if (selectedItem == null)
+        {
+            Debug.Log("No item selected");
+            return;
+        }
+
+        if (!selectedItem.isWeapon)
+        {
+            Debug.Log("Selected item is not a weapon");
+            return;
+        }
+
+        Inventory.Instance.EquipWeapon(selectedItem.weapon);
+        Debug.Log($"Equipped {selectedItem.weapon.WeaponName}");
     }
 
     void HandlePotionConsumption()
     {
-        var items = Inventory.Instance.GetItems();
+        InventoryItem selectedItem = InventoryMenuUI.Instance.GetSelectedItem();
+
+        if (selectedItem == null)
+        {
+            Debug.Log("No item selected");
+            return;
+        }
+
+        if (selectedItem.isWeapon)
+        {
+            Debug.Log("Selected item is not consumable");
+            return;
+        }
+
         BoxMover player = FindFirstObjectByType<BoxMover>();
 
         if (player == null)
@@ -28,30 +94,8 @@ public class InventoryInputHandler : MonoBehaviour
             return;
         }
 
-        foreach (var item in items)
-        {
-            if (!item.isWeapon && item.potion != null)
-            {
-                item.potion.Use(player, player);
-                Inventory.Instance.RemoveItem(item);
-                Debug.Log("Consumed Healing Potion");
-                break;
-            }
-        }
-    }
-
-    void HandleWeaponEquip()
-    {
-        var items = Inventory.Instance.GetItems();
-
-        foreach (var item in items)
-        {
-            if (item.isWeapon)
-            {
-                Inventory.Instance.EquipWeapon(item.weapon);
-                Debug.Log($"Equipped {item.weapon.WeaponName}");
-                break;
-            }
-        }
+        selectedItem.potion.Use(player, player);
+        Inventory.Instance.RemoveItem(selectedItem);
+        Debug.Log("Consumed Healing Potion");
     }
 }

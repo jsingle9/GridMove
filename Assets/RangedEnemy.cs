@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 public class RangedEnemy : Enemy
 {
-    protected override void Awake()
-    {
-        base.Awake();
+  protected override void Awake()
+  {
+      base.Awake();
 
-        // Override to ranged-specific stats
-        maxHP = 8;
-        currentHP = maxHP;
-        equippedWeapon = new Weapon("Bow", 1, "1d6");
-        armorClass = 11;
-        attackBonus = 3;
-        damageDice = "1d6";
-        damageModifier = 1;
-        speed = 5;
+      // Override to ranged-specific stats
+      maxHP = 8;
+      currentHP = maxHP;
+      equippedWeapon = new Weapon("Bow", 1, "1d6", WeaponType.Ranged);
+      armorClass = 11;
+      attackBonus = 3;
+      damageDice = "1d6";
+      damageModifier = 1;
+      speed = 5;
 
-        // Ranged enemy only has ranged attack
-        abilities.Clear();
-        abilities.Add(new RangedAttackAbility());
+      // Ranged enemy only has ranged attack
+      abilities.Clear();
+      abilities.Add(new RangedAttackAbility());
 
-        Debug.Log("RangedEnemy initialized");
-    }
+      Debug.Log("RangedEnemy initialized");
+  }
 
     protected override System.Collections.IEnumerator EnemyTurnRoutine()
     {

@@ -6,7 +6,8 @@ public class Inventory : MonoBehaviour
     public static Inventory Instance { get; private set; }
 
     private List<InventoryItem> items = new List<InventoryItem>();
-    private Weapon equippedWeapon;
+    private Weapon equippedMeleeWeapon;
+    private Weapon equippedRangedWeapon;
 
     void Awake()
     {
@@ -47,13 +48,36 @@ public class Inventory : MonoBehaviour
 
     public Weapon GetEquippedWeapon()
     {
-        return equippedWeapon;
+        // Return the currently active equipped weapon based on context
+        // This will be set by the input handler based on ability selection
+        return equippedMeleeWeapon ?? equippedRangedWeapon;
+    }
+
+    public Weapon GetEquippedMeleeWeapon()
+    {
+        return equippedMeleeWeapon;
+    }
+
+    public Weapon GetEquippedRangedWeapon()
+    {
+        return equippedRangedWeapon;
     }
 
     public void EquipWeapon(Weapon weapon)
     {
-        equippedWeapon = weapon;
-        Debug.Log($"Equipped {weapon.WeaponName}");
+        if (weapon == null) return;
+
+        if (weapon.WeaponType == WeaponType.Melee)
+        {
+            equippedMeleeWeapon = weapon;
+            Debug.Log($"Equipped melee weapon: {weapon.WeaponName}");
+        }
+        else if (weapon.WeaponType == WeaponType.Ranged)
+        {
+            equippedRangedWeapon = weapon;
+            Debug.Log($"Equipped ranged weapon: {weapon.WeaponName}");
+        }
+
         InventoryUIManager.Instance.UpdateUI();
     }
 }

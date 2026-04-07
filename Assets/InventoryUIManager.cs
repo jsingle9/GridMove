@@ -31,10 +31,14 @@ public class InventoryUIManager : MonoBehaviour
             displayText += $"- {item.GetDisplayName()}\n";
         }
 
-        if (Inventory.Instance.GetEquippedWeapon() != null)
-        {
-            displayText += $"\nEquipped: {Inventory.Instance.GetEquippedWeapon().WeaponName}";
-        }
+        Weapon melee = Inventory.Instance.GetEquippedMeleeWeapon();
+        Weapon ranged = Inventory.Instance.GetEquippedRangedWeapon();
+
+        if (melee != null)
+            displayText += $"\nEquipped (Melee): {melee.WeaponName}";
+
+        if (ranged != null)
+            displayText += $"\nEquipped (Ranged): {ranged.WeaponName}";
 
         inventoryDisplay.text = displayText;
     }
