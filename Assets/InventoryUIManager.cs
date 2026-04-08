@@ -6,6 +6,7 @@ public class InventoryUIManager : MonoBehaviour
     public static InventoryUIManager Instance { get; private set; }
 
     [SerializeField] private TextMeshProUGUI statsDisplay;
+    private BoxMover player;  // ← Declare here at class level
 
     void Awake()
     {
@@ -19,12 +20,24 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        player = FindFirstObjectByType<BoxMover>();
+        UpdateUI(); // Initial update
+    }
+
+    void Update()
+    {
+        // Update stats every frame so HP changes are reflected immediately
+        UpdateUI();
+    }
+
+
     public void UpdateUI()
     {
         if (statsDisplay == null)
             return;
 
-        BoxMover player = FindFirstObjectByType<BoxMover>();
         if (player == null)
             return;
 
