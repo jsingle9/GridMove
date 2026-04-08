@@ -68,6 +68,7 @@ public class InventoryInputHandler : MonoBehaviour
 
         Inventory.Instance.EquipWeapon(selectedItem.weapon);
         Debug.Log($"Equipped {selectedItem.weapon.WeaponName}");
+        InventoryUIManager.Instance.UpdateUI(); // Update stats display
     }
 
     void HandlePotionConsumption()
@@ -97,5 +98,7 @@ public class InventoryInputHandler : MonoBehaviour
         selectedItem.potion.Use(player, player);
         Inventory.Instance.RemoveItem(selectedItem);
         Debug.Log("Consumed Healing Potion");
+        InventoryMenuUI.Instance.OpenMenu(); // Refresh menu after consumption
+        InventoryUIManager.Instance.UpdateUI(); // Update stats display
     }
 }
