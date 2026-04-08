@@ -190,4 +190,27 @@ public class TargetingSystem
             }
         }
     }
+
+    public void ShowAOEPreview(Ability ability, Vector3Int centerGridPos)
+    {
+        if (ability.radius <= 0)
+            return; // No AOE
+
+        // Get all nodes in radius
+        List<GridNode> nodesInRadius = grid.GetNodesInRadius(centerGridPos, ability.radius);
+
+        // Clear previous highlights
+        ClearTargetHighlights();
+
+        // Highlight all affected tiles
+        foreach (GridNode node in nodesInRadius)
+        {
+            TileVisual visual = grid.GetTileVisual(node.gridPos);
+            if (visual != null)
+            {
+                visual.Highlight();
+                highlightedVisuals.Add(visual);
+            }
+        }
+    }    
 }
