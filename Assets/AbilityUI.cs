@@ -9,13 +9,22 @@ public class AbilityUI : MonoBehaviour
     public PlayerTurnPhase CurrentPhase;
     public Ability selectedAbility;
     public BoxMover player;   // drag player object here in inspector
+    private AOEVisualizer aoeVisualizer;
 
     void Awake(){
+
       Instance = this;
       grid = FindFirstObjectByType<GridController>();
       targetingSystem = new TargetingSystem(grid);
       CurrentPhase = PlayerTurnPhase.WaitingForAction;
       Debug.Log("AbilityUI Awake() fired");
+
+      aoeVisualizer = GetComponent<AOEVisualizer>();
+      if (aoeVisualizer == null){
+          GameObject aoeObj = new GameObject("AOEVisualizer");
+          aoeObj.transform.parent = transform;
+          aoeVisualizer = aoeObj.AddComponent<AOEVisualizer>();
+      }
     }
 
     void Update(){
@@ -54,15 +63,26 @@ public class AbilityUI : MonoBehaviour
         // the following line is commented out because the context of player changed
         //var player = CombatManager.Instance.CurrentPlayer;
         selectedAbility = player.GetAbility(slot);
+
         if (selectedAbility == null){
           Debug.Log("No ability in that slot");
           return;
         }
 
+        if (selectedAbility != null && selectedAbility.targetingMode == TargetingMode.Area)
+        {
+            // Show AOE preview at player position
+            Vector3Int playerGridPos = grid.WorldToGrid(player.GetWorldPosition());
+            aoeVisualizer.DrawAOE(playerGridPos, selectedAbility.radius);
+        }
+
+
+
         Debug.Log($"Selected ability: {selectedAbility.AbilityName}");
     }
 
     public void CancelAbility(){
+        aoeVisualizer.HideAOE();
         selectedAbility = null;
         Debug.Log("Ability canceled");
     }
