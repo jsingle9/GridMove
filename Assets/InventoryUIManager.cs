@@ -5,7 +5,7 @@ public class InventoryUIManager : MonoBehaviour
 {
     public static InventoryUIManager Instance { get; private set; }
 
-    [SerializeField] private TextMeshProUGUI inventoryDisplay;
+    [SerializeField] private TextMeshProUGUI statsDisplay;
 
     void Awake()
     {
@@ -21,25 +21,25 @@ public class InventoryUIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        if (inventoryDisplay == null)
+        if (statsDisplay == null)
             return;
 
-        string displayText = "Inventory:\n";
+        BoxMover player = FindFirstObjectByType<BoxMover>();
+        if (player == null)
+            return;
 
-        foreach (var item in Inventory.Instance.GetItems())
-        {
-            displayText += $"- {item.GetDisplayName()}\n";
-        }
+        string displayText = $"HP: {player.CurrentHP}\n";
+        displayText += $"AC: {player.ArmorClass}\n";
 
         Weapon melee = Inventory.Instance.GetEquippedMeleeWeapon();
         Weapon ranged = Inventory.Instance.GetEquippedRangedWeapon();
 
         if (melee != null)
-            displayText += $"\nEquipped (Melee): {melee.WeaponName}";
+            displayText += $"Melee: {melee.WeaponName}\n";
 
         if (ranged != null)
-            displayText += $"\nEquipped (Ranged): {ranged.WeaponName}";
+            displayText += $"Ranged: {ranged.WeaponName}";
 
-        inventoryDisplay.text = displayText;
+        statsDisplay.text = displayText;
     }
 }

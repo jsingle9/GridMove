@@ -8,8 +8,6 @@ public class InventoryMenuUI : MonoBehaviour
 
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private TextMeshProUGUI menuDisplay;
-    [SerializeField] private Color selectedItemColor = Color.yellow;
-    [SerializeField] private Color normalItemColor = Color.white;
 
     private List<InventoryItem> displayItems = new List<InventoryItem>();
     private int currentSelectedIndex = 0;
@@ -91,23 +89,30 @@ public class InventoryMenuUI : MonoBehaviour
 
         string displayText = "=== INVENTORY ===\n\n";
 
-        for (int i = 0; i < displayItems.Count; i++)
+        if (displayItems.Count == 0)
         {
-            string itemName = displayItems[i].GetDisplayName();
+            displayText += "Empty";
+        }
+        else
+        {
+            for (int i = 0; i < displayItems.Count; i++)
+            {
+                string itemName = displayItems[i].GetDisplayName();
 
-            if (displayItems[i].isWeapon)
-            {
-                Weapon w = displayItems[i].weapon;
-                itemName += $" ({w.WeaponType}, +{w.DamageBonus})";
-            }
+                if (displayItems[i].isWeapon)
+                {
+                    Weapon w = displayItems[i].weapon;
+                    itemName += $" ({w.WeaponType}, +{w.DamageBonus})";
+                }
 
-            if (i == currentSelectedIndex)
-            {
-                displayText += $"> {itemName} <\n";
-            }
-            else
-            {
-                displayText += $"  {itemName}\n";
+                if (i == currentSelectedIndex)
+                {
+                    displayText += $"> {itemName} <\n";
+                }
+                else
+                {
+                    displayText += $"  {itemName}\n";
+                }
             }
         }
 
