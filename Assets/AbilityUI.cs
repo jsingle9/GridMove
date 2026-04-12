@@ -28,6 +28,19 @@ public class AbilityUI : MonoBehaviour
     }
 
     void Update(){
+
+
+      // NEW: Add cancel ability input during targeting phase
+      if(CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
+             Keyboard.current.escapeKey.wasPressedThisFrame)
+      {
+          Debug.Log("Press escape key to cancel");
+          CancelAbility();
+          grid.ClearAllHighlights();
+          CurrentPhase = PlayerTurnPhase.WaitingForAction;
+          return;
+      }
+
       if(CurrentPhase != PlayerTurnPhase.WaitingForAction)
           return;
 
