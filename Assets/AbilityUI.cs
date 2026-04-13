@@ -34,7 +34,6 @@ public class AbilityUI : MonoBehaviour
       if(CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
              Keyboard.current.escapeKey.wasPressedThisFrame)
       {
-          Debug.Log("Press escape key to cancel");
           CancelAbility();
           grid.ClearAllHighlights();
           CurrentPhase = PlayerTurnPhase.WaitingForAction;

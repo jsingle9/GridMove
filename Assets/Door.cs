@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractable
 {
     [SerializeField] private Sprite closedDoorSprite;
     [SerializeField] private Sprite openDoorSprite;
@@ -73,4 +73,25 @@ public class Door : MonoBehaviour
     }
 
     public bool IsOpen => isOpen;
+
+    // IInteractable Implementation
+    public void Interact(ICombatant interactor)
+    {
+        ToggleDoor();
+    }
+
+    public Vector3Int GetGridPosition()
+    {
+        return doorGridPosition;
+    }
+
+    public float GetInteractionRange()
+    {
+        return 1.5f;
+    }
+
+    public string GetInteractionPrompt()
+    {
+        return isOpen ? "close door" : "open door";
+    }
 }
