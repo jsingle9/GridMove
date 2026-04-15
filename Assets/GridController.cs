@@ -26,7 +26,7 @@ public class GridController : MonoBehaviour
       for (int x = 0; x < width; x++){
 
         for (int y = 0; y < height; y++){
-          
+
             Vector3Int cellPos = new Vector3Int(
                 x + gridOrigin.x,
                 y + gridOrigin.y,
@@ -104,12 +104,22 @@ public class GridController : MonoBehaviour
     }
 
     public void SetWalkable(Vector3Int cell, bool walkable){
-      if (!InBounds(cell)) return;
 
+      Debug.Log($"SetWalkable called: cell={cell}, walkable={walkable}");
+      //if(!InBounds(cell)) return;
+
+      if(!InBounds(cell))
+      {
+          Debug.LogError($"SetWalkable OUT OF BOUNDS: {cell}");
+          return;
+      }
       int x = cell.x - gridOrigin.x;
       int y = cell.y - gridOrigin.y;
 
+      //Debug.Log($"SetWalkable - array index: [{x}, {y}], gridOrigin: {gridOrigin}");
       grid[x, y].walkable = walkable;
+
+      //Debug.Log($"SetWalkable - Grid node now walkable={grid[x, y].walkable}");
     }
 
     public List<GridNode> GetNeighbors(GridNode node)
