@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+public class Door : MonoBehaviour, IDoorInteractable
 {
     [SerializeField] private Sprite closedDoorSprite;
     [SerializeField] private Sprite openDoorSprite;
@@ -108,8 +108,9 @@ public class Door : MonoBehaviour, IInteractable
     public bool IsOpen => isOpen;
 
     // IInteractable Implementation
-    public void Interact(ICombatant interactor)
+    public void Interact(BoxMover player)
     {
+        Debug.Log("Door.Interact() called!");
         ToggleDoor();
     }
 

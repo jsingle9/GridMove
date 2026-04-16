@@ -58,7 +58,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         get => equippedWeapon;
         set => EquippedWeapon = value;
     }
-    
+
     void Awake()
     {
         currentHP = maxHP;
@@ -100,6 +100,11 @@ public class BoxMover : MonoBehaviour, ICombatant
     {
         mover.Tick();
 
+        if(UnityEngine.InputSystem.Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            Debug.Log("F key detected in BoxMover!");
+        }
+
         // Check if a queued ability is ready to execute after movement
         intentExecutor.CheckPendingAbilityExecution();
 
@@ -122,6 +127,9 @@ public class BoxMover : MonoBehaviour, ICombatant
                 }
             }
         }
+      //  Debug.Log($"anyKeyDown: {Input.anyKeyDown}");
+      //  Debug.Log($"F: {Input.GetKeyDown(KeyCode.F)}");
+      //  Debug.Log($"Space: {Input.GetKeyDown(KeyCode.Space)}");
     }
 
     public void HandleLeftClick()
