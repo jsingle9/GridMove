@@ -103,6 +103,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(UnityEngine.InputSystem.Keyboard.current.fKey.wasPressedThisFrame)
         {
             Debug.Log("F key detected in BoxMover!");
+            InteractionSystem.Instance?.AttemptInteraction();
         }
 
         // Check if a queued ability is ready to execute after movement
