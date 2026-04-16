@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public class InteractionSystem : MonoBehaviour
 {
     [SerializeField] private float defaultInteractionRange = 1.5f;
-    private List<IInteractable> interactablesInRange = new List<IInteractable>();
-    private IInteractable currentTarget;
+    private List<IDoorInteractable> interactablesInRange = new List<IDoorInteractable>();  // <-- Line 6
+    private IDoorInteractable currentTarget;  // <-- Line 7
     private GridController grid;
     private BoxMover player;
     public static InteractionSystem Instance;
@@ -57,7 +57,7 @@ public class InteractionSystem : MonoBehaviour
 
         if(currentTarget != null)
         {
-            Debug.Log($"Press E to {currentTarget.GetInteractionPrompt()}");
+            Debug.Log($"Press F to {currentTarget.GetInteractionPrompt()}");
         }
     }
 
@@ -70,5 +70,15 @@ public class InteractionSystem : MonoBehaviour
         }
 
         currentTarget.Interact(player);
+    }
+
+    public bool HasInteractableInRange()
+    {
+        return currentTarget != null;
+    }
+
+    public string GetCurrentInteractionPrompt()
+    {
+        return currentTarget != null ? currentTarget.GetInteractionPrompt() : "";
     }
 }
