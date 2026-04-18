@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7936433725972694691}
   - component: {fileID: 5202666880556560269}
-  - component: {fileID: 8472080043195085478}
   - component: {fileID: 6852537031700588918}
   - component: {fileID: 2537720249687837021}
   - component: {fileID: 3651194573835787172}
+  - component: {fileID: 5038605169049368735}
   m_Layer: 0
   m_Name: BadGuy
   m_TagString: Untagged
@@ -95,24 +95,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &8472080043195085478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8886151682678185778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75bc17e5a572840349680e454ab65651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  grid: {fileID: 0}
-  maxHP: 10
-  armorClass: 12
-  attackBonus: 4
-  damageDice: 1d6
-  damageModifier: 2
 --- !u!61 &6852537031700588918
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -185,3 +167,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitMover
   moveSpeed: 5
+--- !u!114 &5038605169049368735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8886151682678185778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aff605afce86449cbab06be5220b4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
+  grid: {fileID: 0}
+  maxHP: 10
+  armorClass: 12
+  attackBonus: 4
+  damageDice: 1d6
+  damageModifier: 0
+  speed: 6

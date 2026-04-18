@@ -8,7 +8,7 @@ public class LootDrop : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
 
-    void Start()
+    void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if(spriteRenderer == null)
@@ -20,29 +20,41 @@ public class LootDrop : MonoBehaviour
 
         circleCollider.radius = 0.3f;
         circleCollider.isTrigger = true;
-
-        GridController grid = FindFirstObjectByType<GridController>();
-        if(grid != null)
+        
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if(rb == null)
         {
-            Vector3Int cell = grid.WorldToGrid(transform.position);
-            grid.SetWalkable(cell, true);  // Make sure it's walkable
+            rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0;
+            rb.isKinematic = true;
+        }
+    }
+
+    void Start()
+    {
+        // Load and assign sprite
+        spriteRenderer.sprite = Resources.Load<Sprite>("karsiori/Pixel Chest Pack - Animated/Sprites/Wooden Chest 1/Wooden Chest 1 Sprites/Wooden Chest 1 - frame  01");
+
+        if(spriteRenderer.sprite == null)
+        {
+            Debug.LogError("Failed to load sprite! Check path and Resources folder structure");
         }
 
         // Visual feedback
         spriteRenderer.sortingOrder = 3;
         spriteRenderer.color = new Color(0.68f, 0.85f, 1f);
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
-        spriteRenderer.sprite = Resources.Load<Sprite>("Assets/karsiori/Pixel Chest Pack - Animated/Sprites/Wooden Chest 1/Wooden Chest 1 Sprites/Wooden Chest 1 - frame  01");
-        // Built-in Unity sprite
+
+        GridController grid = FindFirstObjectByType<GridController>();
+        if(grid != null)
+        {
+            Vector3Int cell = grid.WorldToGrid(transform.position);
+            grid.SetWalkable(cell, true);
+        }
 
         Debug.Log($"LootDrop ready at {transform.position}");
-        Debug.Log($"BoxMover layer: {LayerMask.LayerToName(gameObject.layer)}");
-        Debug.Log($"LootDrop sprite renderer: {spriteRenderer}");
         Debug.Log($"LootDrop sprite: {spriteRenderer.sprite}");
-        Debug.Log($"LootDrop color: {spriteRenderer.color}");
-        Debug.Log($"LootDrop sorting order: {spriteRenderer.sortingOrder}");
         Debug.Log($"LootDrop position: {transform.position}");
-        Debug.Log($"LootDrop scale: {transform.localScale}");
     }
 
     public void SetWeapon(Weapon weapon)
