@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class BoxMover : MonoBehaviour, ICombatant
@@ -429,6 +430,14 @@ public class BoxMover : MonoBehaviour, ICombatant
         currentHP -= amount;
         Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
 
+        if (DamagePopupManager.Instance != null)
+        {
+            DamagePopupManager.Instance.ShowDamage(amount, transform.position);
+        }
+
+        // Flash red on hit
+        StartCoroutine(FlashRed());
+
         if(currentHP <= 0)
             Die();
     }
@@ -524,5 +533,17 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         equippedWeapon = weapon;
         Debug.Log($"Equipped: {weapon.WeaponName} (+{weapon.DamageBonus} damage)");
+    }
+
+    private IEnumerator FlashRed()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if(sr != null)
+        {
+            Color originalColor = sr.color;
+            sr.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            sr.color = originalColor;
+        }
     }
 }

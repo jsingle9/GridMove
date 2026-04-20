@@ -1,4 +1,7 @@
+
+
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -153,7 +156,10 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         if (DamagePopupManager.Instance != null)
         {
             DamagePopupManager.Instance.ShowDamage(amount, transform.position);
-        }        
+        }
+
+        // Flash red on hit
+        StartCoroutine(FlashRed());
 
         if(currentHP <= 0)
             Die();
@@ -233,4 +239,17 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         transform.position = worldTargetPosition;
         dynamicObstacle.UpdateCell(transform.position);
     }
+
+    private IEnumerator FlashRed()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if(sr != null)
+        {
+            Color originalColor = sr.color;
+            sr.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            sr.color = originalColor;
+        }
+    }
+
 }

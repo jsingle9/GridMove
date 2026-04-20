@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class AttackAbility : Ability
 {
     public AttackAbility()
@@ -63,11 +64,12 @@ public class AttackAbility : Ability
 
             Debug.Log($"Hit for {damage} damage");
             target.TakeDamage(damage);
-            
+
         }
         else
         {
             Debug.Log("Miss");
         }
     }
+
 }

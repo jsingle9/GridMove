@@ -69,12 +69,16 @@ public class RangedAttackAbility : Ability
             int damage = DiceRoller.Roll(damageDice) + damageModifier;
             if(crit) damage *= 2;
 
-            target.TakeDamage(damage);
             Debug.Log($"{user} shoots {target} for {damage} damage");
+            target.TakeDamage(damage);
+
+
         }
         else
         {
             Debug.Log($"{user} missed ranged attack");
         }
     }
+
+
 }
