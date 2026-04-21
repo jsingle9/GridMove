@@ -30,6 +30,7 @@ public class CombatManager : MonoBehaviour{
       if(current.IsPlayerControlled()){
           SetCombatState(CombatState.PlayerTurn);
           SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
+          AbilityUI.Instance.OnPlayerTurnStart();
       }
       else{
           SetCombatState(CombatState.EnemyTurn);
@@ -69,6 +70,8 @@ public class CombatManager : MonoBehaviour{
               current.EndTurn();
       }
 
+      AbilityUI.Instance.OnPlayerTurnEnd();
+
       int safety = 0;
 
       do
@@ -96,6 +99,15 @@ public class CombatManager : MonoBehaviour{
       Debug.Log(">>> NEW TURN: " + combatants[currentIndex]);
 
       combatants[currentIndex].StartTurn();
+
+      if(combatants[currentIndex].IsPlayerControlled()){
+          SetCombatState(CombatState.PlayerTurn);
+          SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
+          AbilityUI.Instance.OnPlayerTurnStart();
+      }
+      else{
+          SetCombatState(CombatState.EnemyTurn);
+      }
 
       turnAdvancing = false;
   }
