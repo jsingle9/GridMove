@@ -10,6 +10,7 @@ public class AbilityUI : MonoBehaviour
     public Ability selectedAbility;
     public BoxMover player;   // drag player object here in inspector
     private AOEVisualizer aoeVisualizer;
+    private CombatActionUIDisplay actionUIDisplay;
 
     void Awake(){
 
@@ -20,17 +21,22 @@ public class AbilityUI : MonoBehaviour
       Debug.Log("AbilityUI Awake() fired");
 
       aoeVisualizer = GetComponent<AOEVisualizer>();
-      if (aoeVisualizer == null){
+      if(aoeVisualizer == null){
           GameObject aoeObj = new GameObject("AOEVisualizer");
           aoeObj.transform.parent = transform;
           aoeVisualizer = aoeObj.AddComponent<AOEVisualizer>();
+      }
+
+      actionUIDisplay = GetComponent<CombatActionUIDisplay>();
+      if(actionUIDisplay == null)
+      {
+          actionUIDisplay = gameObject.AddComponent<CombatActionUIDisplay>();
       }
     }
 
     void Update(){
 
-
-      // NEW: Add cancel ability input during targeting phase
+      // cancel ability input during targeting phase
       if(CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
              Keyboard.current.escapeKey.wasPressedThisFrame)
       {
@@ -46,34 +52,30 @@ public class AbilityUI : MonoBehaviour
       if(Keyboard.current.digit1Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(0);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          //player.ShowTargetingHighlights(selectedAbility);
           grid.HighlightEnemyTiles();
       }
 
       if(Keyboard.current.digit2Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          //player.ShowTargetingHighlights(selectedAbility);
           grid.HighlightEnemyTiles();
       }
+
       if(Keyboard.current.digit3Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(2);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-        //  player.ShowTargetingHighlights(selectedAbility);
-
+          grid.HighlightEnemyTiles();
       }
+
       if(Keyboard.current.digit4Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(3);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
           Debug.Log($"Selected: {selectedAbility.AbilityName}");
-
       }
     }
 
     public void SelectAbility(int slot){
 
-        // the following line is commented out because the context of player changed
-        //var player = CombatManager.Instance.CurrentPlayer;
         selectedAbility = player.GetAbility(slot);
 
         if (selectedAbility == null){
@@ -87,8 +89,6 @@ public class AbilityUI : MonoBehaviour
             Vector3Int playerGridPos = grid.WorldToGrid(player.GetWorldPosition());
             aoeVisualizer.DrawAOE(playerGridPos, selectedAbility.radius);
         }
-
-
 
         Debug.Log($"Selected ability: {selectedAbility.AbilityName}");
     }
@@ -104,7 +104,6 @@ public class AbilityUI : MonoBehaviour
             return;
 
         Ability ability = selectedAbility;
-        //var player = CombatManager.Instance.CurrentPlayer;
         if(ability == null){
                 ability = player.GetAbility(0); // default attack
         }
@@ -117,5 +116,16 @@ public class AbilityUI : MonoBehaviour
 
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
         selectedAbility = null;
+    }
+
+    public void OnPlayerTurnStart()
+    {
+        actionUIDisplay.UpdateActionDisplay(player);
+        actionUIDisplay.ShowActionUI();
+    }
+
+    public void OnPlayerTurnEnd()
+    {
+        actionUIDisplay.HideActionUI();
     }
 }
