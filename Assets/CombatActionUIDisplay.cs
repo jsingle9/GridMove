@@ -13,10 +13,12 @@ public class CombatActionUIDisplay : MonoBehaviour
     void OnEnable()
     {
         Debug.Log($"CombatActionUIDisplay OnEnable - canvasGroup: {canvasGroup}, actionListContainer: {actionListContainer}, actionButtonPrefab: {actionButtonPrefab}");
+        Debug.Log($"OnEnable - Instance {GetInstanceID()}, canvasGroup: {canvasGroup}, actionListContainer: {actionListContainer}, actionButtonPrefab: {actionButtonPrefab}");
     }
 
     void Start()
     {
+        Debug.Log($"Start() called on instance {GetInstanceID()}");
         Debug.Log($"Start() - canvasGroup is {(canvasGroup == null ? "NULL" : "ASSIGNED")}");
         Debug.Log($"Start() - actionListContainer is {(actionListContainer == null ? "NULL" : "ASSIGNED")}");
         Debug.Log($"Start() - actionButtonPrefab is {(actionButtonPrefab == null ? "NULL" : "ASSIGNED")}");
@@ -25,9 +27,7 @@ public class CombatActionUIDisplay : MonoBehaviour
         {
             Debug.LogError("Missing required component assignments!");
             Debug.LogError($"GameObject: {gameObject.name}");
-            Debug.LogError($"Parent: {gameObject.transform.parent?.name ?? "NONE"}");
-            Debug.LogError("STACKTRACE:");
-            Debug.LogError(System.Environment.StackTrace);
+            Debug.LogError($"Instance ID: {GetInstanceID()}");
             return;
         }
 

@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d84bdc92b222c44dd82a2b3a15382656, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridController
   tilePrefab: {fileID: 9137076484629054082, guid: d0e4e81752fb1403f945a56dc38cbc40, type: 3}
   width: 256
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d809526a7f63741a882deb70f0de2624, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HighlightObject
   highlight: {fileID: 112929014}
   grid: {fileID: 945022721}
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18902109b2ed9420f9434d923abb8f5c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionPromptUI
   promptText: {fileID: 1180722894}
   canvasGroup: {fileID: 183004400}
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524032fea15504316a58c4289be9067b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleTilemapScanner
   obstacleTilemap: {fileID: 1096799991}
   gridController: {fileID: 43542802}
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
@@ -586,7 +586,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073e5d58bfa2946c785bba0c1e7bd4f3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
 --- !u!4 &383229962
 Transform:
@@ -641,8 +641,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
@@ -751,7 +751,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eec019c3a9d3e4393ab77bf65f623975, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EdgeScrollCamera
   target: {fileID: 1397349964}
   scrollSpeed: 5
@@ -910,8 +910,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_ComponentVersion: 2
   m_LightType: 4
   m_BlendStyleIndex: 0
@@ -1018,7 +1018,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
@@ -1099,7 +1099,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text:
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1236,7 +1236,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1246,7 +1246,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text:
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -1509,7 +1509,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e5eb2ee5772e44769ac6327bcae8fca, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryInputHandler
 --- !u!4 &1085232745
 Transform:
@@ -1920,7 +1920,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524032fea15504316a58c4289be9067b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleTilemapScanner
   obstacleTilemap: {fileID: 1096799991}
   gridController: {fileID: 43542802}
@@ -1952,7 +1952,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
   m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
@@ -1983,7 +1983,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
@@ -2013,11 +2013,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2537720249687837021, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: gridController
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 5038605169049368735, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: grid
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 7936433725972694691, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: m_LocalScale.x
@@ -2109,7 +2109,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2266,7 +2266,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 0.28235295}
@@ -2321,7 +2321,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e054c5547b27841ee92322e2c2a063fe, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionInputHandler
 --- !u!4 &1334727574
 Transform:
@@ -2444,7 +2444,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a37fcced13de461f87baf5b3c8d7ab7, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoxMover
   grid: {fileID: 43542802}
   mover: {fileID: 1397349966}
@@ -2465,7 +2465,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c745511de00d74db9b8580bc23fd8908, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitMover
   moveSpeed: 5
 --- !u!50 &1397349967
@@ -2568,7 +2568,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2706780b893f64dbe81b4ff6f9abbfa1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
   currentCombatState: 0
   currentPlayerPhase: 0
@@ -2623,7 +2623,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1e05b99706894991a9d1debfc23423d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryUIManager
   statsDisplay: {fileID: 836636929}
 --- !u!224 &1433724847
@@ -2672,7 +2672,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80fa04893d6e24961b6a6da3001c4ecd, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionSystem
   defaultInteractionRange: 1.5
 --- !u!4 &1472025014
@@ -2717,7 +2717,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f7c4f7d0061046b4a425c12e637033e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseInputHandler
   boxMover: {fileID: 1397349965}
 --- !u!4 &1483497350
@@ -2762,7 +2762,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a25d7594cffc34c1fba4d8371516f5cb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameStateManager
 --- !u!4 &1549086998
 Transform:
@@ -2821,7 +2821,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ddee5452f20949c1938719f76cc4f41, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopupManager
   damagePopupPrefab: {fileID: 634088361287481738, guid: 5782b83c87c8648f1a0505182019223c, type: 3}
 --- !u!1 &1717564676
@@ -2866,7 +2866,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c12339812ddd46299c8fb1113107eef, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryMenuUI
   menuPanel: {fileID: 342112675}
   menuDisplay: {fileID: 2003602425}
@@ -2899,7 +2899,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
@@ -2916,7 +2916,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
@@ -2973,6 +2973,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1817286352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1817286354}
+  - component: {fileID: 1817286353}
+  - component: {fileID: 1817286355}
+  m_Layer: 0
+  m_Name: AbilityUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!114 &1817286353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2983,7 +3001,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25423fadf21e947f99a27d3f8948070e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityUI
   CurrentPhase: 0
   player: {fileID: 1397349965}
@@ -3002,6 +3020,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1817286355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817286352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737863d2ed7234788a3b05d2a5b852c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatActionUIDisplay
+  actionListContainer: {fileID: 0}
+  actionButtonPrefab: {fileID: 0}
+  canvasGroup: {fileID: 0}
 --- !u!1 &2003602423
 GameObject:
   m_ObjectHideFlags: 0
@@ -3049,7 +3082,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3259,7 +3292,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 737863d2ed7234788a3b05d2a5b852c4, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatActionUIDisplay
   actionListContainer: {fileID: 1260874105}
   actionButtonPrefab: {fileID: 849129293}
@@ -3274,7 +3307,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25423fadf21e947f99a27d3f8948070e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityUI
   CurrentPhase: 0
   player: {fileID: 1397349965}
@@ -3340,7 +3373,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage:
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -3433,11 +3466,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6128995983368999011, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
       propertyPath: gridController
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 8063584508670854984, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
       propertyPath: grid
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 8456844153550462472, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3494,11 +3527,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2537720249687837021, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: gridController
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 5038605169049368735, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: grid
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 7936433725972694691, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: m_LocalScale.x
@@ -3554,7 +3587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8472080043195085478, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: grid
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 8886151682678185778, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: m_Name
@@ -3576,7 +3609,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 39634792367701780, guid: e14d16b48b98b472bbec3b5b6dc91680, type: 3}
       propertyPath: gridController
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 7827827025197988142, guid: e14d16b48b98b472bbec3b5b6dc91680, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3689,11 +3722,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6278109865758811843, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
       propertyPath: gridController
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 7359055699410177784, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
       propertyPath: grid
-      value:
+      value: 
       objectReference: {fileID: 43542802}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
