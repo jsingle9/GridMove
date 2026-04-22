@@ -4,16 +4,35 @@ using System.Collections.Generic;
 
 public class CombatActionUIDisplay : MonoBehaviour
 {
-    [SerializeField] private Transform actionListContainer; // Parent for action buttons
-    [SerializeField] private GameObject actionButtonPrefab; // UI prefab for each action
-    [SerializeField] private CanvasGroup canvasGroup; // For fading in/out
+    [SerializeField] private Transform actionListContainer;
+    [SerializeField] private GameObject actionButtonPrefab;
+    [SerializeField] private CanvasGroup canvasGroup;
 
     private List<TextMeshProUGUI> actionTexts = new List<TextMeshProUGUI>();
 
+    void OnEnable()
+    {
+        Debug.Log($"CombatActionUIDisplay OnEnable - canvasGroup: {canvasGroup}, actionListContainer: {actionListContainer}, actionButtonPrefab: {actionButtonPrefab}");
+    }
+
     void Start()
     {
-        // Create UI elements for each action slot (1-4)
+        Debug.Log($"Start() - canvasGroup is {(canvasGroup == null ? "NULL" : "ASSIGNED")}");
+        Debug.Log($"Start() - actionListContainer is {(actionListContainer == null ? "NULL" : "ASSIGNED")}");
+        Debug.Log($"Start() - actionButtonPrefab is {(actionButtonPrefab == null ? "NULL" : "ASSIGNED")}");
+
+        if (canvasGroup == null || actionListContainer == null || actionButtonPrefab == null)
+        {
+            Debug.LogError("Missing required component assignments!");
+            Debug.LogError($"GameObject: {gameObject.name}");
+            Debug.LogError($"Parent: {gameObject.transform.parent?.name ?? "NONE"}");
+            Debug.LogError("STACKTRACE:");
+            Debug.LogError(System.Environment.StackTrace);
+            return;
+        }
+
         InitializeActionButtons();
+        HideActionUI();
     }
 
     void InitializeActionButtons()
@@ -58,20 +77,26 @@ public class CombatActionUIDisplay : MonoBehaviour
 
     private string GetKeyDisplay(int slotIndex)
     {
-        return (slotIndex + 1).ToString(); // Returns "1", "2", "3", "4"
+        return (slotIndex + 1).ToString();
     }
 
     public void ShowActionUI()
     {
-        canvasGroup.alpha = 1f;
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+        }
     }
 
     public void HideActionUI()
     {
-        canvasGroup.alpha = 0f;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
     }
 }

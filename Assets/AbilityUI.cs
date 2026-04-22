@@ -30,7 +30,8 @@ public class AbilityUI : MonoBehaviour
       actionUIDisplay = GetComponent<CombatActionUIDisplay>();
       if(actionUIDisplay == null)
       {
-          actionUIDisplay = gameObject.AddComponent<CombatActionUIDisplay>();
+        Debug.LogError("CombatActionUIDisplay not found on AbilityUI! Make sure it's added as a component.");
+        return;          
       }
     }
 
