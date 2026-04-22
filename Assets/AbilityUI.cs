@@ -31,7 +31,7 @@ public class AbilityUI : MonoBehaviour
       if(actionUIDisplay == null)
       {
         Debug.LogError("CombatActionUIDisplay not found on AbilityUI! Make sure it's added as a component.");
-        return;          
+        return;
       }
     }
 
