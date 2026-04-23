@@ -2973,35 +2973,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1817286353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817286352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25423fadf21e947f99a27d3f8948070e, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::AbilityUI
-  CurrentPhase: 0
-  player: {fileID: 1397349965}
---- !u!4 &1817286354
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817286352}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.34855, y: 0.41006, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2003602423
 GameObject:
   m_ObjectHideFlags: 0
@@ -3718,7 +3689,6 @@ SceneRoots:
   - {fileID: 1483497350}
   - {fileID: 1549086998}
   - {fileID: 1425784982}
-  - {fileID: 1817286354}
   - {fileID: 2115269618}
   - {fileID: 5871786756570678143}
   - {fileID: 269408493263621180}
