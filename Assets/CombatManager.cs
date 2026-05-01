@@ -30,12 +30,18 @@ public class CombatManager : MonoBehaviour{
       if(current.IsPlayerControlled()){
           SetCombatState(CombatState.PlayerTurn);
           SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
+          if(CombatUIManager.Instance != null)
+              CombatUIManager.Instance.OnPlayerTurnStart();
       }
       else{
           SetCombatState(CombatState.EnemyTurn);
+          if(CombatUIManager.Instance != null)
+              CombatUIManager.Instance.OnEnemyTurnStart();          
       }
 
       current.StartTurn();
+      if(CombatUIManager.Instance != null)
+          CombatUIManager.Instance.OnCombatStart();
   }
 
   void RollInitiative(){

@@ -49,7 +49,6 @@ public class InteractionPromptUI : MonoBehaviour
     {
         float elapsed = 0f;
         float startAlpha = canvasGroup.alpha;
-
         while(elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
