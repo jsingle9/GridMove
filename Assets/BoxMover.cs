@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class BoxMover : MonoBehaviour, ICombatant
 {
@@ -137,7 +138,8 @@ public class BoxMover : MonoBehaviour, ICombatant
     public void HandleLeftClick()
     {
         Debug.Log("HandleLeftClick - State: " + GameStateManager.Instance.CurrentState);
-
+        if(EventSystem.current.IsPointerOverGameObject())
+            return;
         // EXPLORE MODE
         if(GameStateManager.Instance.CurrentState == GameState.FreeExplore)
         {
