@@ -13,7 +13,7 @@ public class InteractionInputHandler : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("InteractionInputHandler.Update() running");
+        //Debug.Log("InteractionInputHandler.Update() running");
 
         if(Keyboard.current.anyKey.isPressed)
         {

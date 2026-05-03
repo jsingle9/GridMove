@@ -36,7 +36,7 @@ public class CombatManager : MonoBehaviour{
       else{
           SetCombatState(CombatState.EnemyTurn);
           if(CombatUIManager.Instance != null)
-              CombatUIManager.Instance.OnEnemyTurnStart();          
+              CombatUIManager.Instance.OnEnemyTurnStart();
       }
 
       current.StartTurn();
@@ -166,7 +166,7 @@ public class CombatManager : MonoBehaviour{
   public void SetCombatState(CombatState newState)
   {
       currentCombatState = newState;
-      Debug.Log("Combat State → " + newState);
+      //Debug.Log("Combat State → " + newState);
   }
 
   public void SetPlayerPhase(PlayerTurnPhase newPhase)

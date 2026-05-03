@@ -105,7 +105,7 @@ public class GridController : MonoBehaviour
 
     public void SetWalkable(Vector3Int cell, bool walkable){
 
-      Debug.Log($"SetWalkable called: cell={cell}, walkable={walkable}");
+      //Debug.Log($"SetWalkable called: cell={cell}, walkable={walkable}");
       //if(!InBounds(cell)) return;
 
       if(!InBounds(cell))
