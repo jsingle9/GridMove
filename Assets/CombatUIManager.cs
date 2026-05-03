@@ -49,6 +49,7 @@ public class CombatUIManager : MonoBehaviour
             return;
 
         UpdateResourceDisplay();
+        UpdateAbilityButtons();        
     }
 
     public void OnCombatStart()

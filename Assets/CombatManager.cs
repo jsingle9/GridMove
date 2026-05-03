@@ -22,6 +22,8 @@ public class CombatManager : MonoBehaviour{
       GameStateManager.Instance.EnterCombat();
 
       RollInitiative();
+      if(CombatUIManager.Instance != null)
+          CombatUIManager.Instance.OnCombatStart();      
 
       currentIndex = 0;
 
@@ -40,8 +42,7 @@ public class CombatManager : MonoBehaviour{
       }
 
       current.StartTurn();
-      if(CombatUIManager.Instance != null)
-          CombatUIManager.Instance.OnCombatStart();
+
   }
 
   void RollInitiative(){
