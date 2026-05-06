@@ -12,6 +12,21 @@ public class AbilityButtonUI : MonoBehaviour
     private Ability currentAbility;
     private BoxMover player;
 
+    void Awake()
+    {
+        // Determine which button this is (0-3)
+        Transform parent = transform.parent;
+        for(int i = 0; i < parent.childCount; i++)
+        {
+            if(parent.GetChild(i) == transform)
+            {
+                abilitySlot = i;
+                break;
+            }
+        }
+    }
+
+
     void Start()
     {
         player = FindFirstObjectByType<BoxMover>();
@@ -50,12 +65,15 @@ public class AbilityButtonUI : MonoBehaviour
         }
     }
 
-    void OnButtonClicked()
+    public void OnButtonClicked()
     {
         if (currentAbility == null)
             return;
 
-        AbilityUI.Instance.SelectAbility(abilitySlot);
-        CombatUIManager.Instance.OnAbilitySelected(abilitySlot);
+            AbilityUI.Instance.SelectAbility(abilitySlot);
+            AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+            GridController grid = FindFirstObjectByType<GridController>();
+            if(grid != null)
+              grid.HighlightEnemyTiles();
     }
 }

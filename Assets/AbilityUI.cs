@@ -74,6 +74,7 @@ public class AbilityUI : MonoBehaviour
 
         // the following line is commented out because the context of player changed
         //var player = CombatManager.Instance.CurrentPlayer;
+        Debug.Log("SelectAbilityFired");
         selectedAbility = player.GetAbility(slot);
 
         if (selectedAbility == null){

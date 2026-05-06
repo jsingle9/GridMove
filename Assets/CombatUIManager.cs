@@ -49,7 +49,7 @@ public class CombatUIManager : MonoBehaviour
             return;
 
         UpdateResourceDisplay();
-        UpdateAbilityButtons();        
+        UpdateAbilityButtons();
     }
 
     public void OnCombatStart()
@@ -70,7 +70,7 @@ public class CombatUIManager : MonoBehaviour
         }
 
         RefreshCombatUI();
-        AddLog("Your turn started!");
+        //AddLog("Your turn started!");
     }
 
     public void OnEnemyTurnStart()
@@ -81,7 +81,7 @@ public class CombatUIManager : MonoBehaviour
             turnIndicatorText.color = Color.red;
         }
 
-        AddLog("Enemy's turn...");
+        //AddLog("Enemy's turn...");
     }
 
     public void OnCombatEnd()
