@@ -29,45 +29,48 @@ public class AbilityButtonUI : MonoBehaviour
 
     void Start()
     {
-        player = FindFirstObjectByType<BoxMover>();
+        player = AbilityUI.Instance != null ? AbilityUI.Instance.player : null;
 
-        if (button != null)
+        if(button != null)
             button.onClick.AddListener(OnButtonClicked);
     }
 
     public void SetAbility(Ability ability, int slot)
     {
+        player = AbilityUI.Instance != null ? AbilityUI.Instance.player : null;
+
         currentAbility = ability;
         abilitySlot = slot;
 
         if (ability != null)
         {
-            if (abilityNameText != null)
+            if(abilityNameText != null)
                 abilityNameText.text = $"[{slot + 1}] {ability.AbilityName}";
 
-            if (costText != null)
+            if(costText != null)
                 costText.text = ability.CostType.ToString();
 
-            // Grey out if can't use
-            if (button != null)
-                button.interactable = ability.CanUse(player);
+            if(button != null)
+                button.interactable = player != null && ability.CanUse(player);
         }
         else
         {
-            if (abilityNameText != null)
+            if(abilityNameText != null)
                 abilityNameText.text = $"[{slot + 1}] Empty";
 
-            if (costText != null)
+            if(costText != null)
                 costText.text = "";
 
-            if (button != null)
+            if(button != null)
                 button.interactable = false;
         }
     }
 
     public void OnButtonClicked()
     {
-        if (currentAbility == null)
+        Debug.Log($"Button clicked. slot={abilitySlot}, ability={(currentAbility != null ? currentAbility.AbilityName : "null")}");
+
+        if(currentAbility == null)
             return;
 
             AbilityUI.Instance.SelectAbility(abilitySlot);

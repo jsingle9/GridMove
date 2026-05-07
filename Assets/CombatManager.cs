@@ -22,8 +22,9 @@ public class CombatManager : MonoBehaviour{
       GameStateManager.Instance.EnterCombat();
 
       RollInitiative();
+
       if(CombatUIManager.Instance != null)
-          CombatUIManager.Instance.OnCombatStart();      
+          CombatUIManager.Instance.OnCombatStart();
 
       currentIndex = 0;
 
@@ -32,17 +33,21 @@ public class CombatManager : MonoBehaviour{
       if(current.IsPlayerControlled()){
           SetCombatState(CombatState.PlayerTurn);
           SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
-          if(CombatUIManager.Instance != null)
-              CombatUIManager.Instance.OnPlayerTurnStart();
       }
       else{
           SetCombatState(CombatState.EnemyTurn);
-          if(CombatUIManager.Instance != null)
-              CombatUIManager.Instance.OnEnemyTurnStart();
       }
 
       current.StartTurn();
 
+      if(current.IsPlayerControlled()){
+          if(CombatUIManager.Instance != null)
+              CombatUIManager.Instance.OnPlayerTurnStart();
+      }
+      else{
+          if(CombatUIManager.Instance != null)
+              CombatUIManager.Instance.OnEnemyTurnStart();
+      }
   }
 
   void RollInitiative(){
@@ -68,12 +73,17 @@ public class CombatManager : MonoBehaviour{
           return;
       }
 
-      // End current combatant turn safely
       if(currentIndex >= 0 && currentIndex < combatants.Count)
       {
           var current = combatants[currentIndex];
           if(current != null && !current.IsDead())
               current.EndTurn();
+      }
+
+      CheckCombatEnd();
+      if(combatants == null || combatants.Count == 0){
+          turnAdvancing = false;
+          return;
       }
 
       int safety = 0;
@@ -100,9 +110,28 @@ public class CombatManager : MonoBehaviour{
           !((MonoBehaviour)combatants[currentIndex]).gameObject.activeInHierarchy
       );
 
-      Debug.Log(">>> NEW TURN: " + combatants[currentIndex]);
+      ICombatant next = combatants[currentIndex];
 
-      combatants[currentIndex].StartTurn();
+      if(next.IsPlayerControlled()){
+          SetCombatState(CombatState.PlayerTurn);
+          SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
+      }
+      else{
+          SetCombatState(CombatState.EnemyTurn);
+      }
+
+      Debug.Log(">>> NEW TURN: " + next);
+
+      next.StartTurn();
+
+      if(next.IsPlayerControlled()){
+          if(CombatUIManager.Instance != null)
+              CombatUIManager.Instance.OnPlayerTurnStart();
+      }
+      else{
+          if(CombatUIManager.Instance != null)
+              CombatUIManager.Instance.OnEnemyTurnStart();
+      }
 
       turnAdvancing = false;
   }
@@ -151,12 +180,17 @@ public class CombatManager : MonoBehaviour{
   }
 
   void EndCombat(){
-    Debug.Log("Combat ended");
+      Debug.Log("Combat ended");
 
-    combatants.Clear();
-    currentIndex = 0;
+      turnAdvancing = false;
+      currentIndex = 0;
 
-    GameStateManager.Instance.ExitCombat();
+      if(CombatUIManager.Instance != null)
+          CombatUIManager.Instance.OnCombatEnd();
+
+      combatants.Clear();
+
+      GameStateManager.Instance.ExitCombat();
   }
 
   public void ExitCombat()
@@ -178,7 +212,9 @@ public class CombatManager : MonoBehaviour{
 
   public bool IsPlayerActive()
   {
-      return currentCombatState == CombatState.PlayerTurn;
+      return GameStateManager.Instance != null &&
+             GameStateManager.Instance.CurrentState == GameState.Combat &&
+             currentCombatState == CombatState.PlayerTurn;
   }
 
   public List<ICombatant> GetCombatants()
