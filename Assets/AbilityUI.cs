@@ -86,7 +86,7 @@ public class AbilityUI : MonoBehaviour
         {
             // Show AOE preview at player position
             Vector3Int playerGridPos = grid.WorldToGrid(player.GetWorldPosition());
-            aoeVisualizer.DrawAOE(playerGridPos, selectedAbility.radius);
+            //aoeVisualizer.DrawAOE(playerGridPos, selectedAbility.radius);
         }
 
 

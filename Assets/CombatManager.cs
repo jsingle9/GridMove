@@ -161,22 +161,24 @@ public class CombatManager : MonoBehaviour{
   }
 
   void CheckCombatEnd(){
-    bool anyPlayersAlive = false;
-    bool anyEnemiesAlive = false;
+      bool anyPlayersAlive = false;
+      bool anyEnemiesAlive = false;
 
-    foreach(var c in combatants)
-    {
-        if(c == null) continue;
+      foreach(var c in combatants)
+      {
+          if(c == null || c.IsDead())
+              continue;
 
-        if(c is BoxMover && !c.IsDead())
-            anyPlayersAlive = true;
+          if(c.IsPlayerControlled())
+              anyPlayersAlive = true;
+          else
+              anyEnemiesAlive = true;
+      }
 
-        if(c is Enemy && !c.IsDead())
-            anyEnemiesAlive = true;
-    }
+      Debug.Log($"CheckCombatEnd -> playersAlive={anyPlayersAlive}, enemiesAlive={anyEnemiesAlive}, combatantCount={combatants.Count}");
 
-    if(!anyPlayersAlive || !anyEnemiesAlive)
-        EndCombat();
+      if(!anyPlayersAlive || !anyEnemiesAlive)
+          EndCombat();
   }
 
   void EndCombat(){

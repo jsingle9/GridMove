@@ -73,10 +73,18 @@ public class AbilityButtonUI : MonoBehaviour
         if(currentAbility == null)
             return;
 
-            AbilityUI.Instance.SelectAbility(abilitySlot);
-            AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-            GridController grid = FindFirstObjectByType<GridController>();
-            if(grid != null)
-              grid.HighlightEnemyTiles();
+        AbilityUI.Instance.SelectAbility(abilitySlot);
+        AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+
+        GridController grid = FindFirstObjectByType<GridController>();
+        if(grid == null)
+            return;
+
+        grid.ClearAllHighlights();
+
+        if(currentAbility.targetingMode != TargetingMode.Area)
+        {
+            grid.HighlightEnemyTiles();
+        }
     }
 }
