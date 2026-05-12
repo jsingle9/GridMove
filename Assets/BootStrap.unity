@@ -263,6 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 312486674}
+  - component: {fileID: 312486675}
   m_Layer: 0
   m_Name: GameStateManager
   m_TagString: Untagged
@@ -285,6 +286,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 659268767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &312486675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312486673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a25d7594cffc34c1fba4d8371516f5cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameStateManager
 --- !u!1 &350142487
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 350142488}
   m_Layer: 0
-  m_Name: BootstrapController
+  m_Name: Bootstraper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -439,6 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 529302008}
+  - component: {fileID: 529302009}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -461,6 +475,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 659268767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &529302009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529302007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2706780b893f64dbe81b4ff6f9abbfa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  currentCombatState: 0
+  currentPlayerPhase: 0
 --- !u!1 &596907658
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +581,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 841786771}
+  - component: {fileID: 841786772}
   m_Layer: 0
   m_Name: InteractionSystem
   m_TagString: Untagged
@@ -575,6 +604,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 659268767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &841786772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841786770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80fa04893d6e24961b6a6da3001c4ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionSystem
+  defaultInteractionRange: 1.5
 --- !u!1 &1284332333
 GameObject:
   m_ObjectHideFlags: 0
