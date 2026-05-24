@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/BootStrap.unity
     guid: 245b31d6cee98435ba79aaa35abe0fc8
+  - enabled: 1
+    path: Assets/MainMenu.unity
+    guid: 07e75773ab6bd434b90f1669a5e0cf29
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
