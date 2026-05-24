@@ -156,7 +156,10 @@ public class CombatManager : MonoBehaviour{
           if(deadIndex <= currentIndex && currentIndex > 0)
               currentIndex--;
       }
-
+      else{
+        Debug.LogWarning("Dead combatant not found in combatants list!");
+      }
+      Debug.Log($"Combatants after removal: {combatants.Count}");
       CheckCombatEnd();
   }
 
