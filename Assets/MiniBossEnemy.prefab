@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiniBossEnemy
   grid: {fileID: 0}
   maxHP: 25
-  armorClass: 15
+  armorClass: 14
   attackBonus: 4
   damageDice: 1d8
   damageModifier: 4
