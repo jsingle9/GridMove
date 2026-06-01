@@ -8,6 +8,7 @@ using System.Linq;
 public abstract class Enemy : MonoBehaviour, ICombatant
 {
     protected DynamicObstacle dynamicObstacle;
+    [SerializeField] protected EnemyDefinition enemyDefinition;
     [SerializeField] protected GridController grid;
     [SerializeField] protected int maxHP = 10;
     protected int currentHP;
@@ -41,6 +42,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant
 
     protected virtual void Awake()
     {
+        LoadFromDefinition();
         currentHP = maxHP;
 
         dynamicObstacle = GetComponent<DynamicObstacle>();
@@ -250,6 +252,19 @@ public abstract class Enemy : MonoBehaviour, ICombatant
             yield return new WaitForSeconds(0.1f);
             sr.color = originalColor;
         }
+    }
+
+    protected virtual void LoadFromDefinition()
+    {
+        if(enemyDefinition == null)
+            return;
+
+        maxHP = enemyDefinition.MaxHP;
+        armorClass = enemyDefinition.ArmorClass;
+        attackBonus = enemyDefinition.AttackBonus;
+        damageDice = enemyDefinition.DamageDice;
+        damageModifier = enemyDefinition.DamageModifier;
+        speed = enemyDefinition.Speed;
     }
 
 }
