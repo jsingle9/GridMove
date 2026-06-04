@@ -13,7 +13,7 @@ public class MiniBossEnemy : Enemy
         equippedWeapon = new Weapon("Legendary Blade", 4, "1d10", WeaponType.Melee);
         armorClass = 14;
         attackBonus = 5;
-        damageDice = "1d8";
+        damageDice = "1d10";
         damageModifier = 3;
         speed = 6;
 
@@ -98,7 +98,7 @@ public class MiniBossEnemy : Enemy
     }
 
     protected override void Die(){
-      
+
         Debug.Log($"{name} died");
 
         Vector3Int deathCell = grid.WorldToGrid(transform.position);
