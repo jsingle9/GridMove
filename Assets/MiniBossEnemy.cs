@@ -13,7 +13,7 @@ public class MiniBossEnemy : Enemy
         equippedWeapon = new Weapon("Legendary Blade", 4, "1d10", WeaponType.Melee);
         armorClass = 14;
         attackBonus = 5;
-        damageDice = "1d8";
+        damageDice = "1d10";
         damageModifier = 3;
         speed = 6;
 
@@ -97,18 +97,20 @@ public class MiniBossEnemy : Enemy
         EndMyTurn();
     }
 
-    protected override void Die()
-    {
+    protected override void Die(){
+
         Debug.Log($"{name} died");
+
         Vector3Int deathCell = grid.WorldToGrid(transform.position);
         grid.UnregisterOccupant(deathCell);
 
-        // Mini boss drops 2H sword
-        GameObject weaponDropObj = new GameObject("Loot_TwoHandedSword");
+        // Mini boss drops the fire greatsword for the Ice Drake fight
+        GameObject weaponDropObj = new GameObject("Loot_FireGreatsword");
         weaponDropObj.transform.position = transform.position;
+
         LootDrop weaponLoot = weaponDropObj.AddComponent<LootDrop>();
-        Weapon twoHandedSword = new Weapon("Two Handed Sword", 3, "1d12");
-        weaponLoot.SetWeapon(twoHandedSword);
+        Weapon fireGreatsword = new Weapon("Fire Greatsword", 3, "3d6");
+        weaponLoot.SetWeapon(fireGreatsword);
 
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
