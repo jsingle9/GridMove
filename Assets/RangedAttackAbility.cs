@@ -7,6 +7,7 @@ public class RangedAttackAbility : Ability
         AbilityName = "Bow Shot";
         CostType = AbilityCostType.Action;
         Range = 6f;
+        targetingMode = TargetingMode.Enemy;
     }
 
     public override AbilityResult TryUse(ICombatant user, TargetData targetData)
@@ -22,18 +23,31 @@ public class RangedAttackAbility : Ability
         }
 
         ICombatant target = targetData.primaryTarget;
+
         float distance = Vector3.Distance(
             user.GetWorldPosition(),
             target.GetWorldPosition()
         );
 
-        // Check range
         if(distance > Range)
         {
             return AbilityResult.CreateFailure("Target out of range");
         }
 
-        // In range → execute
+        GridController grid = Object.FindFirstObjectByType<GridController>();
+        if(grid == null)
+        {
+            return AbilityResult.CreateFailure("No GridController found");
+        }
+
+        Vector3Int fromCell = grid.WorldToGrid(user.GetWorldPosition());
+        Vector3Int toCell = grid.WorldToGrid(target.GetWorldPosition());
+
+        if(!grid.HasLineOfSight(fromCell, toCell))
+        {
+            return AbilityResult.CreateFailure("No line of sight");
+        }
+
         SpendCost(user);
         Execute(user, target);
         return AbilityResult.CreateSuccess();
@@ -41,7 +55,8 @@ public class RangedAttackAbility : Ability
 
     protected override void Execute(ICombatant user, ICombatant target)
     {
-        if(target == null) return;
+        if(target == null)
+            return;
 
         int roll = DiceRoller.RollD20();
         int total = roll + user.AttackBonus;
@@ -50,16 +65,14 @@ public class RangedAttackAbility : Ability
 
         if(total >= target.ArmorClass || crit)
         {
-            // Use ranged weapon damage if equipped, otherwise use user's base damage
             string damageDice = user.DamageDice;
             int damageModifier = user.DamageModifier;
 
-            // Check if user has a ranged weapon equipped
             BoxMover boxMover = user as BoxMover;
-            if (boxMover != null)
+            if(boxMover != null)
             {
                 Weapon rangedWeapon = Inventory.Instance.GetEquippedRangedWeapon();
-                if (rangedWeapon != null)
+                if(rangedWeapon != null)
                 {
                     damageDice = rangedWeapon.DamageDice;
                     damageModifier = rangedWeapon.DamageBonus;
@@ -67,18 +80,15 @@ public class RangedAttackAbility : Ability
             }
 
             int damage = DiceRoller.Roll(damageDice) + damageModifier;
-            if(crit) damage *= 2;
+            if(crit)
+                damage *= 2;
 
             Debug.Log($"{user} shoots {target} for {damage} damage");
             target.TakeDamage(damage);
-
-
         }
         else
         {
             Debug.Log($"{user} missed ranged attack");
         }
     }
-
-
 }
