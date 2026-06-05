@@ -19,7 +19,12 @@ public class UnitMover : MonoBehaviour
         this.grid = grid;
         targetPosition = transform.position;
         currentCell = grid.WorldToGrid(transform.position);
-        grid.RegisterOccupant(currentCell, GetComponent<ICombatant>());
+
+        ICombatant combatant = GetComponent<ICombatant>();
+        if(combatant != null)
+        {
+            grid.RegisterCombatant(combatant);
+        }
     }
 
     public void StartPath(List<GridNode> path){
@@ -53,10 +58,19 @@ public class UnitMover : MonoBehaviour
             //Debug.Log("CurrentCell before update: " + currentCell);
             Debug.Log("--------------------");
 
-            if(newCell != currentCell){
-              grid.UnregisterOccupant(currentCell);
-              grid.RegisterOccupant(newCell, GetComponent<ICombatant>());
-              currentCell = newCell;
+            if(newCell != currentCell)
+            {
+                ICombatant combatant = GetComponent<ICombatant>();
+                if(combatant != null)
+                {
+                    grid.UnregisterCombatant(combatant);
+                    currentCell = newCell;
+                    grid.RegisterCombatant(combatant);
+                }
+                else
+                {
+                    currentCell = newCell;
+                }
             }
             pathIndex++;
 
@@ -78,9 +92,15 @@ public class UnitMover : MonoBehaviour
       Vector3Int newCell = grid.WorldToGrid(transform.position);
 
       if(newCell != currentCell){
-        grid.UnregisterOccupant(currentCell);
-        grid.RegisterOccupant(newCell, GetComponent<ICombatant>());
-        currentCell = newCell;
+          ICombatant combatant = GetComponent<ICombatant>();
+          if(combatant != null){
+              grid.UnregisterCombatant(combatant);
+              currentCell = newCell;
+              grid.RegisterCombatant(combatant);
+          }
+          else{
+              currentCell = newCell;
+          }
       }
     }
 

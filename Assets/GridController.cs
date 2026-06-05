@@ -368,5 +368,32 @@ public class GridController : MonoBehaviour
         {
             occupiedTiles.Remove(cell);
         }
-    }    
+    }
+
+    public bool CanOccupyFootprint(Vector3Int origin, int width, int height, ICombatant ignore = null)
+    {
+        for(int x = 0; x < width; x++)
+        {
+            for(int y = 0; y < height; y++)
+            {
+                Vector3Int cell = origin + new Vector3Int(x, y, 0);
+
+                if(!IsInBounds(cell))
+                    return false;
+
+                int gx = cell.x - gridOrigin.x;
+                int gy = cell.y - gridOrigin.y;
+
+                if(!grid[gx, gy].walkable)
+                    return false;
+
+                ICombatant occ = GetOccupant(cell);
+                if(occ != null && occ != ignore)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
 }

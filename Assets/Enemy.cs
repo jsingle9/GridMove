@@ -74,23 +74,18 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         Debug.Log("✅ Enemy base initialized correctly");
     }
 
-    void Start()
-    {
+    void Start(){
         if(grid == null)
             grid = FindFirstObjectByType<GridController>();
-
-        Vector3Int startCell = grid.WorldToGrid(transform.position);
-        grid.RegisterOccupant(startCell, this);
+            grid.RegisterCombatant(this);
     }
 
-    void Update()
-    {
+    void Update(){
         mover.Tick();
         intentExecutor.CheckPendingAbilityExecution();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
+    void OnTriggerEnter2D(Collider2D other){
         Debug.Log("Trigger entered by: " + other.name);
         if(other.GetComponent<BoxMover>())
         {
@@ -204,8 +199,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     protected virtual void Die()
     {
         Debug.Log($"{name} died");
-        Vector3Int deathCell = grid.WorldToGrid(transform.position);
-        grid.UnregisterOccupant(deathCell);
+        grid.UnregisterCombatant(this);
 
         if(equippedWeapon != null)
         {
@@ -275,6 +269,6 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         {
             origin
         };
-    }    
+    }
 
 }
