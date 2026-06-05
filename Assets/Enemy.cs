@@ -267,4 +267,14 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         speed = enemyDefinition.Speed;
     }
 
+    public virtual List<Vector3Int> GetOccupiedCells()
+    {
+        Vector3Int origin = grid.WorldToGrid(transform.position);
+
+        return new List<Vector3Int>
+        {
+            origin
+        };
+    }    
+
 }

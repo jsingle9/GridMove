@@ -30,4 +30,6 @@ public interface ICombatant
     int CalculateMoveCost(List<GridNode> path);
     Vector3 GetWorldPosition();
     bool IsPlayerControlled();
+
+    List<Vector3Int> GetOccupiedCells();
 }
