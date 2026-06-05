@@ -548,4 +548,14 @@ public class BoxMover : MonoBehaviour, ICombatant
             sr.color = originalColor;
         }
     }
+
+    public virtual List<Vector3Int> GetOccupiedCells()
+    {
+        Vector3Int origin = grid.WorldToGrid(transform.position);
+
+        return new List<Vector3Int>
+        {
+            origin
+        };
+    }    
 }

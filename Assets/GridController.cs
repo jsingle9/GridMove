@@ -341,4 +341,32 @@ public class GridController : MonoBehaviour
             }
         }
     }
+
+    public void RegisterCombatant(ICombatant unit)
+    {
+        if(unit == null) return;
+
+        foreach(Vector3Int cell in unit.GetOccupiedCells())
+        {
+            occupiedTiles[cell] = unit;
+        }
+    }
+
+    public void UnregisterCombatant(ICombatant unit)
+    {
+        if(unit == null) return;
+
+        List<Vector3Int> toRemove = new List<Vector3Int>();
+
+        foreach(var kvp in occupiedTiles)
+        {
+            if(kvp.Value == unit)
+                toRemove.Add(kvp.Key);
+        }
+
+        foreach(Vector3Int cell in toRemove)
+        {
+            occupiedTiles.Remove(cell);
+        }
+    }    
 }
