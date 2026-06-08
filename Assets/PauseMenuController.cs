@@ -7,6 +7,7 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private GameObject pauseMenuRoot;
     [SerializeField] private GameObject confirmReturnRoot;
     [SerializeField] private string mainMenuSceneName = "MainMenu";
+    [SerializeField] private AbilityUI abilityUI;
 
     private bool isPaused = false;
 
@@ -26,19 +27,36 @@ public class PauseMenuController : MonoBehaviour
         if (Keyboard.current == null)
             return;
 
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            if (confirmReturnRoot != null && confirmReturnRoot.activeSelf)
-            {
-                CloseReturnConfirmation();
-                return;
-            }
+        if (!Keyboard.current.escapeKey.wasPressedThisFrame)
+            return;
 
-            if (isPaused)
-                ResumeGame();
-            else
-                OpenPauseMenu();
+        if (AbilityTargetingIsActive())
+        {
+            abilityUI.CancelAbility();
+            return;
         }
+
+        if (confirmReturnRoot != null && confirmReturnRoot.activeSelf)
+        {
+            CloseReturnConfirmation();
+            return;
+        }
+
+        if (isPaused)
+        {
+            ResumeGame();
+            return;
+        }
+
+        OpenPauseMenu();
+    }
+
+    private bool AbilityTargetingIsActive()
+    {
+        if (abilityUI == null)
+            return false;
+
+        return abilityUI.selectedAbility != null;
     }
 
     public void OpenPauseMenu()
@@ -56,8 +74,6 @@ public class PauseMenuController : MonoBehaviour
 
     public void ResumeGame()
     {
-        isPaused = false;
-
         if (pauseMenuRoot != null)
             pauseMenuRoot.SetActive(false);
 
