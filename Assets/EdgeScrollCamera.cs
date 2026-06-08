@@ -4,7 +4,7 @@ public class EdgeScrollCamera : MonoBehaviour
 {
     public Transform target;            // The box
     public float scrollSpeed = 5f;       // Camera movement speed
-    public float edgeThreshold = 0.4f;   // Distance from screen edge (0–1)
+    public float edgeThreshold = 0.5f;   // Distance from screen edge (0–1)
 
     void LateUpdate()
     {
