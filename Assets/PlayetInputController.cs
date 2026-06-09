@@ -16,7 +16,7 @@ public class PlayerInputController : MonoBehaviour
         if(Keyboard.current.digit3Key.wasPressedThisFrame)
             abilityUI.SelectAbility(2);
 
-        if(Keyboard.current.escapeKey.wasPressedThisFrame)
-            abilityUI.CancelAbility();
+      //  if(Keyboard.current.escapeKey.wasPressedThisFrame)
+        //    abilityUI.CancelAbility();
     }
 }
