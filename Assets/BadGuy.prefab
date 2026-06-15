@@ -81,9 +81,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -1585228169
+  m_SortingLayer: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4622216199488447354, guid: b71f4002b7aa146e7b1f88a079e94082, type: 3}
   m_Color: {r: 0.9622642, g: 0.9395693, b: 0.9395693, a: 1}
@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aff605afce86449cbab06be5220b4b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
+  enemyDefinition: {fileID: 0}
   grid: {fileID: 0}
   maxHP: 10
   armorClass: 12
