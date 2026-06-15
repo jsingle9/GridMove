@@ -104,3 +104,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67ec2b28f44e4504904f78423b9d6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileVisual
+  isHighlighted: 0

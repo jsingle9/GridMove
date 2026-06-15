@@ -6,9 +6,19 @@ public class TileVisual : MonoBehaviour
     Color baseColor;
     public bool isHighlighted;
 
+    [SerializeField] private string sortingLayerName = "Default";
+    [SerializeField] private int baseSortingOrder = 0;
+    [SerializeField] private int highlightSortingOrder = 2;
+
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+
+        if (sr != null)
+        {
+            sr.sortingLayerName = sortingLayerName;
+            sr.sortingOrder = baseSortingOrder;
+        }
     }
 
     public void SetBaseColor(Color color)

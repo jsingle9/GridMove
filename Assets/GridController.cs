@@ -50,10 +50,10 @@ public class GridController : MonoBehaviour
                 TileVisual visual = tileObj.GetComponent<TileVisual>();
                 tileVisuals[x, y] = visual;
 
-                Color tileColor = ((x + y) % 2 == 0)
+              /*  Color tileColor = ((x + y) % 2 == 0)
                     ? new Color(0.35f, 0.65f, 0.35f)
-                    : new Color(0.3f, 0.6f, 0.3f);
-
+                    : new Color(0.3f, 0.6f, 0.3f); */
+                Color tileColor = new Color(1f, 1f, 1f, 0f);
                 visual.SetBaseColor(tileColor);
             }
         }
