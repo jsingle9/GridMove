@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 public class GridController : MonoBehaviour
 {
+
     Dictionary<Vector3Int, ICombatant> occupiedTiles =
         new Dictionary<Vector3Int, ICombatant>();
+    Dictionary<Vector3Int, GoldPileObstacle> goldPiles =
+        new Dictionary<Vector3Int, GoldPileObstacle>();
 
     public GameObject tilePrefab;
     TileVisual[,] tileVisuals;
@@ -50,6 +53,7 @@ public class GridController : MonoBehaviour
                 TileVisual visual = tileObj.GetComponent<TileVisual>();
                 tileVisuals[x, y] = visual;
 
+              //  Debug green grid pattern         //  
               /*  Color tileColor = ((x + y) % 2 == 0)
                     ? new Color(0.35f, 0.65f, 0.35f)
                     : new Color(0.3f, 0.6f, 0.3f); */
@@ -267,6 +271,29 @@ public class GridController : MonoBehaviour
         }
 
         return true;
+    }
+
+    //^^^*** |GOLD PILE OCCUPANCY METHODS| ***^^^//
+    public void RegisterGoldPile(Vector3Int cell, GoldPileObstacle pile)
+    {
+        if (pile == null)
+            return;
+
+        goldPiles[cell] = pile;
+    }
+
+    public void UnregisterGoldPile(Vector3Int cell)
+    {
+        if (goldPiles.ContainsKey(cell))
+            goldPiles.Remove(cell);
+    }
+
+    public GoldPileObstacle GetGoldPileAt(Vector3Int cell)
+    {
+        if (goldPiles.TryGetValue(cell, out GoldPileObstacle pile))
+            return pile;
+
+        return null;
     }
 
     public ICombatant GetOccupant(Vector3Int cell)
