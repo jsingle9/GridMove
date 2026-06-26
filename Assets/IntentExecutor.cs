@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class IntentExecutor 
+public class IntentExecutor
 {
     private GridController grid;
     private IntentResolver intentResolver;
@@ -56,6 +56,10 @@ public class IntentExecutor
             {
                 return AbilityResult.CreateFailure("Cannot find start position");
             }
+
+            Vector3Int targetCell = GetPreferredOrClosestTargetCell(user, targetData);
+            Vector3 targetWorld = grid.GridToWorld(targetCell);
+            targetData.tile = grid.GetNodeFromWorld(targetWorld);
 
             // Create a temporary attack intent to get path to target
             AttackIntent moveIntent = new AttackIntent(targetData);
@@ -154,4 +158,39 @@ public class IntentExecutor
         pendingTargetData = null;
         awaitingMovementCompletion = false;
     }
+
+    private Vector3Int GetPreferredOrClosestTargetCell(ICombatant user, TargetData targetData)
+    {
+        if (targetData != null && targetData.preferredTargetCell.HasValue)
+            return targetData.preferredTargetCell.Value;
+
+        if (targetData == null || targetData.primaryTarget == null)
+            return grid.WorldToGrid(user.GetWorldPosition());
+
+        List<Vector3Int> occupiedCells = targetData.primaryTarget.GetOccupiedCells();
+
+        if (occupiedCells == null || occupiedCells.Count == 0)
+            return grid.WorldToGrid(targetData.primaryTarget.GetWorldPosition());
+
+        Vector3Int userCell = grid.WorldToGrid(user.GetWorldPosition());
+        Vector3Int bestCell = occupiedCells[0];
+        int bestDist = ManhattanDistance(userCell, bestCell);
+
+        for (int i = 1; i < occupiedCells.Count; i++)
+        {
+            int dist = ManhattanDistance(userCell, occupiedCells[i]);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                bestCell = occupiedCells[i];
+            }
+        }
+
+        return bestCell;
+    }
+
+    private int ManhattanDistance(Vector3Int a, Vector3Int b)
+    {
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
+    }    
 }
