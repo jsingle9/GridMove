@@ -21,7 +21,7 @@ public class TargetingSystem
         data.user = user;
 
         Vector3Int gridPos = grid.WorldToGrid(worldClick);
-        // SELF TARGET SHORTCUT
+
         if(ability.targetingMode == TargetingMode.Self)
         {
             data.primaryTarget = user;
@@ -42,19 +42,27 @@ public class TargetingSystem
             {
                 case TargetingMode.Self:
                     if(occupant == user)
+                    {
                         data.primaryTarget = occupant;
+                        data.preferredTargetCell = gridPos;
+                    }
                     break;
 
                 case TargetingMode.Ally:
                     if(IsAlly(user, occupant))
+                    {
                         data.primaryTarget = occupant;
+                        data.preferredTargetCell = gridPos;
+                    }
                     break;
 
                 case TargetingMode.Enemy:
                     if(IsEnemy(user, occupant))
+                    {
                         data.primaryTarget = occupant;
+                        data.preferredTargetCell = gridPos;
+                    }
                     break;
-
             }
         }
 
@@ -212,5 +220,5 @@ public class TargetingSystem
                 highlightedVisuals.Add(visual);
             }
         }
-    }    
+    }
 }

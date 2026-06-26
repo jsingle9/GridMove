@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 
 public class AttackAbility : Ability
 {
@@ -22,12 +22,10 @@ public class AttackAbility : Ability
         }
 
         ICombatant target = targetData.primaryTarget;
-        float distance = Vector3.Distance(
-            user.GetWorldPosition(),
-            target.GetWorldPosition()
-        );
 
-        // Check range
+        float distance = GetClosestDistanceToTarget(user, target);
+
+        // Check range against nearest occupied cell, not just target origin
         if(distance > Range)
         {
             return AbilityResult.CreateFailure("Target out of melee range");
@@ -64,7 +62,6 @@ public class AttackAbility : Ability
 
             Debug.Log($"Hit for {damage} damage");
             target.TakeDamage(damage);
-
         }
         else
         {
@@ -72,4 +69,32 @@ public class AttackAbility : Ability
         }
     }
 
+    private float GetClosestDistanceToTarget(ICombatant user, ICombatant target)
+    {
+        if(user == null || target == null)
+            return float.MaxValue;
+
+        Vector3 userWorld = user.GetWorldPosition();
+        List<Vector3Int> occupiedCells = target.GetOccupiedCells();
+
+        if(occupiedCells == null || occupiedCells.Count == 0)
+        {
+            return Vector3.Distance(userWorld, target.GetWorldPosition());
+        }
+
+        float closestDistance = float.MaxValue;
+
+        foreach(Vector3Int cell in occupiedCells)
+        {
+            Vector3 cellWorld = new Vector3(cell.x + 0.5f, cell.y + 0.5f, 0f);
+            float dist = Vector3.Distance(userWorld, cellWorld);
+
+            if(dist < closestDistance)
+            {
+                closestDistance = dist;
+            }
+        }
+
+        return closestDistance;
+    }
 }
