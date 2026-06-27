@@ -23,9 +23,9 @@ public class AttackAbility : Ability
 
         ICombatant target = targetData.primaryTarget;
 
-        float distance = GetClosestDistanceToTarget(user, target);
+        float distance = GetClosestCombatDistance(user, target);
 
-        // Check range against nearest occupied cell, not just target origin
+        // Check range using all occupied cells of attacker and target
         if(distance > Range)
         {
             return AbilityResult.CreateFailure("Target out of melee range");
@@ -69,29 +69,35 @@ public class AttackAbility : Ability
         }
     }
 
-    private float GetClosestDistanceToTarget(ICombatant user, ICombatant target)
+    private float GetClosestCombatDistance(ICombatant user, ICombatant target)
     {
         if(user == null || target == null)
             return float.MaxValue;
 
-        Vector3 userWorld = user.GetWorldPosition();
-        List<Vector3Int> occupiedCells = target.GetOccupiedCells();
+        List<Vector3Int> userCells = user.GetOccupiedCells();
+        List<Vector3Int> targetCells = target.GetOccupiedCells();
 
-        if(occupiedCells == null || occupiedCells.Count == 0)
+        if(userCells == null || userCells.Count == 0 ||
+           targetCells == null || targetCells.Count == 0)
         {
-            return Vector3.Distance(userWorld, target.GetWorldPosition());
+            return Vector3.Distance(user.GetWorldPosition(), target.GetWorldPosition());
         }
 
         float closestDistance = float.MaxValue;
 
-        foreach(Vector3Int cell in occupiedCells)
+        foreach(Vector3Int userCell in userCells)
         {
-            Vector3 cellWorld = new Vector3(cell.x + 0.5f, cell.y + 0.5f, 0f);
-            float dist = Vector3.Distance(userWorld, cellWorld);
+            Vector3 userWorld = new Vector3(userCell.x + 0.5f, userCell.y + 0.5f, 0f);
 
-            if(dist < closestDistance)
+            foreach(Vector3Int targetCell in targetCells)
             {
-                closestDistance = dist;
+                Vector3 targetWorld = new Vector3(targetCell.x + 0.5f, targetCell.y + 0.5f, 0f);
+                float dist = Vector3.Distance(userWorld, targetWorld);
+
+                if(dist < closestDistance)
+                {
+                    closestDistance = dist;
+                }
             }
         }
 
