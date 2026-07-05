@@ -8,6 +8,10 @@ public class FireDrakeEnemy : Enemy
     [SerializeField] private int breathEveryNTurns = 4;
     [SerializeField] private int breathRange = 6;
     [SerializeField] private int breathDamage = 8;
+    [SerializeField] private float telegraphDuration = 1.8f;
+
+    [Header("References")]
+    [SerializeField] private BreathWeaponTelegrapher breathTelegrapher;
 
     private int turnCounter = 0;
 
@@ -25,6 +29,9 @@ public class FireDrakeEnemy : Enemy
 
         abilities.Clear();
         abilities.Add(new AttackAbility());
+
+        if (breathTelegrapher == null)
+            breathTelegrapher = GetComponent<BreathWeaponTelegrapher>();
 
         Debug.Log("FireDrakeEnemy initialized");
     }
@@ -59,13 +66,9 @@ public class FireDrakeEnemy : Enemy
         turnCounter++;
 
         if (IsBreathTurn())
-        {
             yield return ExecuteBreathTurn(player);
-        }
         else
-        {
             yield return ExecuteNormalTurn(player);
-        }
 
         yield return new WaitForSeconds(0.1f);
         EndMyTurn();
@@ -98,41 +101,39 @@ public class FireDrakeEnemy : Enemy
 
         if (HasMove)
         {
-            Ability melee = abilities[0];
-            TargetData moveTowardTarget = new TargetData(player);
-
-            intentExecutor.ExecuteAbilityWithMovement(this, melee, moveTowardTarget);
-
-            while (mover.IsMoving)
-                yield return null;
-
+            yield return MoveTowardPlayerForBreath(player);
             yield return new WaitForSeconds(0.1f);
+        }
+
+        if (!HasAction)
+        {
+            Debug.Log("Fire Drake has no action left for breath attack.");
+            yield break;
         }
 
         Vector3Int drakeOrigin = grid.WorldToGrid(transform.position);
         Vector3Int playerCell = grid.WorldToGrid(player.GetWorldPosition());
         Vector3Int breathDir = GetBreathDirection(drakeOrigin, playerCell);
 
-        if (breathDir == Vector3Int.right)
+        List<BreathLane> lanes = GetBreathLanes(drakeOrigin, breathDir);
+        List<Vector3Int> previewCells = GetPreviewCells(lanes);
+
+        Debug.Log($"Fire Drake breath direction: {breathDir}, preview cell count: {previewCells.Count}");
+
+        if (breathTelegrapher != null && previewCells.Count > 0)
         {
-            ResolveBreathLane(drakeOrigin + new Vector3Int(2, 0, 0), Vector3Int.right);
-            ResolveBreathLane(drakeOrigin + new Vector3Int(2, 1, 0), Vector3Int.right);
+            Debug.Log($"[FireDrake] Preview cells count: {previewCells.Count}, telegrapher assigned: {breathTelegrapher != null}");          
+            breathTelegrapher.ShowTelegraph(grid, previewCells, breathDir);
         }
-        else if (breathDir == Vector3Int.left)
+
+        yield return new WaitForSeconds(telegraphDuration);
+
+        if (breathTelegrapher != null)
         {
-            ResolveBreathLane(drakeOrigin + new Vector3Int(-1, 0, 0), Vector3Int.left);
-            ResolveBreathLane(drakeOrigin + new Vector3Int(-1, 1, 0), Vector3Int.left);
+            breathTelegrapher.ClearTelegraph();
         }
-        else if (breathDir == Vector3Int.up)
-        {
-            ResolveBreathLane(drakeOrigin + new Vector3Int(0, 2, 0), Vector3Int.up);
-            ResolveBreathLane(drakeOrigin + new Vector3Int(1, 2, 0), Vector3Int.up);
-        }
-        else if (breathDir == Vector3Int.down)
-        {
-            ResolveBreathLane(drakeOrigin + new Vector3Int(0, -1, 0), Vector3Int.down);
-            ResolveBreathLane(drakeOrigin + new Vector3Int(1, -1, 0), Vector3Int.down);
-        }
+
+        ResolveBreathAttack(lanes);
 
         HasAction = false;
 
@@ -140,20 +141,89 @@ public class FireDrakeEnemy : Enemy
         yield return new WaitForSeconds(0.2f);
     }
 
-    private void ResolveBreathLane(Vector3Int start, Vector3Int step)
+    private List<BreathLane> GetBreathLanes(Vector3Int drakeOrigin, Vector3Int breathDir)
     {
+        List<BreathLane> lanes = new List<BreathLane>();
+
+        if (breathDir == Vector3Int.right)
+        {
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(2, 0, 0), Vector3Int.right));
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(2, 1, 0), Vector3Int.right));
+        }
+        else if (breathDir == Vector3Int.left)
+        {
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(-1, 0, 0), Vector3Int.left));
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(-1, 1, 0), Vector3Int.left));
+        }
+        else if (breathDir == Vector3Int.up)
+        {
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(0, 2, 0), Vector3Int.up));
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(1, 2, 0), Vector3Int.up));
+        }
+        else if (breathDir == Vector3Int.down)
+        {
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(0, -1, 0), Vector3Int.down));
+            lanes.Add(new BreathLane(drakeOrigin + new Vector3Int(1, -1, 0), Vector3Int.down));
+        }
+
+        return lanes;
+    }
+
+    private List<Vector3Int> GetPreviewCells(List<BreathLane> lanes)
+    {
+        List<Vector3Int> cells = new List<Vector3Int>();
+
+        foreach (BreathLane lane in lanes)
+        {
+            for (int i = 0; i < breathRange; i++)
+            {
+                Vector3Int cell = lane.start + (lane.step * i);
+
+                if (!grid.IsInBounds(cell))
+                    break;
+
+                cells.Add(cell);
+
+                GoldPileObstacle goldPile = grid.GetGoldPileAt(cell);
+                if (goldPile != null && !goldPile.IsMelted)
+                    break;
+            }
+        }
+
+        return cells;
+    }
+
+    private void ResolveBreathAttack(List<BreathLane> lanes)
+    {
+        Debug.Log($"Resolving breath attack with {lanes.Count} lanes");
+
         HashSet<ICombatant> hitTargets = new HashSet<ICombatant>();
 
+        foreach (BreathLane lane in lanes)
+        {
+            Debug.Log($"Resolving lane from {lane.start} step {lane.step}");
+            ResolveBreathLane(lane.start, lane.step, hitTargets);
+        }
+    }
+
+    private void ResolveBreathLane(Vector3Int start, Vector3Int step, HashSet<ICombatant> hitTargets)
+    {
         for (int i = 0; i < breathRange; i++)
         {
             Vector3Int cell = start + (step * i);
 
             if (!grid.IsInBounds(cell))
+            {
+                Debug.Log($"Breath stopped: out of bounds at {cell}");
                 break;
+            }
+
+            Debug.Log($"Breath checking cell {cell}");
 
             GoldPileObstacle goldPile = grid.GetGoldPileAt(cell);
             if (goldPile != null && !goldPile.IsMelted)
             {
+                Debug.Log($"Breath hit gold pile at {cell} and melted it");
                 goldPile.Melt();
                 break;
             }
@@ -161,6 +231,7 @@ public class FireDrakeEnemy : Enemy
             ICombatant occupant = grid.GetOccupant(cell);
             if (occupant != null && occupant != this && !hitTargets.Contains(occupant))
             {
+                Debug.Log($"Breath hit {occupant.Name} at {cell} for {breathDamage}");
                 occupant.TakeDamage(breathDamage);
                 hitTargets.Add(occupant);
             }
@@ -173,9 +244,7 @@ public class FireDrakeEnemy : Enemy
         int dy = to.y - from.y;
 
         if (Mathf.Abs(dx) >= Mathf.Abs(dy))
-        {
             return dx >= 0 ? Vector3Int.right : Vector3Int.left;
-        }
 
         return dy >= 0 ? Vector3Int.up : Vector3Int.down;
     }
@@ -190,10 +259,54 @@ public class FireDrakeEnemy : Enemy
             Debug.Log($"Boss defeated! Gold remaining: {scoreManager.GetGoldRemaining()}/{scoreManager.GetTotalGold()}");
         }
 
+        if (breathTelegrapher != null)
+            breathTelegrapher.ClearTelegraph();
+
         grid.UnregisterCombatant(this);
 
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);
+    }
+
+    private IEnumerator MoveTowardPlayerForBreath(BoxMover player)
+    {
+        GridNode startNode = grid.GetNodeFromWorld(transform.position);
+        if (startNode == null)
+            yield break;
+
+        List<GridNode> path = resolver.Resolve(new AttackIntent(new TargetData(player)), startNode);
+
+        if (path == null || path.Count <= 1)
+            yield break;
+
+        int maxSteps = Mathf.Min(RemainingMovement, path.Count - 1);
+        if (maxSteps <= 0)
+            yield break;
+
+        List<GridNode> trimmedPath = path.GetRange(0, maxSteps + 1);
+
+        mover.StartPath(trimmedPath);
+
+        RemainingMovement -= maxSteps;
+        if (RemainingMovement < 0)
+            RemainingMovement = 0;
+
+        HasMove = RemainingMovement > 0;
+
+        while (mover.IsMoving)
+            yield return null;
+    }
+
+    private struct BreathLane
+    {
+        public Vector3Int start;
+        public Vector3Int step;
+
+        public BreathLane(Vector3Int start, Vector3Int step)
+        {
+            this.start = start;
+            this.step = step;
+        }
     }
 }
