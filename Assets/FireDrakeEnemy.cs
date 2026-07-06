@@ -6,7 +6,7 @@ public class FireDrakeEnemy : Enemy
 {
     [Header("Fire Drake")]
     [SerializeField] private int breathEveryNTurns = 4;
-    [SerializeField] private int breathRange = 6;
+    [SerializeField] private int breathRange = 4;
     [SerializeField] private int breathDamage = 8;
     [SerializeField] private float telegraphDuration = 1.8f;
 
@@ -122,7 +122,7 @@ public class FireDrakeEnemy : Enemy
 
         if (breathTelegrapher != null && previewCells.Count > 0)
         {
-            Debug.Log($"[FireDrake] Preview cells count: {previewCells.Count}, telegrapher assigned: {breathTelegrapher != null}");          
+            Debug.Log($"[FireDrake] Preview cells count: {previewCells.Count}, telegrapher assigned: {breathTelegrapher != null}");
             breathTelegrapher.ShowTelegraph(grid, previewCells, breathDir);
         }
 
