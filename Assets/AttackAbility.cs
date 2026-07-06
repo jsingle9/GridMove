@@ -42,7 +42,7 @@ public class AttackAbility : Ability
         if(target == null) return;
 
         Debug.Log($"{user} attacks {target}");
-
+        TryPlayActionFlash(user);
         int roll = DiceRoller.RollD20();
         int total = roll + user.AttackBonus;
 
@@ -102,5 +102,16 @@ public class AttackAbility : Ability
         }
 
         return closestDistance;
+    }
+
+    private void TryPlayActionFlash(ICombatant user)
+    {
+        MonoBehaviour mb = user as MonoBehaviour;
+        if (mb == null)
+            return;
+
+        CombatantActionFlash flash = mb.GetComponent<CombatantActionFlash>();
+        if (flash != null)
+            flash.PlayFlash();
     }
 }

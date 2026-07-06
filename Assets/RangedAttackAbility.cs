@@ -55,9 +55,11 @@ public class RangedAttackAbility : Ability
 
     protected override void Execute(ICombatant user, ICombatant target)
     {
+
         if(target == null)
             return;
-
+            
+        TryPlayActionFlash(user);
         int roll = DiceRoller.RollD20();
         int total = roll + user.AttackBonus;
 
@@ -90,5 +92,16 @@ public class RangedAttackAbility : Ability
         {
             Debug.Log($"{user} missed ranged attack");
         }
+    }
+
+    private void TryPlayActionFlash(ICombatant user)
+    {
+        MonoBehaviour mb = user as MonoBehaviour;
+        if (mb == null)
+            return;
+
+        CombatantActionFlash flash = mb.GetComponent<CombatantActionFlash>();
+        if (flash != null)
+            flash.PlayFlash();
     }
 }

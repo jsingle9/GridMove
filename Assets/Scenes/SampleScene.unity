@@ -168,6 +168,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &66287594 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6238051120652705544, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
+  m_PrefabInstance: {fileID: 5871786756570678143}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &66287599 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3546444060027952782, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
+  m_PrefabInstance: {fileID: 5871786756570678143}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &66287602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66287594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dce168185f343a5b819883f049181f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantActionFlash
+  spriteRenderer: {fileID: 66287599}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.12
 --- !u!1 &112929014
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +758,26 @@ MonoBehaviour:
   damageDice: 1d6
   damageModifier: 0
   speed: 6
+--- !u!212 &234167684 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+  m_PrefabInstance: {fileID: 711763763479415497}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &234167686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234167672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dce168185f343a5b819883f049181f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantActionFlash
+  spriteRenderer: {fileID: 234167684}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.18
 --- !u!1 &243243245
 GameObject:
   m_ObjectHideFlags: 0
@@ -4283,6 +4328,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350849839}
   m_CullTransparentMesh: 1
+--- !u!1 &1368455207 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1409124937218125162, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
+  m_PrefabInstance: {fileID: 269408493263621180}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1368455211 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6850189886367830044, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
+  m_PrefabInstance: {fileID: 269408493263621180}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1368455214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368455207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e6de195e72048e69a25ce644549c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantActionFlash
+  spriteRenderer: {fileID: 1368455211}
+  flashColor:
+    r: 1
+    g: 1
+    b: 1
+    a: 1
+  flashDuration: 0.12
 --- !u!4 &1397349964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5708998372538689322, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
@@ -5651,7 +5725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &2129066669
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5830,7 +5904,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1409124937218125162, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1368455214}
   m_SourcePrefab: {fileID: 100100000, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
 --- !u!1001 &711763763479415497
 PrefabInstance:
@@ -5848,6 +5925,22 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 43542802}
+    - target: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+      propertyPath: m_Color.a
+      value: 0.77254903
+      objectReference: {fileID: 0}
+    - target: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+      propertyPath: m_Color.r
+      value: 0.84313726
+      objectReference: {fileID: 0}
     - target: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -5924,6 +6017,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8886151682678185778, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       insertIndex: -1
       addedObject: {fileID: 234167679}
+    - targetCorrespondingSourceObject: {fileID: 8886151682678185778, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 234167686}
   m_SourcePrefab: {fileID: 100100000, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
 --- !u!1001 &1843472227911578915
 PrefabInstance:
@@ -5998,6 +6094,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 43542802}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: turnStarted
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4741787384094870354, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -6191,7 +6291,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6238051120652705544, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 66287602}
   m_SourcePrefab: {fileID: 100100000, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
