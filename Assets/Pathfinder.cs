@@ -72,9 +72,13 @@ public class Pathfinder{
                   continue;
                 }
               }
-              int newCostToNeighbor =
-                  currentNode.gCost + GetDistance(currentNode, neighbor);
+              //int newCostToNeighbor =
+              //    currentNode.gCost + GetDistance(currentNode, neighbor);
+              int stepCost = grid.GetMovementCost(neighbor.gridPos);
 
+              int newCostToNeighbor =
+                  currentNode.gCost + stepCost;
+                  
               if (newCostToNeighbor < neighbor.gCost)
               {
                   neighbor.gCost = newCostToNeighbor;
