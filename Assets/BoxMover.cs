@@ -186,27 +186,34 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(path == null || path.Count == 0)
             return;
 
-        int moveCost = path.Count - 1;
+        int moveCost = MovementCostUtility.CalculatePathCost(grid, path);
 
-        if(moveCost > RemainingMovement)
+        if (moveCost > RemainingMovement)
         {
-            int allowed = RemainingMovement;
+                int allowed = RemainingMovement;
 
-            if(allowed <= 0)
-            {
-                if(GameStateManager.Instance.CurrentState != GameState.Combat ||
-                   !CombatManager.Instance.IsPlayersTurn(this))
+                if (allowed <= 0)
                 {
-                    mover.StartPath(path);
+                    if (GameStateManager.Instance.CurrentState != GameState.Combat ||
+                        !CombatManager.Instance.IsPlayersTurn(this))
+                    {
+                        mover.StartPath(path);
+                        return;
+                    }
+
+                    Debug.Log("No movement left");
                     return;
                 }
 
-                Debug.Log("No movement left");
-                return;
-            }
+                int spent;
+                path = MovementCostUtility.TrimPathToBudget(grid, path, allowed, out spent);
+                moveCost = spent;
 
-            path = path.GetRange(0, allowed + 1);
-            moveCost = allowed;
+                if (path == null || path.Count == 0)
+                {
+                    Debug.Log("No reachable movement within budget");
+                    return;
+                }
         }
 
         RemainingMovement -= moveCost;
@@ -557,5 +564,5 @@ public class BoxMover : MonoBehaviour, ICombatant
         {
             origin
         };
-    }    
+    }
 }

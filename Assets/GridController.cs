@@ -10,6 +10,8 @@ public class GridController : MonoBehaviour
         new Dictionary<Vector3Int, ICombatant>();
     Dictionary<Vector3Int, GoldPileObstacle> goldPiles =
         new Dictionary<Vector3Int, GoldPileObstacle>();
+private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
+        new Dictionary<Vector3Int, DifficultTerrain>();
 
     public GameObject tilePrefab;
     TileVisual[,] tileVisuals;
@@ -53,7 +55,7 @@ public class GridController : MonoBehaviour
                 TileVisual visual = tileObj.GetComponent<TileVisual>();
                 tileVisuals[x, y] = visual;
 
-              //  Debug green grid pattern         //  
+              //  Debug green grid pattern         //
               /*  Color tileColor = ((x + y) % 2 == 0)
                     ? new Color(0.35f, 0.65f, 0.35f)
                     : new Color(0.3f, 0.6f, 0.3f); */
@@ -421,6 +423,23 @@ public class GridController : MonoBehaviour
         }
 
         return true;
+    }
+    public void RegisterDifficultTerrain(Vector3Int cell, DifficultTerrain terrain)
+    {
+        difficultTerrainByCell[cell] = terrain;
+    }
+
+    public void UnregisterDifficultTerrain(Vector3Int cell)
+    {
+        difficultTerrainByCell.Remove(cell);
+    }
+
+    public int GetMovementCost(Vector3Int cell)
+    {
+        if (difficultTerrainByCell.TryGetValue(cell, out DifficultTerrain terrain) && terrain != null)
+            return terrain.MovementCost;
+
+        return 1;
     }
 
 }
