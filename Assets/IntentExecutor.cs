@@ -70,7 +70,7 @@ public class IntentExecutor
                 return AbilityResult.CreateFailure("Cannot reach target");
             }
 
-            int moveCost = path.Count - 1;
+            int moveCost = MovementCostUtility.CalculatePathCost(grid, path);
 
             // Check if we have enough movement
             if(moveCost > user.RemainingMovement)
@@ -81,9 +81,14 @@ public class IntentExecutor
                     return AbilityResult.CreateFailure("No movement available");
                 }
 
-                // Trim path to what we can afford
-                path = path.GetRange(0, allowed + 1);
-                moveCost = allowed;
+                int spent;
+                path = MovementCostUtility.TrimPathToBudget(grid, path, allowed, out spent);
+                moveCost = spent;
+
+                if(path == null || path.Count == 0)
+                {
+                    return AbilityResult.CreateFailure("No reachable movement within budget");
+                }
             }
 
             // Spend movement
@@ -192,5 +197,5 @@ public class IntentExecutor
     private int ManhattanDistance(Vector3Int a, Vector3Int b)
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
-    }    
+    }
 }

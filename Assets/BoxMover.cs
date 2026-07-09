@@ -458,10 +458,10 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     int ICombatant.CalculateMoveCost(List<GridNode> path)
     {
-        if(path == null || path.Count <= 1)
+        if(path == null || path.Count == 0)
             return 0;
 
-        return path.Count - 1;
+        return MovementCostUtility.CalculatePathCost(grid, path);
     }
 
     public int PreviewMoveCost(Intent intent)
@@ -472,7 +472,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         List<GridNode> path = resolver.Resolve(intent, startNode);
         if(path == null || path.Count == 0) return -1;
 
-        return path.Count - 1;
+        return MovementCostUtility.CalculatePathCost(grid, path);
     }
 
     public void AddStatus(StatusEffect status)
