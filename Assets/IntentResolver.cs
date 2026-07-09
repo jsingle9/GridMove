@@ -82,7 +82,7 @@ public class IntentResolver
             }
         }
 
-        GridNode bestTile = null;
+        //GridNode bestTile = null;
         List<GridNode> bestPath = null;
         int bestCost = int.MaxValue;
 
@@ -96,12 +96,12 @@ public class IntentResolver
             if(path == null || path.Count == 0)
                 continue;
 
-            int cost = path.Count;
+            int cost = MovementCostUtility.CalculatePathCost(grid, path);
 
             if(cost < bestCost)
             {
                 bestCost = cost;
-                bestTile = tile;
+                //bestTile = tile;
                 bestPath = path;
             }
         }
