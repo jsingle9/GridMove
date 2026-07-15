@@ -237,39 +237,59 @@ public class BoxMover : MonoBehaviour, ICombatant
         if(mover.IsMoving)
             return;
 
-        float combatRadius = 4f;
+        // Longer trigger range (world units). Tune to taste.
+        float combatRadius = 12f;
+        float combatRadiusSqr = combatRadius * combatRadius;
 
+        // Still use overlap for "who is nearby", but LOS is grid-based via GridController.
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position,
             combatRadius
         );
 
         List<ICombatant> participants = new List<ICombatant>();
-        bool enemyFound = false;
+        bool enemyFoundWithLineOfSight = false;
 
-        participants.Add(GetComponent<ICombatant>());
+        ICombatant self = GetComponent<ICombatant>();
+        if(self != null)
+            participants.Add(self);
+
+        Vector3Int playerCell = grid.WorldToGrid(transform.position);
 
         foreach(Collider2D hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
-            if(enemy == null) continue;
+            if(enemy == null)
+                continue;
 
-            enemyFound = true;
+            // Optional safety check in case overlap shape catches weird edge cases.
+            Vector3 toEnemy = enemy.transform.position - transform.position;
+            if(toEnemy.sqrMagnitude > combatRadiusSqr)
+                continue;
+
+            Vector3Int enemyCell = grid.WorldToGrid(enemy.transform.position);
+
+            // Require tile-based line of sight (your existing mechanic).
+            if(!grid.HasLineOfSight(playerCell, enemyCell))
+                continue;
+
+            enemyFoundWithLineOfSight = true;
 
             ICombatant combatant = enemy.GetComponent<ICombatant>();
             if(combatant != null && !participants.Contains(combatant))
                 participants.Add(combatant);
         }
 
-        if(!enemyFound)
+        if(!enemyFoundWithLineOfSight)
             return;
 
-        Debug.Log("Proximity combat triggered");
+        Debug.Log("Proximity combat triggered (range + tile LoS)");
 
         Vector3Int cell = grid.WorldToGrid(transform.position);
         transform.position = grid.GridToWorld(cell);
         mover.Stop();
         currentMoveIntent = null;
+
         GameStateManager.Instance.EnterCombat();
         CombatManager.Instance.StartCombat(participants);
     }
