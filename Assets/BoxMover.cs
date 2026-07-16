@@ -585,4 +585,39 @@ public class BoxMover : MonoBehaviour, ICombatant
             origin
         };
     }
+
+    public List<ICombatant> GetEnemiesInProximityWithLineOfSight(float combatRadius)
+    {
+        List<ICombatant> found = new List<ICombatant>();
+
+        if(grid == null)
+            return found;
+
+        float combatRadiusSqr = combatRadius * combatRadius;
+        Vector3Int playerCell = grid.WorldToGrid(transform.position);
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, combatRadius);
+
+        foreach(Collider2D hit in hits)
+        {
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if(enemy == null)
+                continue;
+
+            Vector3 delta = enemy.transform.position - transform.position;
+            if(delta.sqrMagnitude > combatRadiusSqr)
+                continue;
+
+            Vector3Int enemyCell = grid.WorldToGrid(enemy.transform.position);
+
+            if(!grid.HasLineOfSight(playerCell, enemyCell))
+                continue;
+
+            ICombatant c = enemy.GetComponent<ICombatant>();
+            if(c != null && !found.Contains(c))
+                found.Add(c);
+        }
+
+        return found;
+    }    
 }

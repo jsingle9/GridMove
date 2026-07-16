@@ -11,6 +11,7 @@ public class CombatManager : MonoBehaviour{
   List<ICombatant> combatants = new List<ICombatant>();
   int currentIndex = 0;
   bool turnAdvancing = false;
+  [SerializeField] float reinforcementCheckRadius = 12f;
 
   public void Awake(){
     Instance = this;
@@ -225,6 +226,40 @@ public class CombatManager : MonoBehaviour{
   public List<ICombatant> GetCombatants()
   {
       return new List<ICombatant>(combatants);
+  }
+
+  public void AddNewVisibleEnemiesFromPlayer()
+  {
+      if(combatants == null || combatants.Count == 0)
+          return;
+
+      BoxMover player = FindFirstObjectByType<BoxMover>();
+      if(player == null)
+          return;
+
+      List<ICombatant> reinforcements =
+          player.GetEnemiesInProximityWithLineOfSight(reinforcementCheckRadius);
+
+      bool addedAny = false;
+
+      foreach(ICombatant c in reinforcements)
+      {
+          if(c == null)
+              continue;
+
+          if(combatants.Contains(c))
+              continue;
+
+          combatants.Add(c);
+          addedAny = true;
+          Debug.Log($"Added new combatant mid-combat: {c}");
+      }
+
+      if(addedAny)
+      {
+          // Optional: if you maintain initiative order separately, rebuild/sort it here.
+          // RebuildInitiativeIfNeeded();
+      }
   }
 
 }
