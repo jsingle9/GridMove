@@ -114,6 +114,7 @@ public class CombatManager : MonoBehaviour{
       ICombatant next = combatants[currentIndex];
 
       if(next.IsPlayerControlled()){
+          AddNewVisibleEnemiesFromPlayer();
           SetCombatState(CombatState.PlayerTurn);
           SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
       }
