@@ -11,7 +11,7 @@ public class CombatManager : MonoBehaviour{
   List<ICombatant> combatants = new List<ICombatant>();
   int currentIndex = 0;
   bool turnAdvancing = false;
-  [SerializeField] float reinforcementCheckRadius = 12f;
+  [SerializeField] float reinforcementCheckRadius = 6f;
 
   public void Awake(){
     Instance = this;
