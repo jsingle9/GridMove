@@ -89,8 +89,11 @@ public class FireDrakeEnemy : Enemy
 
         intentExecutor.ExecuteAbilityWithMovement(this, melee, targetData);
 
-        while (mover.IsMoving)
-            yield return null;
+        // OLD:
+        // while (mover.IsMoving) yield return null;
+
+        // NEW:
+        yield return WaitForMovementOrTimeout(2.0f);
 
         yield return new WaitForSeconds(0.1f);
     }
@@ -229,7 +232,8 @@ public class FireDrakeEnemy : Enemy
             }
 
             ICombatant occupant = grid.GetOccupant(cell);
-            if (occupant != null && occupant != this && !hitTargets.Contains(occupant))
+            var occMb = occupant as MonoBehaviour;
+            if (occMb != null && occMb != this && !hitTargets.Contains(occupant))
             {
                 Debug.Log($"Breath hit {occupant.Name} at {cell} for {breathDamage}");
                 occupant.TakeDamage(breathDamage);
@@ -280,22 +284,55 @@ public class FireDrakeEnemy : Enemy
         if (path == null || path.Count <= 1)
             yield break;
 
-        int maxSteps = Mathf.Min(RemainingMovement, path.Count - 1);
-        if (maxSteps <= 0)
+        int spent = 0;
+        int lastReachableIndex = 0;
+
+        for (int i = 1; i < path.Count; i++)
+        {
+            int stepCost = grid.GetMovementCost(path[i].gridPos);
+            if (stepCost <= 0) stepCost = 1;
+
+            if (spent + stepCost > RemainingMovement)
+                break;
+
+            spent += stepCost;
+            lastReachableIndex = i;
+        }
+
+        if (lastReachableIndex <= 0)
+        {
+            HasMove = false;
             yield break;
+        }
 
-        List<GridNode> trimmedPath = path.GetRange(0, maxSteps + 1);
-
+        List<GridNode> trimmedPath = path.GetRange(0, lastReachableIndex + 1);
         mover.StartPath(trimmedPath);
 
-        RemainingMovement -= maxSteps;
-        if (RemainingMovement < 0)
-            RemainingMovement = 0;
-
+        RemainingMovement -= spent;
+        if (RemainingMovement < 0) RemainingMovement = 0;
         HasMove = RemainingMovement > 0;
 
-        while (mover.IsMoving)
+        // OLD:
+        // while (mover.IsMoving) yield return null;
+
+        // NEW:
+        yield return WaitForMovementOrTimeout(2.0f);
+    }
+
+    private IEnumerator WaitForMovementOrTimeout(float timeoutSeconds = 1.5f)
+    {
+        float t = 0f;
+        while (mover.IsMoving && t < timeoutSeconds)
+        {
+            t += Time.deltaTime;
             yield return null;
+        }
+
+        if (mover.IsMoving)
+        {
+            Debug.LogWarning($"[FireDrake] Movement timeout hit. Forcing Stop() to prevent soft lock.");
+            mover.Stop();
+        }
     }
 
     private struct BreathLane
