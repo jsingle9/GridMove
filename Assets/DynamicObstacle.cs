@@ -44,13 +44,12 @@ public class DynamicObstacle : MonoBehaviour
 
     void OnDestroy()
     {
-        // Ignore editor reload/destruction
-        if(!Application.isPlaying)
+        // Scene unload / domain reload safety
+        if (gridController == null || gridController.grid == null)
             return;
 
-        // If grid not assigned, nothing to clean
-        if(gridController == null)
-            return;
+        // Optional: also ensure lastCell was initialized if you track that
+        // if (!initialized) return;
 
         gridController.SetWalkable(currentCell, true);
     }

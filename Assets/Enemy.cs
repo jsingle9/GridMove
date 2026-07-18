@@ -95,6 +95,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant
 
     public void StartTurn()
     {
+        Debug.Log($"[AI] StartTurn -> {name} (active={gameObject.activeInHierarchy})");        
         Debug.Log("Enemy turn started");
 
         if(!gameObject.activeInHierarchy)

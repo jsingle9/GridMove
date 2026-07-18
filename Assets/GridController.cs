@@ -129,6 +129,9 @@ private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
 
     public void SetWalkable(Vector3Int cell, bool walkable)
     {
+        if (grid == null)
+            return;
+
         if(!InBounds(cell))
         {
             Debug.LogError($"SetWalkable OUT OF BOUNDS: {cell}");
