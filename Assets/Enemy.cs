@@ -81,8 +81,8 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     }
 
     void Update(){
-        mover.Tick();
-        intentExecutor.CheckPendingAbilityExecution();
+        if (intentExecutor != null)
+            intentExecutor.CheckPendingAbilityExecution();
     }
 
     void OnTriggerEnter2D(Collider2D other){
@@ -95,7 +95,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant
 
     public void StartTurn()
     {
-        Debug.Log($"[AI] StartTurn -> {name} (active={gameObject.activeInHierarchy})");        
+        Debug.Log($"[AI] StartTurn -> {name} (active={gameObject.activeInHierarchy})");
         Debug.Log("Enemy turn started");
 
         if(!gameObject.activeInHierarchy)

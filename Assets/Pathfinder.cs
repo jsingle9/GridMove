@@ -9,17 +9,23 @@ public class Pathfinder{
       this.grid = inGrid;
     }
 
-    public List<GridNode> FindPath(GridNode startNode, GridNode targetNode){
+    public List<GridNode> FindPath(GridNode startNode, GridNode targetNode)
+    {
+        return FindPath(startNode, targetNode, null, Vector2Int.one);
+    }
+
+    public List<GridNode> FindPath(GridNode startNode, GridNode targetNode, ICombatant moverCombatant, Vector2Int footprint)
+    {
         if (startNode == null || targetNode == null)
             return null;
 
         for (int x = 0; x < grid.grid.GetLength(0); x++){
-          for (int y = 0; y < grid.grid.GetLength(1); y++){
-            GridNode node = grid.grid[x, y];
-            node.gCost = int.MaxValue;
-            node.hCost = 0;
-            node.parent = null;
-          }
+            for (int y = 0; y < grid.grid.GetLength(1); y++){
+                GridNode node = grid.grid[x, y];
+                node.gCost = int.MaxValue;
+                node.hCost = 0;
+                node.parent = null;
+            }
         }
 
         if (!targetNode.walkable)
@@ -29,8 +35,6 @@ public class Pathfinder{
         HashSet<GridNode> closedSet = new HashSet<GridNode>();
 
         openSet.Add(startNode);
-
-        // Reset start node
         startNode.gCost = 0;
         startNode.hCost = GetDistance(startNode, targetNode);
         startNode.parent = null;
@@ -38,11 +42,9 @@ public class Pathfinder{
         while (openSet.Count > 0){
             GridNode currentNode = openSet[0];
 
-            for (int i = 1; i < openSet.Count; i++)
-            {
+            for (int i = 1; i < openSet.Count; i++){
                 if (openSet[i].fCost < currentNode.fCost ||
-                    openSet[i].fCost == currentNode.fCost &&
-                    openSet[i].hCost < currentNode.hCost)
+                   (openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost))
                 {
                     currentNode = openSet[i];
                 }
@@ -52,41 +54,31 @@ public class Pathfinder{
             closedSet.Add(currentNode);
 
             if (currentNode == targetNode)
-            {
                 return RetracePath(startNode, targetNode);
-            }
 
             foreach (GridNode neighbor in grid.GetNeighbors(currentNode))
             {
-                //Debug.Log("Neighbor instance ID: " + neighbor.GetHashCode());
-                if (!neighbor.walkable || closedSet.Contains(neighbor))
+                if (closedSet.Contains(neighbor))
                     continue;
 
-                //  block tiles occupied by combatants DURING COMBAT
-               if(GameStateManager.Instance.CurrentState == GameState.Combat){
+                // FOOTPRINT-AWARE occupancy/walkability check
+                if (!grid.CanOccupyFootprint(neighbor.gridPos, footprint.x, footprint.y, moverCombatant))
+                    continue;
 
-                  // allow pathing to FINAL target even if occupied
-                  bool isTargetTile = neighbor == targetNode;
+                int stepCost = grid.GetMovementCost(neighbor.gridPos);
+                if (stepCost <= 0) stepCost = 1;
 
-                  if(!isTargetTile && grid.IsTileOccupied(neighbor.gridPos)){
-                  continue;
+                int newCostToNeighbor = currentNode.gCost + stepCost;
+
+                if (newCostToNeighbor < neighbor.gCost)
+                {
+                    neighbor.gCost = newCostToNeighbor;
+                    neighbor.hCost = GetDistance(neighbor, targetNode);
+                    neighbor.parent = currentNode;
+
+                    if (!openSet.Contains(neighbor))
+                        openSet.Add(neighbor);
                 }
-              }
-
-              int stepCost = grid.GetMovementCost(neighbor.gridPos);
-
-              int newCostToNeighbor =
-                  currentNode.gCost + stepCost;
-
-              if (newCostToNeighbor < neighbor.gCost)
-              {
-                  neighbor.gCost = newCostToNeighbor;
-                  neighbor.hCost = GetDistance(neighbor, targetNode);
-                  neighbor.parent = currentNode;
-
-                  if (!openSet.Contains(neighbor))
-                      openSet.Add(neighbor);
-              }
             }
         }
 

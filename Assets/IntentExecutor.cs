@@ -27,91 +27,65 @@ public class IntentExecutor
     public AbilityResult ExecuteAbilityWithMovement(ICombatant user, Ability ability, TargetData targetData)
     {
         if(ability == null || targetData == null)
-        {
             return AbilityResult.CreateFailure("Invalid ability or target");
-        }
 
-        // Try to execute ability immediately
+        // IMPORTANT: use the acting unit's mover, not a shared cached mover
+        MonoBehaviour userMb = user as MonoBehaviour;
+        if(userMb == null)
+            return AbilityResult.CreateFailure("User is not a MonoBehaviour");
+
+        UnitMover actorMover = userMb.GetComponent<UnitMover>();
+        if(actorMover == null)
+            return AbilityResult.CreateFailure("User has no UnitMover");
+
         AbilityResult result = ability.TryUse(user, targetData);
-
         if(result.Success)
-        {
-            Debug.Log($"Ability {ability.AbilityName} executed successfully");
             return result;
-        }
 
-        // If it failed due to range and we have movement, try to move closer
         if(result.FailureReason == "Target out of melee range" ||
            result.FailureReason == "Target out of range")
         {
             if(!user.HasMove)
-            {
-                Debug.Log($"Out of range and no movement available");
                 return result;
-            }
 
-            // Calculate path to target
             GridNode startNode = grid.GetNodeFromWorld(user.GetWorldPosition());
             if(startNode == null)
-            {
                 return AbilityResult.CreateFailure("Cannot find start position");
-            }
 
             Vector3Int targetCell = GetPreferredOrClosestTargetCell(user, targetData);
             Vector3 targetWorld = grid.GridToWorld(targetCell);
             targetData.tile = grid.GetNodeFromWorld(targetWorld);
 
-            // Create a temporary attack intent to get path to target
             AttackIntent moveIntent = new AttackIntent(targetData);
             List<GridNode> path = intentResolver.Resolve(moveIntent, startNode);
 
-            if(path == null || path.Count == 0)
-            {
+            if(path == null || path.Count <= 1)
                 return AbilityResult.CreateFailure("Cannot reach target");
-            }
 
-            int moveCost = MovementCostUtility.CalculatePathCost(grid, path);
+            int spent;
+            path = MovementCostUtility.TrimPathToBudget(grid, path, user.RemainingMovement, out spent);
 
-            // Check if we have enough movement
-            if(moveCost > user.RemainingMovement)
-            {
-                int allowed = user.RemainingMovement;
-                if(allowed <= 0)
-                {
-                    return AbilityResult.CreateFailure("No movement available");
-                }
+            if(path == null || path.Count <= 1 || spent <= 0)
+                return AbilityResult.CreateFailure("No reachable movement within budget");
 
-                int spent;
-                path = MovementCostUtility.TrimPathToBudget(grid, path, allowed, out spent);
-                moveCost = spent;
-
-                if(path == null || path.Count == 0)
-                {
-                    return AbilityResult.CreateFailure("No reachable movement within budget");
-                }
-            }
-
-            // Spend movement
-            user.RemainingMovement -= moveCost;
-            if(user.RemainingMovement < 0)
-                user.RemainingMovement = 0;
-
-            user.HasMove = user.RemainingMovement > 0;
-
-            Debug.Log($"Movement spent: {moveCost}, remaining: {user.RemainingMovement}");
-
-            // Start movement and queue up ability retry
+            // queue retry
             pendingUser = user;
             pendingAbility = ability;
             pendingTargetData = targetData;
             awaitingMovementCompletion = true;
 
-            unitMover.StartPath(path);
+            // start movement on correct mover
+            actorMover.StartPath(path);
 
-            return AbilityResult.CreateSuccess(); // Movement started successfully
+            user.RemainingMovement -= spent;
+            if(user.RemainingMovement < 0) user.RemainingMovement = 0;
+            user.HasMove = user.RemainingMovement > 0;
+
+            Debug.Log($"[IntentExecutor] {user.Name} move started via actorMover. spent={spent}, remaining={user.RemainingMovement}");
+
+            return AbilityResult.CreateSuccess();
         }
 
-        // Other failures - just return them
         return result;
     }
 
@@ -123,26 +97,48 @@ public class IntentExecutor
         if(!awaitingMovementCompletion)
             return;
 
-        if(unitMover.IsMoving)
-            return; // Still moving
-
-        // Movement finished → retry ability
-        if(pendingUser != null && pendingAbility != null && pendingTargetData != null)
+        if(pendingUser == null || pendingAbility == null || pendingTargetData == null)
         {
-            Debug.Log("Movement finished → retrying ability");
-            AbilityResult retryResult = pendingAbility.TryUse(pendingUser, pendingTargetData);
-
-            if(!retryResult.Success)
-            {
-                Debug.Log($"Ability failed after movement: {retryResult.FailureReason}");
-            }
-
-            // Clear pending state
+            awaitingMovementCompletion = false;
             pendingUser = null;
             pendingAbility = null;
             pendingTargetData = null;
-            awaitingMovementCompletion = false;
+            return;
         }
+
+        MonoBehaviour mb = pendingUser as MonoBehaviour;
+        if(mb == null)
+        {
+            Debug.LogWarning("[IntentExecutor] pendingUser is not a MonoBehaviour. Clearing pending state.");
+            awaitingMovementCompletion = false;
+            pendingUser = null;
+            pendingAbility = null;
+            pendingTargetData = null;
+            return;
+        }
+
+        UnitMover pendingMover = mb.GetComponent<UnitMover>();
+        if(pendingMover == null)
+        {
+            Debug.LogWarning($"[IntentExecutor] {pendingUser.Name} has no UnitMover. Retrying ability immediately.");
+        }
+        else if(pendingMover.IsMoving)
+        {
+            return; // still moving, wait
+        }
+
+        // Movement finished (or no mover) -> retry ability once
+        Debug.Log($"[IntentExecutor] Movement finished for {pendingUser.Name} -> retrying ability");
+        AbilityResult retryResult = pendingAbility.TryUse(pendingUser, pendingTargetData);
+
+        if(!retryResult.Success)
+            Debug.Log($"[IntentExecutor] Ability failed after movement: {retryResult.FailureReason}");
+
+        // Clear pending state
+        pendingUser = null;
+        pendingAbility = null;
+        pendingTargetData = null;
+        awaitingMovementCompletion = false;
     }
 
     /// <summary>
@@ -197,5 +193,19 @@ public class IntentExecutor
     private int ManhattanDistance(Vector3Int a, Vector3Int b)
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
+    }
+
+    private int CalculateEnteredTileCost(GridController grid, List<GridNode> path)
+    {
+        if (path == null || path.Count <= 1) return 0;
+
+        int cost = 0;
+        for (int i = 1; i < path.Count; i++) // skip start node
+        {
+            int step = grid.GetMovementCost(path[i].gridPos);
+            if (step <= 0) step = 1;
+            cost += step;
+        }
+        return cost;
     }
 }
