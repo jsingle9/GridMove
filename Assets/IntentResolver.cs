@@ -92,7 +92,7 @@ public class IntentResolver
             if(tile == null)
                 continue;
 
-            List<GridNode> path = pathfinder.FindPath(actorNode, tile);
+            List<GridNode> path = pathfinder.FindPath(actorNode, tile, attacker, attackerFootprint);
             if(path == null || path.Count == 0)
                 continue;
 

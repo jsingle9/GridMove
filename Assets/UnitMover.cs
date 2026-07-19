@@ -7,7 +7,7 @@ public class UnitMover : MonoBehaviour
     Vector3Int currentCell;
     List<GridNode> currentPath;
     int pathIndex;
-
+    private int _lastTickFrame = -1;
     Vector3 targetPosition;
     bool isMoving;
 
@@ -28,18 +28,49 @@ public class UnitMover : MonoBehaviour
     }
 
     public void StartPath(List<GridNode> path){
-      Debug.Log("STARTPATH CALLED. Path length: " + path.Count);
         if (path == null || path.Count == 0)
             return;
 
         currentPath = path;
+        isMoving = false;
+
+        Vector3Int myCell = grid.WorldToGrid(transform.position);
+
+        // Find first node that is actually different from current cell
         pathIndex = 0;
+        while (pathIndex < currentPath.Count && currentPath[pathIndex].gridPos == myCell)
+            pathIndex++;
+
+        if (pathIndex >= currentPath.Count)
+        {
+            // No actual displacement
+            currentPath = null;
+            return;
+        }
+
         SetNextTarget();
+
+        // If first target resolves to same world position, abort safely
+        if (Vector3.Distance(transform.position, targetPosition) < 0.001f)
+        {
+            isMoving = false;
+            currentPath = null;
+            return;
+        }
+
+        Debug.Log($"[UnitMover] {name} start move: from={myCell} toFirst={currentPath[pathIndex].gridPos} pathCount={currentPath.Count}");
     }
 
     public void Tick(){
-        if (!isMoving) return;
+      // Guard: prevent double-tick in same frame
+      if (_lastTickFrame == Time.frameCount)
+          return;
+      _lastTickFrame = Time.frameCount;
 
+      if (!isMoving || currentPath == null || pathIndex >= currentPath.Count)
+          return;
+        if (!isMoving) return;
+        Debug.Log($"[UnitMover.Tick] {name} pos={transform.position} target={targetPosition} speed={moveSpeed}");
         transform.position = Vector3.MoveTowards(
             transform.position,
             targetPosition,
@@ -109,5 +140,10 @@ public class UnitMover : MonoBehaviour
         targetPosition = grid.GridToWorld(nextNode.gridPos);
         isMoving = true;
         Debug.Log("Setting next target to: " + currentPath[pathIndex]);
+    }
+
+    private void Update()
+    {
+        Tick();
     }
 }

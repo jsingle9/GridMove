@@ -335,6 +335,28 @@ public class FireDrakeEnemy : Enemy
         }
     }
 
+    private bool CanOccupyDrakeAnchor(Vector3Int origin)
+    {
+        Vector3Int[] cells = new Vector3Int[]
+        {
+            origin,
+            origin + Vector3Int.right,
+            origin + Vector3Int.up,
+            origin + Vector3Int.right + Vector3Int.up
+        };
+
+        foreach (var c in cells)
+        {
+            if (!grid.IsInBounds(c)) return false;
+            if (!grid.IsWalkable(c)) return false;
+
+            ICombatant occ = grid.GetOccupant(c);
+            if (occ != null && !ReferenceEquals(occ, this)) return false;
+        }
+
+        return true;
+    }    
+
     private struct BreathLane
     {
         public Vector3Int start;
