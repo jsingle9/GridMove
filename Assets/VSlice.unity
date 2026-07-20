@@ -12845,24 +12845,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
---- !u!1 &791101538 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8833428039547803963, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
-  m_PrefabInstance: {fileID: 898881513}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &791101544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791101538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c745511de00d74db9b8580bc23fd8908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitMover
-  moveSpeed: 5
 --- !u!1001 &814795331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13502,14 +13484,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireDrake
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5202734630167250568, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8833428039547803963, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 791101544}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
 --- !u!1 &926080446
 GameObject:

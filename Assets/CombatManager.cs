@@ -189,6 +189,16 @@ public class CombatManager : MonoBehaviour{
   void EndCombat(){
       Debug.Log("Combat ended");
 
+      // we want to make sure that players actions and bonus actions reset
+      // when combat ends
+      foreach(var c in combatants){
+        if( c == null || c.IsDead())
+          continue;
+
+        // clear out any used action economy resources  
+        c.EndTurn();
+      }
+
       turnAdvancing = false;
       currentIndex = 0;
 
