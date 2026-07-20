@@ -114,11 +114,14 @@ public class FireDrakeEnemy : Enemy
             yield break;
         }
 
-        Vector3Int drakeOrigin = grid.WorldToGrid(transform.position);
-        Vector3Int playerCell = grid.WorldToGrid(player.GetWorldPosition());
-        Vector3Int breathDir = GetBreathDirection(drakeOrigin, playerCell);
+        List<Vector3Int> drakeCells = GetOccupiedCells();
+        List<Vector3Int> playerCells = player.GetOccupiedCells();
 
-        List<BreathLane> lanes = GetBreathLanes(drakeOrigin, breathDir);
+        Vector3Int breathOrigin = GetBestBreathOriginCell(drakeCells, playerCells);
+        Vector3Int targetCell = GetClosestTargetCellToOrigin(breathOrigin, playerCells);
+        Vector3Int breathDir = GetBreathDirection(breathOrigin, targetCell);
+
+        List<BreathLane> lanes = GetBreathLanesFromOriginCell(breathOrigin, breathDir);
         List<Vector3Int> previewCells = GetPreviewCells(lanes);
 
         Debug.Log($"Fire Drake breath direction: {breathDir}, preview cell count: {previewCells.Count}");
@@ -355,7 +358,80 @@ public class FireDrakeEnemy : Enemy
         }
 
         return true;
+    }
+
+    private Vector3Int GetBestBreathOriginCell(List<Vector3Int> drakeCells, List<Vector3Int> targetCells)
+    {
+        Vector3Int bestOrigin = drakeCells[0];
+        float bestDist = float.MaxValue;
+
+        foreach (var dc in drakeCells)
+        {
+            Vector3 dWorld = new Vector3(dc.x + 0.5f, dc.y + 0.5f, 0f);
+
+            foreach (var tc in targetCells)
+            {
+                Vector3 tWorld = new Vector3(tc.x + 0.5f, tc.y + 0.5f, 0f);
+                float dist = Vector3.Distance(dWorld, tWorld);
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    bestOrigin = dc;
+                }
+            }
+        }
+
+        return bestOrigin;
+    }
+
+    private Vector3Int GetClosestTargetCellToOrigin(Vector3Int origin, List<Vector3Int> targetCells)
+    {
+        if (targetCells == null || targetCells.Count == 0)
+            return origin;
+
+        Vector3Int best = targetCells[0];
+        int bestDist = int.MaxValue;
+
+        foreach (var tc in targetCells)
+        {
+            int dist = Mathf.Abs(origin.x - tc.x) + Mathf.Abs(origin.y - tc.y);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = tc;
+            }
+        }
+
+        return best;
     }    
+
+    private List<BreathLane> GetBreathLanesFromOriginCell(Vector3Int originCell, Vector3Int breathDir)
+    {
+        List<BreathLane> lanes = new List<BreathLane>();
+
+        if (breathDir == Vector3Int.right)
+        {
+            lanes.Add(new BreathLane(originCell + new Vector3Int(1, 0, 0), Vector3Int.right));
+            lanes.Add(new BreathLane(originCell + new Vector3Int(1, 1, 0), Vector3Int.right));
+        }
+        else if (breathDir == Vector3Int.left)
+        {
+            lanes.Add(new BreathLane(originCell + new Vector3Int(-1, 0, 0), Vector3Int.left));
+            lanes.Add(new BreathLane(originCell + new Vector3Int(-1, 1, 0), Vector3Int.left));
+        }
+        else if (breathDir == Vector3Int.up)
+        {
+            lanes.Add(new BreathLane(originCell + new Vector3Int(0, 1, 0), Vector3Int.up));
+            lanes.Add(new BreathLane(originCell + new Vector3Int(1, 1, 0), Vector3Int.up));
+        }
+        else if (breathDir == Vector3Int.down)
+        {
+            lanes.Add(new BreathLane(originCell + new Vector3Int(0, -1, 0), Vector3Int.down));
+            lanes.Add(new BreathLane(originCell + new Vector3Int(1, -1, 0), Vector3Int.down));
+        }
+
+        return lanes;
+    }
 
     private struct BreathLane
     {
