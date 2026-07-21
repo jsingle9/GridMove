@@ -39,18 +39,20 @@ public class AttackAbility : Ability
 
     protected override void Execute(ICombatant user, ICombatant target)
     {
-        if(target == null) return;
+        if(target == null || user == null) return;
 
         Debug.Log($"{user} attacks {target}");
         TryPlayActionFlash(user);
+
         int roll = DiceRoller.RollD20();
         int total = roll + user.AttackBonus;
 
         Debug.Log($"Attack roll: {roll} + {user.AttackBonus} = {total} vs AC {target.ArmorClass}");
 
         bool crit = roll == 20;
+        bool hit = (total >= target.ArmorClass) || crit;
 
-        if(total >= target.ArmorClass || crit)
+        if(hit)
         {
             int damage = DiceRoller.Roll(user.DamageDice) + user.DamageModifier;
 
@@ -62,10 +64,29 @@ public class AttackAbility : Ability
 
             Debug.Log($"Hit for {damage} damage");
             target.TakeDamage(damage);
+
+            CombatUIManager.Instance?.LogAttack(
+                user.Name,
+                target.Name,
+                true,
+                roll,
+                total,
+                target.ArmorClass,
+                damage
+            );
         }
         else
         {
             Debug.Log("Miss");
+
+            CombatUIManager.Instance?.LogAttack(
+                user.Name,
+                target.Name,
+                false,
+                roll,
+                total,
+                target.ArmorClass
+            );
         }
     }
 
