@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CombatUIManager : MonoBehaviour
 {
@@ -16,9 +17,9 @@ public class CombatUIManager : MonoBehaviour
     [SerializeField] private Button endTurnButton;
 
     private BoxMover currentPlayer;
-    private int maxLogLines = 5;
-    private string[] logBuffer;
-    private int logIndex = 0;
+
+    [SerializeField] private int maxLogLines = 8;
+    private readonly Queue<string> logQueue = new Queue<string>();
 
     void Awake()
     {
@@ -34,8 +35,6 @@ public class CombatUIManager : MonoBehaviour
 
     void Start()
     {
-        logBuffer = new string[maxLogLines];
-
         if (combatUIPanel != null)
             combatUIPanel.SetActive(false);
 
@@ -45,7 +44,7 @@ public class CombatUIManager : MonoBehaviour
 
     void Update()
     {
-        if (!CombatManager.Instance.IsPlayerActive())
+        if (CombatManager.Instance == null || !CombatManager.Instance.IsPlayerActive())
             return;
 
         UpdateResourceDisplay();
@@ -59,6 +58,7 @@ public class CombatUIManager : MonoBehaviour
 
         currentPlayer = FindFirstObjectByType<BoxMover>();
         RefreshCombatUI();
+        AddLog("Combat begins!");
     }
 
     public void OnPlayerTurnStart()
@@ -70,7 +70,6 @@ public class CombatUIManager : MonoBehaviour
         }
 
         RefreshCombatUI();
-        //AddLog("Your turn started!");
     }
 
     public void OnEnemyTurnStart()
@@ -80,16 +79,14 @@ public class CombatUIManager : MonoBehaviour
             turnIndicatorText.text = "ENEMY TURN";
             turnIndicatorText.color = Color.red;
         }
-
-        //AddLog("Enemy's turn...");
     }
 
     public void OnCombatEnd()
     {
+        AddLog("Combat ended!");
+
         if (combatUIPanel != null)
             combatUIPanel.SetActive(false);
-
-        AddLog("Combat ended!");
     }
 
     void RefreshCombatUI()
@@ -118,7 +115,7 @@ public class CombatUIManager : MonoBehaviour
 
     void UpdateAbilityButtons()
     {
-        if (abilityButtons == null || abilityButtons.Length == 0)
+        if (currentPlayer == null || abilityButtons == null || abilityButtons.Length == 0)
             return;
 
         for (int i = 0; i < abilityButtons.Length && i < 4; i++)
@@ -130,17 +127,22 @@ public class CombatUIManager : MonoBehaviour
 
     void OnEndTurnClicked()
     {
-        if (CombatManager.Instance.IsPlayerActive())
+        if (CombatManager.Instance != null && CombatManager.Instance.IsPlayerActive())
         {
-            AddLog("Turn ended.");
+            AddLog($"{currentPlayer.name} ends turn.");
             CombatManager.Instance.EndTurn();
         }
     }
 
     public void AddLog(string message)
     {
-        logBuffer[logIndex] = message;
-        logIndex = (logIndex + 1) % maxLogLines;
+        if (string.IsNullOrWhiteSpace(message))
+            return;
+
+        logQueue.Enqueue(message);
+
+        while (logQueue.Count > maxLogLines)
+            logQueue.Dequeue();
 
         UpdateLogDisplay();
     }
@@ -150,16 +152,42 @@ public class CombatUIManager : MonoBehaviour
         if (combatLogText == null)
             return;
 
-        combatLogText.text = "";
-        for (int i = 0; i < maxLogLines; i++)
-        {
-            if (logBuffer[i] != null)
-                combatLogText.text += logBuffer[i] + "\n";
-        }
+        combatLogText.text = string.Join("\n", logQueue);
     }
 
     public void OnAbilitySelected(int slot)
     {
-        AddLog($"Selected: {currentPlayer.GetAbility(slot).AbilityName}");
+        if (currentPlayer == null) return;
+
+        Ability selected = currentPlayer.GetAbility(slot);
+        if (selected != null)
+            AddLog($"Selected: {selected.AbilityName}");
+    }
+
+    // --- New helper methods for richer combat logging ---
+
+    public void LogTurnStart(string unitName)
+    {
+        AddLog($"-- {unitName}'s turn starts --");
+    }
+
+    public void LogTurnEnd(string unitName)
+    {
+        AddLog($"-- {unitName}'s turn ends --");
+    }
+
+    public void LogAttack(
+        string attacker,
+        string target,
+        bool hit,
+        int roll,
+        int total,
+        int targetAC,
+        int damage = 0)
+    {
+        if (hit)
+            AddLog($"{attacker} attacks {target}. Hit! ({roll} -> {total} vs AC {targetAC}) {target} takes {damage} damage.");
+        else
+            AddLog($"{attacker} attacks {target}. Miss! ({roll} -> {total} vs AC {targetAC})");
     }
 }

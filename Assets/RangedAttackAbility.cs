@@ -55,17 +55,17 @@ public class RangedAttackAbility : Ability
 
     protected override void Execute(ICombatant user, ICombatant target)
     {
-
-        if(target == null)
+        if(target == null || user == null)
             return;
-            
+
         TryPlayActionFlash(user);
+
         int roll = DiceRoller.RollD20();
         int total = roll + user.AttackBonus;
-
         bool crit = roll == 20;
+        bool hit = (total >= target.ArmorClass) || crit;
 
-        if(total >= target.ArmorClass || crit)
+        if(hit)
         {
             string damageDice = user.DamageDice;
             int damageModifier = user.DamageModifier;
@@ -87,10 +87,29 @@ public class RangedAttackAbility : Ability
 
             Debug.Log($"{user} shoots {target} for {damage} damage");
             target.TakeDamage(damage);
+
+            CombatUIManager.Instance?.LogAttack(
+                user.Name,
+                target.Name,
+                true,
+                roll,
+                total,
+                target.ArmorClass,
+                damage
+            );
         }
         else
         {
             Debug.Log($"{user} missed ranged attack");
+
+            CombatUIManager.Instance?.LogAttack(
+                user.Name,
+                target.Name,
+                false,
+                roll,
+                total,
+                target.ArmorClass
+            );
         }
     }
 
