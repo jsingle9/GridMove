@@ -13430,6 +13430,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3303993204624572881, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+      propertyPath: breathDamage
+      value: 3d8
+      objectReference: {fileID: 0}
     - target: {fileID: 8833428039547803963, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
       propertyPath: m_Name
       value: FireDrake
@@ -21941,8 +21945,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -21956,7 +21960,7 @@ MonoBehaviour:
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
+  m_paragraphSpacing: 1
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
@@ -22852,6 +22856,7 @@ MonoBehaviour:
   - {fileID: 157384005}
   - {fileID: 312225577}
   endTurnButton: {fileID: 181793734}
+  maxLogLines: 5
 --- !u!1001 &1972183462
 PrefabInstance:
   m_ObjectHideFlags: 0
