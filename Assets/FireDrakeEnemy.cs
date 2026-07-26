@@ -7,7 +7,8 @@ public class FireDrakeEnemy : Enemy
     [Header("Fire Drake")]
     [SerializeField] private int breathEveryNTurns = 4;
     [SerializeField] private int breathRange = 4;
-    [SerializeField] private int breathDamage = 8;
+    [SerializeField] private string breathDamage = "3d8";
+    [SerializeField] private int breathDamageBonus = 0;
     [SerializeField] private float telegraphDuration = 1.8f;
 
     [Header("References")]
@@ -23,7 +24,7 @@ public class FireDrakeEnemy : Enemy
         currentHP = maxHP;
         armorClass = 16;
         attackBonus = 6;
-        damageDice = "2d8";
+        damageDice = "1d8";
         damageModifier = 4;
         speed = 4;
 
@@ -238,8 +239,9 @@ public class FireDrakeEnemy : Enemy
             var occMb = occupant as MonoBehaviour;
             if (occMb != null && occMb != this && !hitTargets.Contains(occupant))
             {
+                int damage = DiceRoller.Roll(this.breathDamage);
                 Debug.Log($"Breath hit {occupant.Name} at {cell} for {breathDamage}");
-                occupant.TakeDamage(breathDamage);
+                occupant.TakeDamage(damage);
                 hitTargets.Add(occupant);
             }
         }
@@ -403,7 +405,7 @@ public class FireDrakeEnemy : Enemy
         }
 
         return best;
-    }    
+    }
 
     private List<BreathLane> GetBreathLanesFromOriginCell(Vector3Int originCell, Vector3Int breathDir)
     {
