@@ -265,7 +265,11 @@ public class FireDrakeEnemy : Enemy
         BossEncounterScoreManager scoreManager = FindFirstObjectByType<BossEncounterScoreManager>();
         if (scoreManager != null)
         {
-            Debug.Log($"Boss defeated! Gold remaining: {scoreManager.GetGoldRemaining()}/{scoreManager.GetTotalGold()}");
+            scoreManager.FinalizeBossEncounterScore();
+        }
+        else
+        {
+            Debug.LogWarning("BossEncounterScoreManager not found when drake died.");
         }
 
         if (breathTelegrapher != null)
