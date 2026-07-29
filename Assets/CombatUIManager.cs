@@ -190,4 +190,11 @@ public class CombatUIManager : MonoBehaviour
         else
             AddLog($"{attacker} attacks {target}. Miss! ({roll} -> {total} vs AC {targetAC})");
     }
+    
+    public void LogAbilityDamage(string source, string abilityName, string target, int damage, string damageType = "")
+    {
+        string dtype = string.IsNullOrWhiteSpace(damageType) ? "" : $" {damageType}";
+        AddLog($"{source} uses {abilityName} on {target}. {target} takes {damage}{dtype} damage.");
+    }
+
 }

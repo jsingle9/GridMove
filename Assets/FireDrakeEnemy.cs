@@ -239,8 +239,9 @@ public class FireDrakeEnemy : Enemy
             var occMb = occupant as MonoBehaviour;
             if (occMb != null && occMb != this && !hitTargets.Contains(occupant))
             {
-                int damage = DiceRoller.Roll(this.breathDamage);
-                Debug.Log($"Breath hit {occupant.Name} at {cell} for {breathDamage}");
+                int damage = DiceRoller.Roll(this.breathDamage) + breathDamageBonus;
+                Debug.Log($"Breath hit {occupant.Name} at {cell} for {damage}");
+                CombatUIManager.Instance?.LogAbilityDamage(this.Name, "Breath Weapon", occupant.Name, damage, "fire");
                 occupant.TakeDamage(damage);
                 hitTargets.Add(occupant);
             }
