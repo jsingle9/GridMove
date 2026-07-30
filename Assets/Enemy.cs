@@ -77,7 +77,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     void Start(){
         if(grid == null)
             grid = FindFirstObjectByType<GridController>();
-            grid.RegisterCombatant(this);
+            //grid.RegisterCombatant(this);
     }
 
     void Update(){
