@@ -7,8 +7,16 @@ public class DynamicObstacle : MonoBehaviour
     Vector3Int currentCell;
 
     void Start(){
-        if(gridController == null)
-              gridController = FindObjectOfType<GridController>();
+
+      if (GetComponent<ICombatant>() != null)
+      {
+          // Combatants use GridController occupiedTiles, not SetWalkable toggling
+          enabled = false;
+          return;
+      }
+      
+      if(gridController == null)
+          gridController = FindObjectOfType<GridController>();
 
           if(gridController == null)
           {
@@ -44,13 +52,8 @@ public class DynamicObstacle : MonoBehaviour
 
     void OnDestroy()
     {
-        // Scene unload / domain reload safety
-        if (gridController == null || gridController.grid == null)
-            return;
-
-        // Optional: also ensure lastCell was initialized if you track that
-        // if (!initialized) return;
-
+        if (!enabled) return; // combatants skipped this system
+        if (gridController == null || gridController.grid == null) return;
         gridController.SetWalkable(currentCell, true);
     }
 

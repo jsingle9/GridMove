@@ -69,7 +69,10 @@ public class UnitMover : MonoBehaviour
 
       if (!isMoving || currentPath == null || pathIndex >= currentPath.Count)
           return;
-        if (!isMoving) return;
+
+      if (!isMoving)
+          return;
+
         Debug.Log($"[UnitMover.Tick] {name} pos={transform.position} target={targetPosition} speed={moveSpeed}");
         transform.position = Vector3.MoveTowards(
             transform.position,
@@ -94,15 +97,21 @@ public class UnitMover : MonoBehaviour
                 ICombatant combatant = GetComponent<ICombatant>();
                 if(combatant != null)
                 {
-                    grid.UnregisterCombatant(combatant);
+                    // IMPORTANT: clear old tile explicitly
+                    grid.UnregisterOccupant(currentCell);
+
+                    // update tracked cell
                     currentCell = newCell;
-                    grid.RegisterCombatant(combatant);
+
+                    // then occupy new tile explicitly
+                    grid.RegisterOccupant(currentCell, combatant);
                 }
                 else
                 {
                     currentCell = newCell;
                 }
             }
+
             pathIndex++;
 
             if (pathIndex >= currentPath.Count){
@@ -125,7 +134,9 @@ public class UnitMover : MonoBehaviour
       if(newCell != currentCell){
           ICombatant combatant = GetComponent<ICombatant>();
           if(combatant != null){
+              Debug.Log($"LEAVE {currentCell}: occupiedBefore={grid.IsOccupied(currentCell)} walkableBefore={grid.IsWalkable(currentCell)}");
               grid.UnregisterCombatant(combatant);
+              Debug.Log($"LEAVE {currentCell}: occupiedAfter={grid.IsOccupied(currentCell)} walkableAfter={grid.IsWalkable(currentCell)}");
               currentCell = newCell;
               grid.RegisterCombatant(combatant);
           }

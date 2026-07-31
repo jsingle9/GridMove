@@ -22,6 +22,8 @@ private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
     [SerializeField] Vector3Int gridOrigin = new Vector3Int(-128, -128, 0);
     public Tilemap obstacleTilemap;
 
+    public bool IsOccupied(Vector3Int cell) => occupiedTiles.ContainsKey(cell);
+
     void Awake()
     {
         grid = new GridNode[width, height];
@@ -252,6 +254,7 @@ private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
         return neighbors;
     }
 
+
     public void RegisterOccupant(Vector3Int cell, ICombatant unit)
     {
         occupiedTiles[cell] = unit;
@@ -384,22 +387,20 @@ private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
         }
     }
 
-    public void UnregisterCombatant(ICombatant unit)
+    public void UnregisterCombatant(ICombatant combatant)
     {
-        if(unit == null) return;
+        if (combatant == null) return;
 
-        List<Vector3Int> toRemove = new List<Vector3Int>();
+        List<Vector3Int> keysToRemove = new List<Vector3Int>();
 
-        foreach(var kvp in occupiedTiles)
+        foreach (var kvp in occupiedTiles)
         {
-            if(kvp.Value == unit)
-                toRemove.Add(kvp.Key);
+            if (kvp.Value == combatant)
+                keysToRemove.Add(kvp.Key);
         }
 
-        foreach(Vector3Int cell in toRemove)
-        {
-            occupiedTiles.Remove(cell);
-        }
+        for (int i = 0; i < keysToRemove.Count; i++)
+            occupiedTiles.Remove(keysToRemove[i]);
     }
 
     public bool CanOccupyFootprint(Vector3Int origin, int width, int height, ICombatant ignore = null)
