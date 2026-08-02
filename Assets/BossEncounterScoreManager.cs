@@ -6,6 +6,9 @@ public class BossEncounterScoreManager : MonoBehaviour
     private int destroyedGold = 0;
     private bool scoreFinalized = false;
 
+    [Header("Optional Direct Reference (falls back to singleton)")]
+    [SerializeField] private BossVictoryPanelUI victoryPanel;
+
     public void RegisterGoldPile(int value)
     {
         totalGold += value;
@@ -44,12 +47,21 @@ public class BossEncounterScoreManager : MonoBehaviour
         int total = GetTotalGold();
 
         Debug.Log($"Boss defeated! Gold preserved: {remaining}/{total}");
-
-        // Optional UI feedback
         CombatUIManager.Instance?.AddLog($"Boss defeated! Gold preserved: {remaining}/{total}");
 
-        // TODO: Hook into your broader progression/score system here if you have one:
-        // ScoreManager.Instance?.AddGoldScore(remaining);
+        // Prefer inspector reference, fallback to singleton
+        if (victoryPanel == null)
+            victoryPanel = BossVictoryPanelUI.Instance;
+
+        if (victoryPanel != null)
+        {
+            victoryPanel.ShowVictory(remaining, total);
+            Debug.Log("[BossEncounterScoreManager] Victory panel shown.");
+        }
+        else
+        {
+            Debug.LogError("[BossEncounterScoreManager] No BossVictoryPanelUI found. Add it to scene or assign reference.");
+        }
     }
 
     // Optional: call this when encounter is reset/restarted

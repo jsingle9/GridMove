@@ -10,6 +10,8 @@ public class FireDrakeEnemy : Enemy
     [SerializeField] private string breathDamage = "3d8";
     [SerializeField] private int breathDamageBonus = 0;
     [SerializeField] private float telegraphDuration = 1.8f;
+    [SerializeField] private BossEncounterScoreManager bossScoreManager;
+    private bool deathHandled = false;
 
     [Header("References")]
     [SerializeField] private BreathWeaponTelegrapher breathTelegrapher;
@@ -263,15 +265,7 @@ public class FireDrakeEnemy : Enemy
     {
         Debug.Log($"{name} died");
 
-        BossEncounterScoreManager scoreManager = FindFirstObjectByType<BossEncounterScoreManager>();
-        if (scoreManager != null)
-        {
-            scoreManager.FinalizeBossEncounterScore();
-        }
-        else
-        {
-            Debug.LogWarning("BossEncounterScoreManager not found when drake died.");
-        }
+        HandleBossDeath(); // single entry point, guarded against duplicates
 
         if (breathTelegrapher != null)
             breathTelegrapher.ClearTelegraph();
@@ -440,6 +434,22 @@ public class FireDrakeEnemy : Enemy
         return lanes;
     }
 
+    private void HandleBossDeath()
+    {
+        if (deathHandled) return;
+        deathHandled = true;
+
+        if (bossScoreManager == null)
+            bossScoreManager = FindFirstObjectByType<BossEncounterScoreManager>();
+
+        if (bossScoreManager != null)
+            bossScoreManager.FinalizeBossEncounterScore();
+        else
+            Debug.LogWarning("BossEncounterScoreManager not found when drake died.");
+
+        Debug.Log("FireDrake death handled: boss score finalized.");
+    }
+
     private struct BreathLane
     {
         public Vector3Int start;
@@ -451,4 +461,6 @@ public class FireDrakeEnemy : Enemy
             this.step = step;
         }
     }
+
+
 }
