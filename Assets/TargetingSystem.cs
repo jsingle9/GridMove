@@ -11,45 +11,46 @@ public class TargetingSystem
         this.grid = grid;
     }
 
-    public TargetData ResolveTarget(
-        Ability ability,
-        ICombatant user,
-        Vector3 worldClick
-    )
+    public TargetData ResolveTarget(Ability ability, ICombatant user, Vector3 worldClick)
     {
         TargetData data = new TargetData();
         data.user = user;
 
+        // Hard rule: Heal targets player Box only
+        if (ability is HealAbility)
+        {
+            ICombatant player = FindPlayerBoxCombatant();
+            if (player != null && !player.IsDead())
+            {
+                data.primaryTarget = player;
+                data.unitsInArea.Add(player);
+                data.preferredTargetCell = grid.WorldToGrid(player.GetWorldPosition());
+            }
+            return data;
+        }
+
         Vector3Int gridPos = grid.WorldToGrid(worldClick);
 
-        if(ability.targetingMode == TargetingMode.Self)
+        if (ability.targetingMode == TargetingMode.Self)
         {
             data.primaryTarget = user;
             data.unitsInArea.Add(user);
+            data.preferredTargetCell = gridPos;
             return data;
         }
 
         Vector3 world = grid.GridToWorld(gridPos);
         GridNode node = grid.GetNodeFromWorld(world);
-
         data.tile = node;
 
         ICombatant occupant = grid.GetOccupant(gridPos);
 
-        if(occupant != null)
+        if (occupant != null)
         {
-            switch(ability.targetingMode)
+            switch (ability.targetingMode)
             {
-                case TargetingMode.Self:
-                    if(occupant == user)
-                    {
-                        data.primaryTarget = occupant;
-                        data.preferredTargetCell = gridPos;
-                    }
-                    break;
-
                 case TargetingMode.Ally:
-                    if(IsAlly(user, occupant))
+                    if (IsAlly(user, occupant))
                     {
                         data.primaryTarget = occupant;
                         data.preferredTargetCell = gridPos;
@@ -57,7 +58,7 @@ public class TargetingSystem
                     break;
 
                 case TargetingMode.Enemy:
-                    if(IsEnemy(user, occupant))
+                    if (IsEnemy(user, occupant))
                     {
                         data.primaryTarget = occupant;
                         data.preferredTargetCell = gridPos;
@@ -66,14 +67,10 @@ public class TargetingSystem
             }
         }
 
-        if(ability.radius > 0)
-        {
+        if (ability.radius > 0)
             data.unitsInArea = GetUnitsInRadius(gridPos, ability.radius);
-        }
-        else if(data.primaryTarget != null)
-        {
+        else if (data.primaryTarget != null)
             data.unitsInArea.Add(data.primaryTarget);
-        }
 
         return data;
     }
@@ -108,6 +105,15 @@ public class TargetingSystem
         List<ICombatant> validTargets = new List<ICombatant>();
         List<ICombatant> all = CombatManager.Instance.GetCombatants();
 
+        // Hard rule: Heal highlights only player Box
+        if (ability is HealAbility)
+        {
+            ICombatant player = FindPlayerBoxCombatant();
+            if (player != null && !player.IsDead())
+                validTargets.Add(player);
+            return validTargets;
+        }
+
         foreach (ICombatant c in all)
         {
             if (c == null || c.IsDead()) continue;
@@ -117,15 +123,12 @@ public class TargetingSystem
                 case TargetingMode.Self:
                     if (c == user) validTargets.Add(c);
                     break;
-
                 case TargetingMode.Ally:
                     if (IsAlly(user, c)) validTargets.Add(c);
                     break;
-
                 case TargetingMode.Enemy:
                     if (IsEnemy(user, c)) validTargets.Add(c);
                     break;
-
                 case TargetingMode.Area:
                     validTargets.Add(c);
                     break;
@@ -133,6 +136,12 @@ public class TargetingSystem
         }
 
         return validTargets;
+    }
+
+    private ICombatant FindPlayerBoxCombatant()
+    {
+        BoxMover box = Object.FindFirstObjectByType<BoxMover>();
+        return box as ICombatant;
     }
 
     public void HighlightValidTargets(Ability ability, ICombatant user)

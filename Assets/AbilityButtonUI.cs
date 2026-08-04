@@ -82,9 +82,6 @@ public class AbilityButtonUI : MonoBehaviour
 
         grid.ClearAllHighlights();
 
-        if(currentAbility.targetingMode != TargetingMode.Area)
-        {
-            grid.HighlightEnemyTiles();
-        }
+        AbilityUI.Instance.BeginTargetingForSelectedAbility("BUTTON");
     }
 }
