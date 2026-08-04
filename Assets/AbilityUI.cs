@@ -46,19 +46,20 @@ public class AbilityUI : MonoBehaviour
       if(Keyboard.current.digit1Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(0);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          //player.ShowTargetingHighlights(selectedAbility);
-          grid.HighlightEnemyTiles();
+          BeginTargetingForSelectedAbility("KEYBIND");
+          //grid.HighlightEnemyTiles();
       }
 
       if(Keyboard.current.digit2Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(1);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          //player.ShowTargetingHighlights(selectedAbility);
-          grid.HighlightEnemyTiles();
+          BeginTargetingForSelectedAbility("KEYBIND");
+          //grid.HighlightEnemyTiles();
       }
       if(Keyboard.current.digit3Key.wasPressedThisFrame){
           selectedAbility = player.GetAbility(2);
           CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+          BeginTargetingForSelectedAbility("KEYBIND");
         //  player.ShowTargetingHighlights(selectedAbility);
 
       }
@@ -118,5 +119,32 @@ public class AbilityUI : MonoBehaviour
 
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
         selectedAbility = null;
+    }
+
+    public void BeginTargetingForSelectedAbility(string sourceTag)
+    {
+        if (selectedAbility == null || player == null || grid == null)
+            return;
+
+        grid.ClearAllHighlights();
+
+        Debug.Log(
+            $"[ABILITY ENTRY] source={sourceTag} " +
+            $"abilityName={selectedAbility.AbilityName} " +
+            $"abilityType={selectedAbility.GetType().Name} " +
+            $"targetingMode={selectedAbility.targetingMode} " +
+            $"user={player.Name}"
+        );
+
+        if (selectedAbility.targetingMode == TargetingMode.Area)
+        {
+            // Let your AOE preview/template system handle visuals.
+            // Example if needed:
+            // Vector3Int p = grid.WorldToGrid(player.GetWorldPosition());
+            // aoeVisualizer.DrawAOE(p, selectedAbility.radius);
+            return;
+        }
+
+        targetingSystem.HighlightValidTargets(selectedAbility, player);
     }
 }
