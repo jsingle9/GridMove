@@ -84,19 +84,31 @@ public class FireDrakeEnemy : Enemy
 
     private IEnumerator ExecuteNormalTurn(BoxMover player)
     {
+        Debug.Log($"[DrakeTurn] HasAction={HasAction} HasMove={HasMove} RemainingMove={RemainingMovement}");
         if (!HasAction && !HasMove)
+            yield break;
+
+        if (player == null)
             yield break;
 
         Ability melee = abilities[0];
         TargetData targetData = new TargetData(player);
+        Debug.Log($"[DrakeTurn] Player found? {player != null}");
 
-        intentExecutor.ExecuteAbilityWithMovement(this, melee, targetData);
+        bool inRange = InMeleeRange(this, player, 1);
+        Debug.Log($"[DrakeTurn] InMeleeRange={inRange}");
 
-        // OLD:
-        // while (mover.IsMoving) yield return null;
-
-        // NEW:
-        yield return WaitForMovementOrTimeout(2.0f);
+        if (inRange)
+        {
+            // If you have a direct no-move execute, use it here.
+            // Otherwise this still works if executor handles "already in range" cleanly.
+            intentExecutor.ExecuteAbilityWithMovement(this, melee, targetData);
+        }
+        else
+        {
+            intentExecutor.ExecuteAbilityWithMovement(this, melee, targetData);
+            yield return WaitForMovementOrTimeout(2.0f);
+        }
 
         yield return new WaitForSeconds(0.1f);
     }
@@ -448,6 +460,26 @@ public class FireDrakeEnemy : Enemy
             Debug.LogWarning("BossEncounterScoreManager not found when drake died.");
 
         Debug.Log("FireDrake death handled: boss score finalized.");
+    }
+
+    private bool InMeleeRange(ICombatant a, ICombatant b, int range = 1)
+    {
+        if (a == null || b == null) return false;
+
+        var aCells = a.GetOccupiedCells();
+        var bCells = b.GetOccupiedCells();
+        if (aCells == null || bCells == null) return false;
+
+        for (int i = 0; i < aCells.Count; i++)
+        {
+            for (int j = 0; j < bCells.Count; j++)
+            {
+                int d = Mathf.Abs(aCells[i].x - bCells[j].x) + Mathf.Abs(aCells[i].z - bCells[j].z);
+                if (d <= range) return true;
+            }
+        }
+
+        return false;
     }
 
     private struct BreathLane

@@ -16,7 +16,10 @@ public class TargetingSystem
         TargetData data = new TargetData();
         data.user = user;
 
-        // Hard rule: Heal targets player Box only
+        Vector3Int gridPos = grid.WorldToGrid(worldClick);
+        data.preferredTargetCell = gridPos;
+
+        // Heal special case (keep if you added it)
         if (ability is HealAbility)
         {
             ICombatant player = FindPlayerBoxCombatant();
@@ -29,40 +32,38 @@ public class TargetingSystem
             return data;
         }
 
-        Vector3Int gridPos = grid.WorldToGrid(worldClick);
-
-        if (ability.targetingMode == TargetingMode.Self)
-        {
-            data.primaryTarget = user;
-            data.unitsInArea.Add(user);
-            data.preferredTargetCell = gridPos;
-            return data;
-        }
-
-        Vector3 world = grid.GridToWorld(gridPos);
-        GridNode node = grid.GetNodeFromWorld(world);
-        data.tile = node;
-
         ICombatant occupant = grid.GetOccupant(gridPos);
+
+        // NEW: multi-tile fallback
+        if (occupant == null)
+        {
+            List<ICombatant> valid = GetValidTargets(ability, user);
+            foreach (var t in valid)
+            {
+                var occ = t.GetOccupiedCells();
+                if (occ != null && occ.Contains(gridPos))
+                {
+                    occupant = t;
+                    break;
+                }
+            }
+        }
 
         if (occupant != null)
         {
             switch (ability.targetingMode)
             {
-                case TargetingMode.Ally:
-                    if (IsAlly(user, occupant))
-                    {
-                        data.primaryTarget = occupant;
-                        data.preferredTargetCell = gridPos;
-                    }
+                case TargetingMode.Self:
+                    if (occupant == user) data.primaryTarget = occupant;
                     break;
-
+                case TargetingMode.Ally:
+                    if (IsAlly(user, occupant)) data.primaryTarget = occupant;
+                    break;
                 case TargetingMode.Enemy:
-                    if (IsEnemy(user, occupant))
-                    {
-                        data.primaryTarget = occupant;
-                        data.preferredTargetCell = gridPos;
-                    }
+                    if (IsEnemy(user, occupant)) data.primaryTarget = occupant;
+                    break;
+                case TargetingMode.Area:
+                    data.primaryTarget = occupant;
                     break;
             }
         }
@@ -152,16 +153,25 @@ public class TargetingSystem
 
         foreach (ICombatant target in targets)
         {
-            if(target == null || target.IsDead())
-              continue;
+            if (target == null || target.IsDead())
+                continue;
 
-            Vector3Int pos = grid.WorldToGrid(target.GetWorldPosition());
-            TileVisual visual = grid.GetTileVisual(pos);
-
-            if (visual != null)
+            // Multi-tile safe
+            List<Vector3Int> cells = target.GetOccupiedCells();
+            if (cells == null || cells.Count == 0)
             {
-                visual.Highlight();
-                highlightedVisuals.Add(visual);
+                // fallback for older units
+                cells = new List<Vector3Int> { grid.WorldToGrid(target.GetWorldPosition()) };
+            }
+
+            foreach (Vector3Int pos in cells)
+            {
+                TileVisual visual = grid.GetTileVisual(pos);
+                if (visual != null && !highlightedVisuals.Contains(visual))
+                {
+                    visual.Highlight();
+                    highlightedVisuals.Add(visual);
+                }
             }
         }
     }
