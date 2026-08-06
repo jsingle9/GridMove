@@ -8,21 +8,24 @@ public class SpellTelegrapher : MonoBehaviour
 
     private readonly List<GameObject> spawned = new();
 
-    public void Show(GridController grid, List<Vector3Int> cells, Color color, Vector3 scale)
+    public void Show(GridController grid, List<Vector3Int> cells, TelegraphStyle style)
     {
         Clear();
-        if (grid == null || defaultTilePrefab == null || cells == null) return;
+        if (grid == null || cells == null || style == null) return;
+
+        GameObject prefab = style.tilePrefab != null ? style.tilePrefab : defaultTilePrefab;
+        if (prefab == null) return;
 
         foreach (var cell in cells)
         {
             if (!grid.IsInBounds(cell)) continue;
-
             var world = grid.GridToWorld(cell);
-            var go = Instantiate(defaultTilePrefab, world, Quaternion.identity, root ? root : transform);
-            go.transform.localScale = scale;
+
+            var go = Instantiate(prefab, world, Quaternion.identity, root ? root : transform);
+            go.transform.localScale = style.scale;
 
             var sr = go.GetComponentInChildren<SpriteRenderer>();
-            if (sr != null) sr.color = color;
+            if (sr != null) sr.color = style.color;
 
             spawned.Add(go);
         }

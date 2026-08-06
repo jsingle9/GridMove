@@ -59,7 +59,7 @@ public class FireballAbility : Ability
             cells.Add(node.gridPos);
 
         if (tele != null && telegraphStyle != null)
-            tele.Show(grid, cells, telegraphStyle.color, telegraphStyle.scale);
+            tele.Show(grid, cells, telegraphStyle);
 
         float delay = telegraphStyle != null ? telegraphStyle.duration : 0.8f;
         yield return new WaitForSeconds(delay);
