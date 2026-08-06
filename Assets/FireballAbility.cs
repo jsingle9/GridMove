@@ -9,6 +9,8 @@ public class FireballAbility : Ability
 
     [Header("Telegraph")]
     [SerializeField] private TelegraphStyle telegraphStyle;
+    
+    public void SetTelegraphStyle(TelegraphStyle style) => telegraphStyle = style;
 
     public FireballAbility()
     {
@@ -58,8 +60,20 @@ public class FireballAbility : Ability
         foreach (var node in grid.GetNodesInRadius(targetData.tile.gridPos, radius))
             cells.Add(node.gridPos);
 
+        if (tele == null)
+            tele = Object.FindFirstObjectByType<SpellTelegrapher>();
+
+        if (tele == null)
+        {
+            Debug.LogError("[Fireball] No SpellTelegrapher found in scene.");
+            yield break; // or continue without telegraph
+        }
+
+        Debug.Log($"[Fireball] tele={(tele!=null)} style={(telegraphStyle!=null)} prefab={(telegraphStyle!=null && telegraphStyle.tilePrefab!=null)}");
+
         if (tele != null && telegraphStyle != null)
             tele.Show(grid, cells, telegraphStyle);
+        Debug.Log("[Fireball] About to show telegraph");
 
         float delay = telegraphStyle != null ? telegraphStyle.duration : 0.8f;
         yield return new WaitForSeconds(delay);
