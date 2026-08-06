@@ -10,7 +10,8 @@ public class BoxMover : MonoBehaviour, ICombatant
     List<Ability> abilities = new List<Ability>();
     TargetingSystem targeting;
     IntentExecutor intentExecutor;
-
+    // To telegraph fireball for now
+    [SerializeField] TelegraphStyle fireballTelegraphStyle;
     IntentResolver resolver;
     MoveIntent currentMoveIntent; // Only for exploration movement
     [SerializeField] int maxHP = 45;
@@ -58,7 +59,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     private Weapon equippedWeapon;
     public Weapon EquippedWeapon {
         get => equippedWeapon;
-        set => EquippedWeapon = value;
+        set => equippedWeapon = value;
     }
 
     void Awake()
@@ -69,7 +70,10 @@ public class BoxMover : MonoBehaviour, ICombatant
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
         abilities.Add(new HealAbility());
-        abilities.Add(new FireballAbility());
+        //abilities.Add(new FireballAbility());
+        var fireball = new FireballAbility();
+        fireball.SetTelegraphStyle(fireballTelegraphStyle);
+        abilities.Add(fireball);
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
     }
@@ -619,5 +623,5 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
 
         return found;
-    }    
+    }
 }

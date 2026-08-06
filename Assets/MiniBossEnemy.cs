@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class MiniBossEnemy : Enemy
 {
+    [SerializeField] TelegraphStyle fireballTelegraphStyle;
+
     protected override void Awake()
     {
         base.Awake();
@@ -21,7 +23,9 @@ public class MiniBossEnemy : Enemy
         abilities.Clear();
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
-        abilities.Add(new FireballAbility());
+        var fireball = new FireballAbility();
+        fireball.SetTelegraphStyle(fireballTelegraphStyle);
+        abilities.Add(fireball);
 
         Debug.Log("MiniBossEnemy initialized");
     }

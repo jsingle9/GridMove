@@ -12413,6 +12413,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 43542802}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: fireballTelegraphStyle
+      value: 
+      objectReference: {fileID: 11400000, guid: e2df6adf68d284a5b8ba85ea1623df6a, type: 2}
     - target: {fileID: 4741787384094870354, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -14962,6 +14966,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 43542802}
+    - target: {fileID: 8063584508670854984, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
+      propertyPath: fireballTelegraphStyle
+      value: 
+      objectReference: {fileID: 11400000, guid: e2df6adf68d284a5b8ba85ea1623df6a, type: 2}
     - target: {fileID: 8456844153550462472, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.15
@@ -24030,6 +24038,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
+--- !u!1 &1999481189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1999481191}
+  - component: {fileID: 1999481190}
+  m_Layer: 0
+  m_Name: SpellTelegrapher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1999481190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999481189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b429680667cb407b935d69059550599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpellTelegrapher
+  defaultTilePrefab: {fileID: 0}
+  root: {fileID: 0}
+--- !u!4 &1999481191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999481189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 831.02545, y: 684.4241, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2003602423
 GameObject:
   m_ObjectHideFlags: 0
@@ -24660,3 +24714,4 @@ SceneRoots:
   - {fileID: 1805844195}
   - {fileID: 435269550}
   - {fileID: 664656118}
+  - {fileID: 1999481191}

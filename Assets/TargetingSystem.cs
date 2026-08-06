@@ -18,6 +18,7 @@ public class TargetingSystem
 
         Vector3Int gridPos = grid.WorldToGrid(worldClick);
         data.preferredTargetCell = gridPos;
+        data.tile = grid.GetNodeFromWorld(grid.GridToWorld(gridPos));
 
         // Heal special case (keep if you added it)
         if (ability is HealAbility)
@@ -28,6 +29,8 @@ public class TargetingSystem
                 data.primaryTarget = player;
                 data.unitsInArea.Add(player);
                 data.preferredTargetCell = grid.WorldToGrid(player.GetWorldPosition());
+                if (ability.targetingMode == TargetingMode.Area && data.tile == null)
+                    return null;
             }
             return data;
         }
