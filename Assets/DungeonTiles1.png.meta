@@ -1,0 +1,3638 @@
+fileFormatVersion: 2
+guid: a24d04d78e8a8416080be69068f1a390
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2998703348590815816
+    second: DungeonTiles1_0
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DungeonTiles1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b5587831377266d0800000000000000
+      internalID: -2998703348590815816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c76fc2cc0c6145e5abc0a1d0ad8db53
+      internalID: -824666593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffbda6a2beaaf46d99ff0ab1622cc4c4
+      internalID: 1091859723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a8b9b892adda4dcea1e317951bde49b
+      internalID: 360160342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_4
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2e3d7cf6ac75490a9a981106057988d
+      internalID: 611004752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_5
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fbf07da27a12458ea8ebef704bd04d2
+      internalID: 1577730499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_6
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ef260d23f480433e9f04941694b5245
+      internalID: -507616988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_7
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 700
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f93fcf1619fb43ea96834c6517abf25
+      internalID: -799853377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_8
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc4668916d991478fac5a7f37cfa3c46
+      internalID: -1174087538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_9
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38bd53d6263504d26be39b566ef50307
+      internalID: -714969555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_10
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 985257f33e7e44c9e8f39eedd7bd6b19
+      internalID: 1740290733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_11
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d5acf36bd4ec486e8da24d03e325fd6
+      internalID: -1351443370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_12
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5172a0f68a53644cba5b15ebc6d68a61
+      internalID: 1515516698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_13
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: aeb44d0eccad14f3bb94066bf27906c1
+      internalID: 1183800742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_14
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 650
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbbf2d65c15bf486dba3e6cb5bf7a488
+      internalID: 2074267847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d78b37f90bd64e489fbc99d25f9083c
+      internalID: -934564952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_16
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0f7be2ea02a14714a91198932a1619c
+      internalID: 263783042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_17
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90a7b9c00e9214cbea2754765af12875
+      internalID: 1199448598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_18
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 507a7339cfdf64f4aa69e6c7266294b9
+      internalID: -1985065867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_19
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14be7378761614fbe9f093da5d8851b2
+      internalID: 1740991449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_20
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9050997dacbd74c61b00947fb10c22ca
+      internalID: 1434946817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_21
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e359a6c730c445debc346c46312c02b
+      internalID: 502569610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_22
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 600
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 504fb412ecba849a0977f906fff1f9df
+      internalID: -1567524664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_23
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa5a7e0a6084e49fa88efca581defd23
+      internalID: -1071168585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_24
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86b02845bf3e8446c893c79d9ee335d9
+      internalID: -357358538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_25
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa57a4f3f3f5f422aab92ed47f683007
+      internalID: 2057125305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_26
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0cfab7d269db4b63b936848ad568f8f
+      internalID: -1643898799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_27
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc4657c0efc204c2a98ea96e13a97b2f
+      internalID: 1004302986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_28
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2eed19a73c9214924b227317ede1c271
+      internalID: -785612733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_29
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 550
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d4b992501c2342a2a31e506289d2933
+      internalID: -1919215237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50a5987bc6cdc4d8aa799034335b4baa
+      internalID: 453609268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_31
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e75b1f1f1aa604d08b22ffadbc9c3bae
+      internalID: -121231476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_32
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac9b897bd1f71481393cda754977b632
+      internalID: -1475877036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_33
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f62beb8f39364421c922ca134e3c8fdf
+      internalID: -384217704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_34
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: da3f373a277b44e108b0b4cb7fe01246
+      internalID: 1651573124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_35
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cb4fef0db5204d9faf24e5613b4b4ea
+      internalID: -2097023748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_36
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfc1bfcf2549f4a57891b18349e8c4a5
+      internalID: -823249767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_37
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 500
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7999128af3d4e48d581996d9c8f0fd43
+      internalID: -183713919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_38
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cf180b1e07a74a1aabe7d38b0a1ac4d
+      internalID: 1930971866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_39
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: db55d9d3bc6014d6cb16f791b1deb2cc
+      internalID: 514771717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_40
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b113cb03cda73419f9e258167e37b42d
+      internalID: 1131818815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_41
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: d15ab12dec0054b019b6c22eb4bc6eaf
+      internalID: 2055546969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_42
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7b2a8101c4854d598e8dd16c46e2b32
+      internalID: -1995966737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_43
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f7f6e38f18d944688ad651ded3173e6
+      internalID: 383083241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_44
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 450
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1e25616d99a8442793af1e9506aca3b
+      internalID: -334307604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d79a01e39c524fd08cd1f196158d3ff
+      internalID: 1357513092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_46
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6323ba4b45fe04a0b8567ec96ed5d609
+      internalID: 160899635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_47
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4729feefe0a45435fb3cbd8137c67de5
+      internalID: -2024127926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_48
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32644e8d0cc2e44d59fd0b269dc4f26a
+      internalID: -1112768081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_49
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fbbbdbb51f3b49ac837280ae51c04c7
+      internalID: 129054428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_50
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38e4351e0d99b48c0b45d35bb57d837f
+      internalID: -1722400860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_51
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 136597cad0dea4de1a47181850bae92f
+      internalID: 1147103192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_52
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 400
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd15f90c8234d4ecf97ad76818ea6411
+      internalID: 702116782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_53
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9984a62a46f754b5a809df4d97dc613f
+      internalID: -844591486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_54
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38701debd94364bcbb1e403ad37274eb
+      internalID: 1070006664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_55
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1353aeaa0658b4b8c81936098206d78a
+      internalID: -48525095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_56
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: edf1576931805446d8c24289d0f31ef5
+      internalID: 1427719073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_57
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7b38b4af8f714de2906c408b701ebd2
+      internalID: -510131139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_58
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86d12b22b220e4b069363ed938cf7987
+      internalID: -1451206434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_59
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 350
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e19582aa5c8ce494f9981bcffb72abde
+      internalID: -957105497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08fb889705e914179842cb646072c729
+      internalID: 2065796291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_61
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 037d8c43ef2334a9884e816fe4853589
+      internalID: -1486682648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_62
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d8e80af5ba794a909c1fb08c4ce31fe
+      internalID: -1466115835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_63
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: fefb3e2c83cb1442b9ba0bfd56525bf7
+      internalID: 1044811921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_64
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebdeb00114d6c4bb2b914b498dafa858
+      internalID: 1187849133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_65
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b67c7981c6fd41869c9d951fd7d18ec
+      internalID: -1444515707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_66
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68e0504b51d084fa88b85fd100ce3d90
+      internalID: 682164139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_67
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 300
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8d0c74623ce142cb9343f5ffac727fa
+      internalID: 533840731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_68
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecce6f27c009a4b63978060bd4e84691
+      internalID: -1008834848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_69
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68f17ca65e2b64c84bfd9e7531dfb3f9
+      internalID: -267571252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_70
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40601fa34402c4c62b080d27aca089ae
+      internalID: 600861392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_71
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: d57a813e235154433abdccbe17b573a3
+      internalID: -547406387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_72
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c49c6f0ad2904c70a5e2d90dce27c55
+      internalID: -195554769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_73
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48aa2bfab976e449396a9c3de9a5b314
+      internalID: -109881810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_74
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 250
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5162ec26c8c414db38a366b105370d31
+      internalID: -1618724254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_75
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3c06598f3db14a9088235feabfbf445
+      internalID: -510544453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_76
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fba107e18c9c44709cce53f92c89658
+      internalID: 1393764142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_77
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad36dac1be9d84a809116f9e9998f3ed
+      internalID: 2077001256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_78
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 314b4838cfd7249649da879077674ef2
+      internalID: 1409247656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_79
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 017ffb88d16624ae48d8cac5eedaf449
+      internalID: 2060053991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_80
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b98ebf5464cd4558a59a07c01f297a3
+      internalID: -1322824907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_81
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0dc2151b649864bab92d05b98904a35d
+      internalID: 2109431705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_82
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: bab1dac3e26264b2aaa473c01a8a0d8b
+      internalID: 615087578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_83
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 116959e9c960f48e8b384b725b4b30be
+      internalID: 1755189572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_84
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ef24a33eb9c544ce9c3e7aa8df0adf1
+      internalID: -1864651232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_85
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8aa5f796029a04209be3571a8739081a
+      internalID: 892621701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_86
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ff9aa0fdfe004ece8767bc264ac3083
+      internalID: -501761721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_87
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60064b122f57c4acebd8d4308f4759d5
+      internalID: 1854837618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_88
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2d79a1cff7ac4f4492cf8bba24c5142
+      internalID: -239711449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_89
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 150
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6d0d2a83ae1845d4a66ff3877db3548
+      internalID: -1566901137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_90
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee6400fdc878a41a199948b14802eaf8
+      internalID: 246340195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_91
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae9295182e04841319a126f1459ff561
+      internalID: 755534985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_92
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: a63c0cae0e26d4875807c83651d9a509
+      internalID: -1688937722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_93
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9afe5fb7780df46318970cdd32a578bb
+      internalID: -113440692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_94
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a58bc455bb00407883060b5108a7225
+      internalID: -416486496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_95
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: db0029639495a4fdc8e70c74cae3188f
+      internalID: 1264914752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_96
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 284edaa316b2846ee8ec46752285275c
+      internalID: -614128801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_97
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54572ddb7342149a48c5f06b5a80b9a6
+      internalID: 764030039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_98
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f838e18ea14af4089bf24015d570407d
+      internalID: 68532049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_99
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4c2599e104ad48c3bfc727906582d35
+      internalID: 374942047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_100
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae5f955f9c1fa40e2b1a3492632114ca
+      internalID: -2052702257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_101
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6f5a742782d54c3c8b5d53d8c3bf46c
+      internalID: -704952646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_102
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8dc14949f9c8d4deaafd89c6c5994611
+      internalID: 1939746049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_103
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20b34c91f388c48058f8098ce327318e
+      internalID: -1538033750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_104
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e702b6300b34d470d9968fe5e0efac18
+      internalID: 1357053929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_105
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b89717f3c2064fd694904ab84abde1c
+      internalID: -155314002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_106
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e442885d5cb844621807a6a984e7263b
+      internalID: -1026833194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_107
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc03b2e1cd71f4f548f141ce5821be76
+      internalID: -341742482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_108
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54a228cb220ca4a6190717c655aa49a6
+      internalID: -1203747701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_109
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c8a0810c89cd44e3ba66fdc68bbabaf
+      internalID: 1610917903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_110
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 185f089897c1f47849a5186652c5d5df
+      internalID: -2029813867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_111
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64ce50429bdd949d190693ef4af28d4b
+      internalID: 970829750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DungeonTiles1_112
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      physicsShape:
+      - - {x: 0, y: -50}
+        - {x: 50, y: 0}
+        - {x: 0, y: 50}
+        - {x: -50, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 115750071bdcc4783bce72c480196e71
+      internalID: -1864715125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 30526aafb908c48a982400b2b7c5983e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":100.0,"y":100.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":3,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      DungeonTiles1_0: -2998703348590815816
+      DungeonTiles1_1: -824666593
+      DungeonTiles1_10: 1740290733
+      DungeonTiles1_100: -2052702257
+      DungeonTiles1_101: -704952646
+      DungeonTiles1_102: 1939746049
+      DungeonTiles1_103: -1538033750
+      DungeonTiles1_104: 1357053929
+      DungeonTiles1_105: -155314002
+      DungeonTiles1_106: -1026833194
+      DungeonTiles1_107: -341742482
+      DungeonTiles1_108: -1203747701
+      DungeonTiles1_109: 1610917903
+      DungeonTiles1_11: -1351443370
+      DungeonTiles1_110: -2029813867
+      DungeonTiles1_111: 970829750
+      DungeonTiles1_112: -1864715125
+      DungeonTiles1_12: 1515516698
+      DungeonTiles1_13: 1183800742
+      DungeonTiles1_14: 2074267847
+      DungeonTiles1_15: -934564952
+      DungeonTiles1_16: 263783042
+      DungeonTiles1_17: 1199448598
+      DungeonTiles1_18: -1985065867
+      DungeonTiles1_19: 1740991449
+      DungeonTiles1_2: 1091859723
+      DungeonTiles1_20: 1434946817
+      DungeonTiles1_21: 502569610
+      DungeonTiles1_22: -1567524664
+      DungeonTiles1_23: -1071168585
+      DungeonTiles1_24: -357358538
+      DungeonTiles1_25: 2057125305
+      DungeonTiles1_26: -1643898799
+      DungeonTiles1_27: 1004302986
+      DungeonTiles1_28: -785612733
+      DungeonTiles1_29: -1919215237
+      DungeonTiles1_3: 360160342
+      DungeonTiles1_30: 453609268
+      DungeonTiles1_31: -121231476
+      DungeonTiles1_32: -1475877036
+      DungeonTiles1_33: -384217704
+      DungeonTiles1_34: 1651573124
+      DungeonTiles1_35: -2097023748
+      DungeonTiles1_36: -823249767
+      DungeonTiles1_37: -183713919
+      DungeonTiles1_38: 1930971866
+      DungeonTiles1_39: 514771717
+      DungeonTiles1_4: 611004752
+      DungeonTiles1_40: 1131818815
+      DungeonTiles1_41: 2055546969
+      DungeonTiles1_42: -1995966737
+      DungeonTiles1_43: 383083241
+      DungeonTiles1_44: -334307604
+      DungeonTiles1_45: 1357513092
+      DungeonTiles1_46: 160899635
+      DungeonTiles1_47: -2024127926
+      DungeonTiles1_48: -1112768081
+      DungeonTiles1_49: 129054428
+      DungeonTiles1_5: 1577730499
+      DungeonTiles1_50: -1722400860
+      DungeonTiles1_51: 1147103192
+      DungeonTiles1_52: 702116782
+      DungeonTiles1_53: -844591486
+      DungeonTiles1_54: 1070006664
+      DungeonTiles1_55: -48525095
+      DungeonTiles1_56: 1427719073
+      DungeonTiles1_57: -510131139
+      DungeonTiles1_58: -1451206434
+      DungeonTiles1_59: -957105497
+      DungeonTiles1_6: -507616988
+      DungeonTiles1_60: 2065796291
+      DungeonTiles1_61: -1486682648
+      DungeonTiles1_62: -1466115835
+      DungeonTiles1_63: 1044811921
+      DungeonTiles1_64: 1187849133
+      DungeonTiles1_65: -1444515707
+      DungeonTiles1_66: 682164139
+      DungeonTiles1_67: 533840731
+      DungeonTiles1_68: -1008834848
+      DungeonTiles1_69: -267571252
+      DungeonTiles1_7: -799853377
+      DungeonTiles1_70: 600861392
+      DungeonTiles1_71: -547406387
+      DungeonTiles1_72: -195554769
+      DungeonTiles1_73: -109881810
+      DungeonTiles1_74: -1618724254
+      DungeonTiles1_75: -510544453
+      DungeonTiles1_76: 1393764142
+      DungeonTiles1_77: 2077001256
+      DungeonTiles1_78: 1409247656
+      DungeonTiles1_79: 2060053991
+      DungeonTiles1_8: -1174087538
+      DungeonTiles1_80: -1322824907
+      DungeonTiles1_81: 2109431705
+      DungeonTiles1_82: 615087578
+      DungeonTiles1_83: 1755189572
+      DungeonTiles1_84: -1864651232
+      DungeonTiles1_85: 892621701
+      DungeonTiles1_86: -501761721
+      DungeonTiles1_87: 1854837618
+      DungeonTiles1_88: -239711449
+      DungeonTiles1_89: -1566901137
+      DungeonTiles1_9: -714969555
+      DungeonTiles1_90: 246340195
+      DungeonTiles1_91: 755534985
+      DungeonTiles1_92: -1688937722
+      DungeonTiles1_93: -113440692
+      DungeonTiles1_94: -416486496
+      DungeonTiles1_95: 1264914752
+      DungeonTiles1_96: -614128801
+      DungeonTiles1_97: 764030039
+      DungeonTiles1_98: 68532049
+      DungeonTiles1_99: 374942047
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
