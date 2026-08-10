@@ -31,6 +31,8 @@ public class BoxMover : MonoBehaviour, ICombatant
     public int Speed => speed;
     public int ArmorClass => armorClass;
     public int AttackBonus => attackBonus;
+    [SerializeField] private CharacterSheet characterSheet = new CharacterSheet();
+    public CharacterSheet Sheet => characterSheet;
 
     // These now factor in equipped weapons
     public string DamageDice
@@ -64,16 +66,33 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void Awake()
     {
-        currentHP = maxHP;
+        // 1) Ensure CharacterSheet defaults
+        if (characterSheet == null)
+            characterSheet = new CharacterSheet();
+
+        if (characterSheet.Level < 1) characterSheet.Level = 1;
+        if (characterSheet.MaxHP < 1) characterSheet.MaxHP = maxHP; // keep old inspector value as fallback
+        if (characterSheet.CurrentHP < 1) characterSheet.CurrentHP = characterSheet.MaxHP;
+        if (characterSheet.ArmorClass < 1) characterSheet.ArmorClass = armorClass;
+        if (characterSheet.Speed < 1) characterSheet.Speed = speed;
+
+        // 2) Sheet -> runtime (authoritative sync)
+        maxHP = characterSheet.MaxHP;
+        currentHP = characterSheet.CurrentHP;
+        armorClass = characterSheet.ArmorClass;
+        speed = characterSheet.Speed;
+
+        // 3) Existing setup
         equippedWeapon = new Weapon("Iron Sword", 3, "1d8");
 
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
         abilities.Add(new HealAbility());
-        //abilities.Add(new FireballAbility());
+
         var fireball = new FireballAbility();
         fireball.SetTelegraphStyle(fireballTelegraphStyle);
         abilities.Add(fireball);
+
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
     }
@@ -461,6 +480,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     public void TakeDamage(int amount)
     {
         currentHP -= amount;
+        characterSheet.CurrentHP = Mathf.Max(0, currentHP);
         Debug.Log($"{name} took {amount} damage. HP: {currentHP}");
 
         if (DamagePopupManager.Instance != null)
@@ -556,6 +576,8 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         if(currentHP > maxHP)
             currentHP = maxHP;
+
+        characterSheet.CurrentHP = currentHP;
 
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
     }
