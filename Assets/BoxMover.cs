@@ -66,23 +66,21 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void Awake()
     {
-        // 1) Ensure CharacterSheet defaults
         if (characterSheet == null)
             characterSheet = new CharacterSheet();
 
         if (characterSheet.Level < 1) characterSheet.Level = 1;
-        if (characterSheet.MaxHP < 1) characterSheet.MaxHP = maxHP; // keep old inspector value as fallback
-        if (characterSheet.CurrentHP < 1) characterSheet.CurrentHP = characterSheet.MaxHP;
-        if (characterSheet.ArmorClass < 1) characterSheet.ArmorClass = armorClass;
-        if (characterSheet.Speed < 1) characterSheet.Speed = speed;
 
-        // 2) Sheet -> runtime (authoritative sync)
+        // Apply class rules at level 1 (fighter for now)
+        var rules = ClassRulesFactory.Create(CharacterClassType.Fighter);
+        rules?.ApplyLevel1(characterSheet);
+
+        // Sheet -> runtime sync
         maxHP = characterSheet.MaxHP;
         currentHP = characterSheet.CurrentHP;
         armorClass = characterSheet.ArmorClass;
         speed = characterSheet.Speed;
 
-        // 3) Existing setup
         equippedWeapon = new Weapon("Iron Sword", 3, "1d8");
 
         abilities.Add(new AttackAbility());
