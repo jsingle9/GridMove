@@ -23080,6 +23080,10 @@ PrefabInstance:
       value: GoldPileObstacle (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5633746357476580666, guid: 21166f63098024ff58ffbdd77b2279cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9f6c33a01ddca41df86e012fd10f4d76, type: 3}
+    - target: {fileID: 5633746357476580666, guid: 21166f63098024ff58ffbdd77b2279cb, type: 3}
       propertyPath: m_SortingLayer
       value: 2
       objectReference: {fileID: 0}

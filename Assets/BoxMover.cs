@@ -74,6 +74,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         // Apply class rules at level 1 (fighter for now)
         var rules = ClassRulesFactory.Create(CharacterClassType.Fighter);
         rules?.ApplyLevel1(characterSheet);
+        rules?.ApplyLevelUp(characterSheet, 2);
 
         // Sheet -> runtime sync
         maxHP = characterSheet.MaxHP;

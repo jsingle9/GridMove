@@ -17,4 +17,31 @@ public class FighterRules : IClassRules
         // Your grid movement default
         if (sheet.Speed <= 0) sheet.Speed = 6;
     }
+
+    public void ApplyLevelUp(CharacterSheet sheet, int newLevel)
+    {
+        if (sheet == null) return;
+        if (newLevel <= sheet.Level) return;
+
+        for (int lvl = sheet.Level + 1; lvl <= newLevel; lvl++)
+        {
+            // Fighter hit die d10; using fixed average gain for predictability
+            int hpGain = Mathf.Max(1, 6 + sheet.Scores.ConMod);
+            sheet.MaxHP += hpGain;
+
+            // Feature unlocks
+            if (lvl == 2)
+            {
+                // Track in your own feature system/list when you add it
+                // e.g., sheet.Features.Add("Action Surge");
+            }
+            else if (lvl == 3)
+            {
+                // e.g., sheet.Features.Add("Martial Archetype");
+            }
+        }
+
+        sheet.Level = newLevel;
+        sheet.CurrentHP = sheet.MaxHP; // common on level-up for demo feel
+    }
 }
