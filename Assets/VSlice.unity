@@ -12416,7 +12416,7 @@ PrefabInstance:
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: fireballTelegraphStyle
       value: 
-      objectReference: {fileID: 11400000, guid: e2df6adf68d284a5b8ba85ea1623df6a, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4741787384094870354, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -23460,6 +23460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityUI
   CurrentPhase: 0
   player: {fileID: 1676257078}
+  abilityButtons: []
 --- !u!4 &1817286354
 Transform:
   m_ObjectHideFlags: 0
