@@ -10,6 +10,7 @@ public class AbilityUI : MonoBehaviour
     public Ability selectedAbility;
     public BoxMover player;   // drag player object here in inspector
     private AOEVisualizer aoeVisualizer;
+    [SerializeField] private AbilityButtonUI[] abilityButtons;
 
     void Awake(){
 
@@ -25,6 +26,10 @@ public class AbilityUI : MonoBehaviour
           aoeObj.transform.parent = transform;
           aoeVisualizer = aoeObj.AddComponent<AOEVisualizer>();
       }
+    }
+
+    void Start(){
+      RefreshAbilityButtons();
     }
 
     void Update(){
@@ -146,5 +151,74 @@ public class AbilityUI : MonoBehaviour
         }
 
         targetingSystem.HighlightValidTargets(selectedAbility, player);
+    }
+
+    public void TryActivateAbilitySlot(int slot, string sourceTag)
+    {
+        if (player == null)
+        {
+            Debug.LogWarning("TryActivateAbilitySlot: player is null.");
+            return;
+        }
+
+        Ability ability = player.GetAbility(slot);
+        if (ability == null)
+        {
+            Debug.Log($"No ability in slot {slot}");
+            return;
+        }
+
+        if (!ability.CanUse(player))
+        {
+            Debug.Log($"{ability.AbilityName} cannot be used right now.");
+            return;
+        }
+
+        selectedAbility = ability;
+
+        if (grid != null)
+            grid.ClearAllHighlights();
+
+        Debug.Log(
+            $"[ABILITY ACTIVATE] source={sourceTag} " +
+            $"slot={slot} ability={ability.AbilityName} mode={ability.targetingMode}"
+        );
+
+        bool selfCast =
+            ability.targetingMode == TargetingMode.Self ||
+            ability.Range <= 0f;
+
+        if (selfCast)
+        {
+            TargetData selfTarget = new TargetData
+            {
+                primaryTarget = player,
+                user = player
+            };
+            selfTarget.unitsInArea.Add(player);
+
+            AbilityResult result = ability.TryUse(player, selfTarget);
+
+            if (!result.Success)
+                Debug.Log($"Ability failed: {result.FailureReason}");
+
+            CurrentPhase = PlayerTurnPhase.WaitingForAction;
+            selectedAbility = null;
+            return;
+        }
+
+        CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+        BeginTargetingForSelectedAbility(sourceTag);
+    }
+
+    public void RefreshAbilityButtons()
+    {
+        if (player == null || abilityButtons == null) return;
+
+        for (int i = 0; i < abilityButtons.Length; i++)
+        {
+            Ability a = player.GetAbility(i);
+            abilityButtons[i].SetAbility(a, i);
+        }
     }
 }

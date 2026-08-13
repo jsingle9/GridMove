@@ -33,6 +33,8 @@ public class BoxMover : MonoBehaviour, ICombatant
     public int AttackBonus => attackBonus;
     [SerializeField] private CharacterSheet characterSheet = new CharacterSheet();
     public CharacterSheet Sheet => characterSheet;
+    public bool SecondWindUsedThisCombat { get; set; }
+    public bool ActionSurgeUsedThisCombat { get; set; }
 
     // These now factor in equipped weapons
     public string DamageDice
@@ -86,11 +88,13 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
-        abilities.Add(new HealAbility());
+      //abilities.Add(new HealAbility());
 
-        var fireball = new FireballAbility();
+      /*  var fireball = new FireballAbility();
         fireball.SetTelegraphStyle(fireballTelegraphStyle);
-        abilities.Add(fireball);
+        abilities.Add(fireball); */
+        abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
+        abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
 
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
@@ -118,6 +122,12 @@ public class BoxMover : MonoBehaviour, ICombatant
         // Initialize IntentExecutor
         intentExecutor = new IntentExecutor();
         intentExecutor.Initialize(grid, mover);
+        // Wire UI to this player and refresh ability buttons
+        if (AbilityUI.Instance != null)
+        {
+            AbilityUI.Instance.player = this;
+            AbilityUI.Instance.RefreshAbilityButtons();
+        }        
     }
 
     void Update()
@@ -313,6 +323,8 @@ public class BoxMover : MonoBehaviour, ICombatant
         currentMoveIntent = null;
 
         GameStateManager.Instance.EnterCombat();
+        SecondWindUsedThisCombat = false;
+        ActionSurgeUsedThisCombat = false;
         CombatManager.Instance.StartCombat(participants);
     }
 
