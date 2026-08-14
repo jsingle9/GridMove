@@ -23,4 +23,5 @@ public class CharacterSheet
 
     // 5e progression: 2 at lv1-4, 3 at 5-8, 4 at 9-12, etc.
     public int ProficiencyBonus => 2 + ((Level - 1) / 4);
+    public CharacterFeatureFlags Flags = new CharacterFeatureFlags();
 }
