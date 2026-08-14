@@ -127,7 +127,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         {
             AbilityUI.Instance.player = this;
             AbilityUI.Instance.RefreshAbilityButtons();
-        }        
+        }
     }
 
     void Update()
@@ -263,68 +263,72 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void CheckForProximityCombat()
     {
-        if(GameStateManager.Instance.CurrentState != GameState.FreeExplore)
+        if (GameStateManager.Instance.CurrentState != GameState.FreeExplore)
             return;
 
-        if(mover.IsMoving)
+        if (mover.IsMoving)
             return;
 
-        // Longer trigger range (world units). Tune to taste.
         float combatRadius = 12f;
         float combatRadiusSqr = combatRadius * combatRadius;
 
-        // Still use overlap for "who is nearby", but LOS is grid-based via GridController.
-        Collider2D[] hits = Physics2D.OverlapCircleAll(
-            transform.position,
-            combatRadius
-        );
+        // Snap player first so LoS uses the same final position combat starts from.
+        Vector3Int snappedCell = grid.WorldToGrid(transform.position);
+        transform.position = grid.GridToWorld(snappedCell);
+        Vector3Int playerCell = snappedCell;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, combatRadius);
 
         List<ICombatant> participants = new List<ICombatant>();
-        bool enemyFoundWithLineOfSight = false;
+        bool anyEnemyHasLineOfSight = false;
 
         ICombatant self = GetComponent<ICombatant>();
-        if(self != null)
+        if (self != null)
             participants.Add(self);
 
-        Vector3Int playerCell = grid.WorldToGrid(transform.position);
+        List<ICombatant> nearbyEnemies = new List<ICombatant>();
 
-        foreach(Collider2D hit in hits)
+        foreach (Collider2D hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
-            if(enemy == null)
-                continue;
+            if (enemy == null) continue;
 
-            // Optional safety check in case overlap shape catches weird edge cases.
             Vector3 toEnemy = enemy.transform.position - transform.position;
-            if(toEnemy.sqrMagnitude > combatRadiusSqr)
-                continue;
+            if (toEnemy.sqrMagnitude > combatRadiusSqr) continue;
+
+            ICombatant enemyCombatant = enemy.GetComponent<ICombatant>();
+            if (enemyCombatant == null) continue;
+
+            if (!nearbyEnemies.Contains(enemyCombatant))
+                nearbyEnemies.Add(enemyCombatant);
 
             Vector3Int enemyCell = grid.WorldToGrid(enemy.transform.position);
-
-            // Require tile-based line of sight (your existing mechanic).
-            if(!grid.HasLineOfSight(playerCell, enemyCell))
-                continue;
-
-            enemyFoundWithLineOfSight = true;
-
-            ICombatant combatant = enemy.GetComponent<ICombatant>();
-            if(combatant != null && !participants.Contains(combatant))
-                participants.Add(combatant);
+            if (grid.HasLineOfSight(playerCell, enemyCell))
+                anyEnemyHasLineOfSight = true;
         }
 
-        if(!enemyFoundWithLineOfSight)
+        // Require at least one LoS enemy to trigger combat at all.
+        if (!anyEnemyHasLineOfSight)
             return;
 
-        Debug.Log("Proximity combat triggered (range + tile LoS)");
+        // Pull all nearby enemies into this encounter once triggered.
+        foreach (ICombatant e in nearbyEnemies)
+        {
+            if (!participants.Contains(e))
+                participants.Add(e);
+        }
 
-        Vector3Int cell = grid.WorldToGrid(transform.position);
-        transform.position = grid.GridToWorld(cell);
+        Debug.Log($"Proximity combat triggered. Participants={participants.Count}");
+
         mover.Stop();
         currentMoveIntent = null;
 
         GameStateManager.Instance.EnterCombat();
+
+        // Reset per-combat feature usage
         SecondWindUsedThisCombat = false;
         ActionSurgeUsedThisCombat = false;
+
         CombatManager.Instance.StartCombat(participants);
     }
 
