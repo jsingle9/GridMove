@@ -1,27 +1,44 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
 
-[System.Serializable]
+[Serializable]
 public class CharacterSheet
 {
-    [Header("Identity")]
+    public string CharacterId = Guid.NewGuid().ToString();
     public string CharacterName = "New Hero";
-    public string Ancestry;   // later: enum if you want strict typing
-    public string Background; // later: enum/scriptable data
 
-    [Header("Progression")]
+    public string ClassId = "fighter";
+    public string SpeciesId = "human";
+    public string BackgroundId = "soldier";
+
     public int Level = 1;
     public int Experience = 0;
 
-    [Header("Core Stats")]
-    public AbilityScores Scores = new AbilityScores();
-
-    [Header("Combat Snapshot")]
-    public int MaxHP = 1;
+    public AbilityScores Scores = new();
     public int CurrentHP = 1;
-    public int ArmorClass = 10;
-    public int Speed = 6; // your grid-oriented movement budget
+    public int TempHP = 0;
 
-    // 5e progression: 2 at lv1-4, 3 at 5-8, 4 at 9-12, etc.
+    public string EquippedArmorId = "";
+    public bool HasShieldEquipped = false;
+    public int BaseSpeed = 6;
+
+    public List<string> SkillProficiencyIds = new();
+    public List<string> SaveProficiencyIds = new();
+    public List<string> FeatureIds = new();
+
+    public int DataVersion = 1;
+    public long LastUpdatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
     public int ProficiencyBonus => 2 + ((Level - 1) / 4);
-    public CharacterFeatureFlags Flags = new CharacterFeatureFlags();
+
+    // ---- TEMP COMPAT SHIMS ----
+    public int MaxHP;       // TODO remove after RulesService migration
+    public int ArmorClass;  // TODO remove after RulesService migration
+    public int Speed
+    {
+        get => BaseSpeed;
+        set => BaseSpeed = value;
+    }
+
+    public CharacterFeatureFlags Flags = new CharacterFeatureFlags(); // TODO migrate to FeatureIds
 }
