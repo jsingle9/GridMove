@@ -27,6 +27,8 @@ public class BoxMover : MonoBehaviour, ICombatant
     [SerializeField] string baseDamageDice = "1d8";      // Base damage without weapon
     [SerializeField] int baseDamageModifier = 3;         // Base modifier without weapon
     [SerializeField] int speed = 6;
+    private ClassDef classDef;
+    private ArmorDef armorDef;
     public string Name => name;
     public int Speed => speed;
     public int ArmorClass => armorClass;
@@ -78,13 +80,27 @@ public class BoxMover : MonoBehaviour, ICombatant
         rules?.ApplyLevel1(characterSheet);
         rules?.ApplyLevelUp(characterSheet, 2);
 
-        // Sheet -> runtime sync
-        maxHP = characterSheet.MaxHP;
-        currentHP = characterSheet.CurrentHP;
-        armorClass = characterSheet.ArmorClass;
-        speed = characterSheet.Speed;
+        // Resolve defs (temp lookup approach)
+        classDef = RulesLookups.GetClassDef(characterSheet.ClassId);
+        armorDef = RulesLookups.GetArmorDefOrNull(characterSheet.EquippedArmorId);
 
-        equippedWeapon = new Weapon("Iron Sword", 3, "1d8");
+        // Rules-authoritative sync
+        maxHP = RulesService.CalculateMaxHP(characterSheet, classDef);
+        armorClass = RulesService.CalculateAC(characterSheet, armorDef);
+        speed = RulesService.CalculateSpeed(characterSheet);
+
+        // Keep current HP valid
+        if (characterSheet.CurrentHP <= 0)
+            characterSheet.CurrentHP = maxHP;
+
+        currentHP = Mathf.Clamp(characterSheet.CurrentHP, 0, maxHP);
+
+        // TEMP compat backfill (safe during migration)
+        characterSheet.MaxHP = maxHP;
+        characterSheet.ArmorClass = armorClass;
+        characterSheet.Speed = speed;
+
+        equippedWeapon = new Weapon("Long Sword", 3, "1d8");
 
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
@@ -343,6 +359,7 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         Debug.Log("Player turn started");
         turnStarted = true;
+        RefreshDerivedCombatStats();
 
         HasMove = true;
         HasAction = true;
@@ -660,5 +677,22 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
 
         return found;
+    }
+    private void RefreshDerivedCombatStats()
+    {
+        classDef = RulesLookups.GetClassDef(characterSheet.ClassId);
+        armorDef = RulesLookups.GetArmorDefOrNull(characterSheet.EquippedArmorId);
+
+        maxHP = RulesService.CalculateMaxHP(characterSheet, classDef);
+        armorClass = RulesService.CalculateAC(characterSheet, armorDef);
+        speed = RulesService.CalculateSpeed(characterSheet);
+
+        currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+        characterSheet.CurrentHP = currentHP;
+
+        // TEMP compat backfill
+        characterSheet.MaxHP = maxHP;
+        characterSheet.ArmorClass = armorClass;
+        characterSheet.Speed = speed;
     }
 }

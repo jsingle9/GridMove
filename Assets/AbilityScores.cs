@@ -1,6 +1,6 @@
-using UnityEngine;
+using System;
 
-[System.Serializable]
+[Serializable]
 public class AbilityScores
 {
     public int STR = 10;
@@ -10,15 +10,18 @@ public class AbilityScores
     public int WIS = 10;
     public int CHA = 10;
 
-    public static int ToModifier(int score)
-    {
-        return Mathf.FloorToInt((score - 10) / 2f);
-    }
+    public int ModSTR => (STR - 10) / 2;
+    public int ModDEX => (DEX - 10) / 2;
+    public int ModCON => (CON - 10) / 2;
+    public int ModINT => (INT - 10) / 2;
+    public int ModWIS => (WIS - 10) / 2;
+    public int ModCHA => (CHA - 10) / 2;
 
-    public int StrMod => ToModifier(STR);
-    public int DexMod => ToModifier(DEX);
-    public int ConMod => ToModifier(CON);
-    public int IntMod => ToModifier(INT);
-    public int WisMod => ToModifier(WIS);
-    public int ChaMod => ToModifier(CHA);
+    // ---- TEMP COMPAT ALIASES ----
+    public int StrMod => ModSTR;
+    public int DexMod => ModDEX;
+    public int ConMod => ModCON;
+    public int IntMod => ModINT;
+    public int WisMod => ModWIS;
+    public int ChaMod => ModCHA;
 }

@@ -6,14 +6,25 @@ public class FighterRules : IClassRules
 
     public void ApplyLevel1(CharacterSheet sheet)
     {
-        sheet.Level = 1;
-        sheet.MaxHP = Mathf.Max(1, 10 + sheet.Scores.ConMod);
-        sheet.CurrentHP = sheet.MaxHP;
-        sheet.ArmorClass = Mathf.Max(1, 10 + sheet.Scores.DexMod);
-        if (sheet.Speed <= 0) sheet.Speed = 6;
+        if (sheet == null) return;
 
-        sheet.Flags.HasSecondWind = true;   // level 1
-        sheet.Flags.HasActionSurge = false; // not yet
+        sheet.Level = 1;
+
+        // HP (fighter d10 at level 1)
+        sheet.MaxHP = Mathf.Max(1, 10 + sheet.Scores.ModCON);
+        sheet.CurrentHP = sheet.MaxHP;
+
+        // Unarmored fallback AC for now (real AC should come from RulesService + armor later)
+        sheet.ArmorClass = Mathf.Max(1, 10 + sheet.Scores.ModDEX);
+
+        // Base speed fallback
+        if (sheet.BaseSpeed <= 0) sheet.BaseSpeed = 6;
+
+        // New feature system
+        AddFeature(sheet, FeatureIds.SecondWind);
+
+        // If you want Defense style at level 1 by default (or set via choice flow):
+        // AddFeature(sheet, FeatureIds.FightingStyleDefense);
     }
 
     public void ApplyLevelUp(CharacterSheet sheet, int newLevel)
@@ -23,15 +34,24 @@ public class FighterRules : IClassRules
 
         for (int lvl = sheet.Level + 1; lvl <= newLevel; lvl++)
         {
-            int hpGain = Mathf.Max(1, 6 + sheet.Scores.ConMod);
+            // Fixed fighter gain (d10 -> 6) + CON mod
+            int hpGain = Mathf.Max(1, 6 + sheet.Scores.ModCON);
             sheet.MaxHP += hpGain;
 
             if (lvl == 2)
-                sheet.Flags.HasActionSurge = true;
-            // additional features gained at higher levels to follow 
+                AddFeature(sheet, FeatureIds.ActionSurge);
+
+            // Add higher-level fighter features here later
         }
 
         sheet.Level = newLevel;
         sheet.CurrentHP = sheet.MaxHP;
+    }
+
+    private static void AddFeature(CharacterSheet sheet, string featureId)
+    {
+        if (string.IsNullOrWhiteSpace(featureId)) return;
+        if (!sheet.FeatureIds.Contains(featureId))
+            sheet.FeatureIds.Add(featureId);
     }
 }
