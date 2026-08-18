@@ -695,4 +695,10 @@ public class BoxMover : MonoBehaviour, ICombatant
         characterSheet.ArmorClass = armorClass;
         characterSheet.Speed = speed;
     }
+
+    public void SetCharacterSheet(CharacterSheet loadedSheet)
+    {
+        if (loadedSheet == null) return;
+        characterSheet = loadedSheet;
+    }    
 }
