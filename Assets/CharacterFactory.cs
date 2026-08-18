@@ -2,7 +2,7 @@ using System;
 
 public static class CharacterFactory
 {
-    public static CharacterSheet CreateFirstFighterSave()
+    public static CharacterSheet CreateFighter_Example()
     {
         var c = new CharacterSheet
         {
@@ -13,7 +13,7 @@ public static class CharacterFactory
             Level = 1,
             Experience = 0,
             BaseSpeed = 6,
-            EquippedArmorId = "",      // unarmored for now
+            EquippedArmorId = "",
             HasShieldEquipped = false
         };
 
@@ -24,20 +24,14 @@ public static class CharacterFactory
         c.Scores.WIS = 10;
         c.Scores.CHA = 10;
 
-        // Level 1 fighter features
         if (!c.FeatureIds.Contains(FeatureIds.SecondWind))
             c.FeatureIds.Add(FeatureIds.SecondWind);
 
-        // Optional if you want Defense style from the start:
-        // c.FeatureIds.Add(FeatureIds.FightingStyleDefense);
-
-        // Initialize HP from rules
         var classDef = RulesLookups.GetClassDef(c.ClassId);
-        int maxHp = RulesService.CalculateMaxHP(c, classDef);
-        c.CurrentHP = maxHp;
+        c.CurrentHP = RulesService.CalculateMaxHP(c, classDef);
 
-        // TEMP compat fields (while still present)
-        c.MaxHP = maxHp;
+        // TEMP compat fields
+        c.MaxHP = c.CurrentHP;
         c.ArmorClass = RulesService.CalculateAC(c, RulesLookups.GetArmorDefOrNull(c.EquippedArmorId));
         c.Speed = RulesService.CalculateSpeed(c);
 
