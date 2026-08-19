@@ -285,56 +285,90 @@ public class BoxMover : MonoBehaviour, ICombatant
         if (mover.IsMoving)
             return;
 
-        float combatRadius = 12f;
-        float combatRadiusSqr = combatRadius * combatRadius;
+        // 1) Trigger range: can start combat if an enemy is seen within this range.
+        float triggerRadius = 12f;
+        float triggerRadiusSqr = triggerRadius * triggerRadius;
+
+        // 2) Join range: same-encounter enemies can join without LoS if this close.
+        float joinRadius = 6f;
+        float joinRadiusSqr = joinRadius * joinRadius;
 
         // Snap player first so LoS uses the same final position combat starts from.
         Vector3Int snappedCell = grid.WorldToGrid(transform.position);
         transform.position = grid.GridToWorld(snappedCell);
         Vector3Int playerCell = snappedCell;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, combatRadius);
-
-        List<ICombatant> participants = new List<ICombatant>();
-        bool anyEnemyHasLineOfSight = false;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, triggerRadius);
 
         ICombatant self = GetComponent<ICombatant>();
-        if (self != null)
-            participants.Add(self);
+        if (self == null)
+            return;
 
-        List<ICombatant> nearbyEnemies = new List<ICombatant>();
+        // Find one valid trigger enemy (alive + active + within trigger radius + LoS)
+        Enemy triggerEnemy = null;
+        ICombatant triggerCombatant = null;
 
         foreach (Collider2D hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy == null) continue;
-
-            Vector3 toEnemy = enemy.transform.position - transform.position;
-            if (toEnemy.sqrMagnitude > combatRadiusSqr) continue;
+            if (!enemy.gameObject.activeInHierarchy) continue;
 
             ICombatant enemyCombatant = enemy.GetComponent<ICombatant>();
             if (enemyCombatant == null) continue;
+            if (enemyCombatant.IsDead()) continue;
 
-            if (!nearbyEnemies.Contains(enemyCombatant))
-                nearbyEnemies.Add(enemyCombatant);
+            Vector3 delta = enemy.transform.position - transform.position;
+            if (delta.sqrMagnitude > triggerRadiusSqr) continue;
 
             Vector3Int enemyCell = grid.WorldToGrid(enemy.transform.position);
-            if (grid.HasLineOfSight(playerCell, enemyCell))
-                anyEnemyHasLineOfSight = true;
+            if (!grid.HasLineOfSight(playerCell, enemyCell)) continue;
+
+            triggerEnemy = enemy;
+            triggerCombatant = enemyCombatant;
+            break;
         }
 
-        // Require at least one LoS enemy to trigger combat at all.
-        if (!anyEnemyHasLineOfSight)
+        // No valid trigger => no combat
+        if (triggerEnemy == null || triggerCombatant == null)
             return;
 
-        // Pull all nearby enemies into this encounter once triggered.
-        foreach (ICombatant e in nearbyEnemies)
+        string encounterId = triggerEnemy.EncounterId;
+
+        List<ICombatant> participants = new List<ICombatant> { self };
+
+        // Build participants from SAME encounter only
+        foreach (Collider2D hit in hits)
         {
-            if (!participants.Contains(e))
-                participants.Add(e);
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy == null) continue;
+            if (!enemy.gameObject.activeInHierarchy) continue;
+            if (enemy.EncounterId != encounterId) continue;
+
+            ICombatant enemyCombatant = enemy.GetComponent<ICombatant>();
+            if (enemyCombatant == null) continue;
+            if (enemyCombatant.IsDead()) continue;
+
+            Vector3 delta = enemy.transform.position - transform.position;
+            float sqrDist = delta.sqrMagnitude;
+            if (sqrDist > triggerRadiusSqr) continue; // hard cap from overlap query
+
+            Vector3Int enemyCell = grid.WorldToGrid(enemy.transform.position);
+            bool hasLos = grid.HasLineOfSight(playerCell, enemyCell);
+
+            // Include if close OR visible
+            if (sqrDist > joinRadiusSqr && !hasLos)
+                continue;
+
+            if (!participants.Contains(enemyCombatant))
+                participants.Add(enemyCombatant);
         }
 
-        Debug.Log($"Proximity combat triggered. Participants={participants.Count}");
+        // Must have at least one enemy
+        if (participants.Count <= 1)
+            return;
+
+        Debug.Log($"Proximity combat triggered. EncounterId={encounterId}, Participants={participants.Count}");
 
         mover.Stop();
         currentMoveIntent = null;
@@ -700,5 +734,5 @@ public class BoxMover : MonoBehaviour, ICombatant
     {
         if (loadedSheet == null) return;
         characterSheet = loadedSheet;
-    }    
+    }
 }

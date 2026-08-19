@@ -27,6 +27,9 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     public int Speed => speed;
     public string Name => name;
     public int MaxHP => maxHP;
+    [Header("Encounter")]
+    [SerializeField] private string encounterId = "encounter_01";
+    public string EncounterId => encounterId;
 
     protected IntentResolver resolver;
     protected UnitMover mover;
@@ -271,5 +274,10 @@ public abstract class Enemy : MonoBehaviour, ICombatant
             origin
         };
     }
+
+    public void SetEncounterId(string id)
+    {
+        encounterId = string.IsNullOrWhiteSpace(id) ? "encounter_01" : id;
+    }    
 
 }
