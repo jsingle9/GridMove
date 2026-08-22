@@ -14247,6 +14247,51 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &877514646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 877514648}
+  - component: {fileID: 877514647}
+  m_Layer: 0
+  m_Name: GameSaveCoordinator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &877514647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877514646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9d07cc64dd64cfbb8bb23253969800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameSaveCoordinator
+  player: {fileID: 1676257078}
+--- !u!4 &877514648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877514646}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.5, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &898881513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21410,6 +21455,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e385669163c974b7ca46b6cd8f8a9523, type: 3}
+--- !u!1 &1268997955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1268997957}
+  - component: {fileID: 1268997956}
+  m_Layer: 0
+  m_Name: QuitMenuActions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1268997956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268997955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f17695ad90eaa440a8810baa158dfa8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuitMenuActions
+  activeSlot: 1
+  player: {fileID: 0}
+--- !u!4 &1268997957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268997955}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 469.48773, y: 247.96135, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1270973688
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24547,6 +24638,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 830073168}
     m_Modifications:
+    - target: {fileID: 605614956018313246, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1268997956}
+    - target: {fileID: 1159061265282124876, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1159061265282124876, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424311937265382931, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1268997956}
+    - target: {fileID: 1424311937265382931, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SaveGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424311937265382931, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: QuitMenuActions, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424311937265382931, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249768426983469842, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_text
+      value: 'No Save Quit '
+      objectReference: {fileID: 0}
     - target: {fileID: 3964551217402968874, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -24627,9 +24750,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3970919134768395880, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970919134768395880, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 6801564755056751843, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
       propertyPath: m_Name
       value: PauseMenuController
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1268997956}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: QuitMenuActions, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929667008307664565, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7712105358538906329, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7712105358538906329, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 170
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24660,6 +24827,8 @@ SceneRoots:
   - {fileID: 280707463}
   - {fileID: 835394000}
   - {fileID: 1001308596}
+  - {fileID: 1268997957}
+  - {fileID: 877514648}
   - {fileID: 1490927742}
   - {fileID: 661024841}
   - {fileID: 1666053246}
