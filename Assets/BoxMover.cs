@@ -733,6 +733,18 @@ public class BoxMover : MonoBehaviour, ICombatant
     public void SetCharacterSheet(CharacterSheet loadedSheet)
     {
         if (loadedSheet == null) return;
+
         characterSheet = loadedSheet;
+
+        RefreshDerivedCombatStats();
+
+        currentHP = Mathf.Clamp(characterSheet.CurrentHP, 0, maxHP);
+        characterSheet.CurrentHP = currentHP;
+
+        if (AbilityUI.Instance != null)
+        {
+            AbilityUI.Instance.player = this;
+            AbilityUI.Instance.RefreshAbilityButtons();
+        }
     }
 }
