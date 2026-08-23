@@ -53,7 +53,7 @@ public class QuitMenuActions : MonoBehaviour
 
         int i = Mathf.Clamp(save.ActivePartyIndex, 0, save.Party.Count - 1);
         p.SetCharacterSheet(save.Party[i]);
-
+        Debug.Log($"AFTER APPLY: player={p.Sheet?.CharacterName} HP={p.Sheet?.CurrentHP}");
         Debug.Log($"Loaded slot {activeSlot}");
     }
 
