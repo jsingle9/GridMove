@@ -119,8 +119,15 @@ public class AbilityUI : MonoBehaviour
                 Debug.LogError("No ability available");
                 return;
         }
+
+        CombatEvents.Log($"{player.Name} uses {ability.AbilityName}.");
+
         grid.ClearAllHighlights();
-        selectedAbility.TryUse(player, target);
+        AbilityResult result = selectedAbility.TryUse(player, target);
+
+        CombatEvents.Log(result.Success
+            ? $"{ability.AbilityName} resolved successfully."
+            : $"{ability.AbilityName} failed: {result.FailureReason}");
 
         CurrentPhase = PlayerTurnPhase.WaitingForAction;
         selectedAbility = null;
