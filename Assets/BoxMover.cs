@@ -722,7 +722,7 @@ public class BoxMover : MonoBehaviour, ICombatant
         speed = RulesService.CalculateSpeed(characterSheet);
 
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
-        characterSheet.CurrentHP = currentHP;
+
 
         // TEMP compat backfill
         characterSheet.MaxHP = maxHP;
@@ -735,11 +735,18 @@ public class BoxMover : MonoBehaviour, ICombatant
         if (loadedSheet == null) return;
 
         characterSheet = loadedSheet;
+        Debug.Log($"SetCharacterSheet called. Incoming HP={characterSheet.CurrentHP}");
 
+        // Recompute maxHP/AC/speed from loaded sheet
         RefreshDerivedCombatStats();
 
+        // Final authoritative load: sheet -> runtime (clamped)
         currentHP = Mathf.Clamp(characterSheet.CurrentHP, 0, maxHP);
+
+        // Keep sheet and runtime in sync after clamp
         characterSheet.CurrentHP = currentHP;
+
+        Debug.Log($"After SetCharacterSheet: SheetHP={characterSheet.CurrentHP}, CurrentHP={CurrentHP}, MaxHP={maxHP}");
 
         if (AbilityUI.Instance != null)
         {

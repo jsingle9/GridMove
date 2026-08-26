@@ -1,30 +1,11 @@
-using System;
 using System.IO;
 using UnityEngine;
 
 public static class SaveLoadService
 {
-    private const string SaveFilePrefix = "save_slot_";
-    private const string SaveFileSuffix = ".json";
-
     public static string GetSavePath(int slot)
     {
-        string file = $"{SaveFilePrefix}{slot}{SaveFileSuffix}";
-        return Path.Combine(Application.persistentDataPath, file);
-    }
-
-    public static void Save(int slot, SaveGame save)
-    {
-        if (save == null) throw new ArgumentNullException(nameof(save));
-        if (slot < 1) throw new ArgumentOutOfRangeException(nameof(slot), "Slot must be >= 1");
-
-        save.LastUpdatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-        string json = JsonUtility.ToJson(save, true);
-        string path = GetSavePath(slot);
-        File.WriteAllText(path, json);
-
-        Debug.Log($"[SaveLoadService] Saved slot {slot} -> {path}");
+        return Path.Combine(Application.persistentDataPath, $"slot{slot}.json");
     }
 
     public static bool Exists(int slot)
@@ -34,41 +15,57 @@ public static class SaveLoadService
 
     public static SaveGame Load(int slot)
     {
-        if (slot < 1) throw new ArgumentOutOfRangeException(nameof(slot), "Slot must be >= 1");
-
         string path = GetSavePath(slot);
         if (!File.Exists(path))
         {
-            Debug.LogWarning($"[SaveLoadService] No save file in slot {slot}");
+            Debug.LogWarning($"Load failed: no file at {path}");
             return null;
         }
 
         string json = File.ReadAllText(path);
         SaveGame save = JsonUtility.FromJson<SaveGame>(json);
-
-        if (save == null)
-        {
-            Debug.LogError($"[SaveLoadService] Failed to parse save slot {slot}");
-            return null;
-        }
-
-        // Version migration hook
-        if (save.SaveVersion < 1)
-        {
-            // future migration logic
-            save.SaveVersion = 1;
-        }
-
+        Debug.Log($"LOAD path={path}");
         return save;
     }
 
-    public static void Delete(int slot)
+    public static void Save(int slot, SaveGame save)
     {
-        string path = GetSavePath(slot);
-        if (File.Exists(path))
+        if (save == null)
         {
-            File.Delete(path);
-            Debug.Log($"[SaveLoadService] Deleted slot {slot}");
+            Debug.LogError("Save failed: SaveGame is null");
+            return;
         }
+
+        save.LastUpdatedUnix = System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+        string json = JsonUtility.ToJson(save, true);
+        string path = GetSavePath(slot);
+        File.WriteAllText(path, json);
+
+        Debug.Log($"SAVE path={path}");
+        Debug.Log($"SAVE scene={save.World?.CurrentScene}");
+    }
+
+    // Optional helper if you want runtime->save in one call
+    public static SaveGame BuildFromRuntime(BoxMover player, SaveGame existing = null)
+    {
+        SaveGame save = existing ?? new SaveGame();
+        save.CaptureRuntime(player);
+
+        if (save.Party == null) save.Party = new System.Collections.Generic.List<CharacterSheet>();
+        save.Party.Clear();
+
+        if (player != null && player.Sheet != null)
+        {
+            // No Clone required: serialize/deserialize deep copy
+            string sheetJson = JsonUtility.ToJson(player.Sheet);
+            CharacterSheet sheetCopy = JsonUtility.FromJson<CharacterSheet>(sheetJson);
+
+            sheetCopy.CurrentHP = player.CurrentHP; // runtime -> save
+            save.Party.Add(sheetCopy);
+            save.ActivePartyIndex = 0;
+        }
+
+        return save;
     }
 }
