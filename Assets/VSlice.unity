@@ -24772,6 +24772,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 5110187358978451443, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1268997956}
     - target: {fileID: 6801564755056751843, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
       propertyPath: m_Name
       value: PauseMenuController

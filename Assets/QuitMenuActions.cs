@@ -101,7 +101,7 @@ public class QuitMenuActions : MonoBehaviour
         Debug.Log($"After apply runtimeHP={p.CurrentHP}, sheetHP={p.Sheet?.CurrentHP}");
         Debug.Log($"Loaded slot {activeSlot}");
 
-        FindFirstObjectByType<InventoryUIManager>()?.UpdateUI(); 
+        FindFirstObjectByType<InventoryUIManager>()?.UpdateUI();
     }
 
     public void SaveAndQuit()
@@ -119,5 +119,41 @@ public class QuitMenuActions : MonoBehaviour
     {
         Debug.Log("Quitting game...");
         Application.Quit();
+    }
+
+    public void LoadAfterDeath()
+    {
+        Debug.Log("LoadAfterDeath() fired");
+        var p = ResolvePlayer();
+        if (p == null)
+        {
+            Debug.LogError("LoadAfterDeath failed: no BoxMover found.");
+            return;
+        }
+
+        SaveGame save = SaveLoadService.Load(activeSlot);
+        if (save == null || save.Party == null || save.Party.Count == 0)
+        {
+            Debug.LogWarning($"LoadAfterDeath failed: slot {activeSlot} empty or invalid.");
+            return;
+        }
+
+        int i = Mathf.Clamp(save.ActivePartyIndex, 0, save.Party.Count - 1);
+        CharacterSheet loaded = save.Party[i];
+
+        p.SetCharacterSheet(loaded);   // sheet -> runtime
+        p.ReviveFromLoad();            // death-state recovery
+
+        // Optional: reposition from save
+        var pos = save.World?.PlayerWorldPosition;
+        if (pos.HasValue)
+        {
+            var v = pos.Value;
+            p.transform.position = new Vector3(v.x, v.y, v.z);
+        }
+
+        FindFirstObjectByType<InventoryUIManager>()?.UpdateUI();
+
+        Debug.Log($"LoadAfterDeath complete. HP={p.CurrentHP}");
     }
 }

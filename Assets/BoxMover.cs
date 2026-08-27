@@ -754,4 +754,28 @@ public class BoxMover : MonoBehaviour, ICombatant
             AbilityUI.Instance.RefreshAbilityButtons();
         }
     }
+
+    public void ReviveFromLoad()
+    {
+        // Ensure object is active again
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
+
+        // If somehow loaded HP is 0, force to at least 1
+        if (currentHP <= 0)
+        {
+            currentHP = Mathf.Max(1, currentHP);
+            if (characterSheet != null)
+                characterSheet.CurrentHP = currentHP;
+        }
+
+        // Clear death/transient combat effects
+        statusManager?.Clear();
+
+        // reset per-combat toggles
+        SecondWindUsedThisCombat = false;
+        ActionSurgeUsedThisCombat = false;
+
+        Debug.Log($"ReviveFromLoad complete. HP={currentHP}");
+    }    
 }
