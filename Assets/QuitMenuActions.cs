@@ -123,7 +123,8 @@ public class QuitMenuActions : MonoBehaviour
 
     public void LoadAfterDeath()
     {
-        Debug.Log("LoadAfterDeath() fired");
+        Debug.Log("LoadAfterDeath called!");
+
         var p = ResolvePlayer();
         if (p == null)
         {
@@ -141,19 +142,19 @@ public class QuitMenuActions : MonoBehaviour
         int i = Mathf.Clamp(save.ActivePartyIndex, 0, save.Party.Count - 1);
         CharacterSheet loaded = save.Party[i];
 
-        p.SetCharacterSheet(loaded);   // sheet -> runtime
-        p.ReviveFromLoad();            // death-state recovery
+        if (!p.gameObject.activeSelf)
+            p.gameObject.SetActive(true);
 
-        // Optional: reposition from save
-        var pos = save.World?.PlayerWorldPosition;
-        if (pos.HasValue)
-        {
-            var v = pos.Value;
-            p.transform.position = new Vector3(v.x, v.y, v.z);
-        }
+        p.SetCharacterSheet(loaded);
+        p.ReviveFromLoad(true);
 
-        FindFirstObjectByType<InventoryUIManager>()?.UpdateUI();
+        // Revive at the location where they died
+        Vector3 deathPos = SaveLoadService.GetLastDeathPosition();
+        Debug.Log($"Reviving player at death location: {deathPos}");
+        p.transform.position = deathPos;
 
-        Debug.Log($"LoadAfterDeath complete. HP={p.CurrentHP}");
+        FindFirstObjectByType<InventoryUIManager>(FindObjectsInactive.Include)?.UpdateUI();
+
+        Debug.Log($"LoadAfterDeath complete. HP={p.CurrentHP}, Position={p.transform.position}");
     }
 }

@@ -22,8 +22,10 @@ public class GameSaveCoordinator : MonoBehaviour
 
     private BoxMover ResolvePlayer()
     {
-        if (player == null)
-            player = FindFirstObjectByType<BoxMover>();
+        if (player == null){
+            player = FindFirstObjectByType<BoxMover>(FindObjectsInactive.Include);
+            Debug.Log($"ResolvePlayer: Found player = {(player != null ? player.name : "NULL")}");
+        }
         return player;
     }
 
