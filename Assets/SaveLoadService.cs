@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class SaveLoadService
 {
+    private static Vector3 lastDeathPosition = Vector3.zero;
+
     public static string GetSavePath(int slot)
     {
         return Path.Combine(Application.persistentDataPath, $"slot{slot}.json");
@@ -67,5 +69,16 @@ public static class SaveLoadService
         }
 
         return save;
+    }
+
+    public static void SetLastDeathPosition(Vector3 position)
+    {
+        lastDeathPosition = position;
+        Debug.Log($"Death position saved: {position}");
+    }
+
+    public static Vector3 GetLastDeathPosition()
+    {
+        return lastDeathPosition;
     }
 }

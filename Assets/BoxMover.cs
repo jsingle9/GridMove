@@ -597,7 +597,9 @@ public class BoxMover : MonoBehaviour, ICombatant
 
     void Die()
     {
-        Debug.Log($"{name} died");
+        Debug.Log($"{name} died at position: {transform.position}");
+        SaveLoadService.SetLastDeathPosition(transform.position);
+
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);
@@ -755,27 +757,39 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
     }
 
-    public void ReviveFromLoad()
+    public void ReviveFromLoad(bool resetCombatResources = true)
     {
-        // Ensure object is active again
+        // 1) Ensure actor is active
         if (!gameObject.activeSelf)
             gameObject.SetActive(true);
 
-        // If somehow loaded HP is 0, force to at least 1
-        if (currentHP <= 0)
-        {
-            currentHP = Mathf.Max(1, currentHP);
-            if (characterSheet != null)
-                characterSheet.CurrentHP = currentHP;
-        }
+        // 2) Recompute derived stats from loaded sheet
+        RefreshDerivedCombatStats();
 
-        // Clear death/transient combat effects
+        // 3) Ensure runtime HP is valid/alive
+        currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+        if (currentHP <= 0)
+            currentHP = Mathf.Max(1, maxHP); // full heal fallback for death-load
+
+        characterSheet.CurrentHP = currentHP;
+
+        // 4) Clear transient statuses/effects
         statusManager?.Clear();
 
-        // reset per-combat toggles
-        SecondWindUsedThisCombat = false;
-        ActionSurgeUsedThisCombat = false;
+        // 5) Normalize turn state
+        turnStarted = false;
+        HasMove = false;
+        HasAction = false;
+        HasBonusAction = false;
+        RemainingMovement = 0;
 
-        Debug.Log($"ReviveFromLoad complete. HP={currentHP}");
-    }    
+        // 6) Reset per-combat feature usage (optional but recommended for death-load)
+        if (resetCombatResources)
+        {
+            SecondWindUsedThisCombat = false;
+            ActionSurgeUsedThisCombat = false;
+        }
+
+        Debug.Log($"ReviveFromLoad: active={gameObject.activeSelf}, HP={currentHP}/{maxHP}, SWUsed={SecondWindUsedThisCombat}, ASUsed={ActionSurgeUsedThisCombat}");
+    }
 }
