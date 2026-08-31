@@ -38,4 +38,41 @@ public static class CharacterFactory
         c.LastUpdatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         return c;
     }
+
+    public static CharacterSheet CreateMystic_Example()
+    {
+        var c = new CharacterSheet
+        {
+            CharacterName = "Mystic One",
+            ClassId = "mystic",
+            SpeciesId = "human",
+            BackgroundId = "hermit",
+            Level = 1,
+            Experience = 0,
+            BaseSpeed = 6,
+            EquippedArmorId = "",
+            HasShieldEquipped = false
+        };
+
+        c.Scores.STR = 8;
+        c.Scores.DEX = 12;
+        c.Scores.CON = 13;
+        c.Scores.INT = 16;
+        c.Scores.WIS = 15;
+        c.Scores.CHA = 10;
+
+        var rules = new MysticRules();
+        rules.ApplyLevel1(c);
+
+        var classDef = RulesLookups.GetClassDef(c.ClassId);
+        c.CurrentHP = RulesService.CalculateMaxHP(c, classDef);
+
+        // TEMP compat fields
+        c.MaxHP = c.CurrentHP;
+        c.ArmorClass = RulesService.CalculateAC(c, RulesLookups.GetArmorDefOrNull(c.EquippedArmorId));
+        c.Speed = RulesService.CalculateSpeed(c);
+
+        c.LastUpdatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        return c;
+    }
 }

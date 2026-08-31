@@ -5,6 +5,7 @@ public static class ClassRulesFactory
         switch (classType)
         {
             case CharacterClassType.Fighter: return new FighterRules();
+            case CharacterClassType.Mystic:  return new MysticRules();
             default: return null;
         }
     }

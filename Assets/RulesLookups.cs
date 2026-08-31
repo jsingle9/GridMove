@@ -13,6 +13,14 @@ public static class RulesLookups
                     Level1BaseHP = 10
                 };
 
+            case "mystic":
+                return new ClassDef
+                {
+                    ClassId = "mystic",
+                    HitDie = 8,
+                    Level1BaseHP = 8
+                };
+
             // sensible fallback
             default:
                 return new ClassDef

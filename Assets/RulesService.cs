@@ -29,6 +29,7 @@ public static class RulesService
     /// + DEX contribution based on armor type
     /// + shield (+2)
     /// + feature bonuses (e.g., fighter defense style +1 while armored)
+    /// Mystic unarmored: 10 + ModWIS (psionic defense) instead of DEX.
     /// </summary>
     public static int CalculateAC(CharacterSheet c, ArmorDef equippedArmorOrNull)
     {
@@ -41,9 +42,17 @@ public static class RulesService
 
         if (equippedArmorOrNull == null)
         {
-            // Unarmored default
-            baseAC = 10;
-            dexToAdd = dexMod;
+            // Mystic uses WIS for unarmored AC (psionic defense)
+            if (c.ClassId == "mystic")
+            {
+                baseAC = 10;
+                dexToAdd = c.Scores.ModWIS;
+            }
+            else
+            {
+                baseAC = 10;
+                dexToAdd = dexMod;
+            }
         }
         else
         {
