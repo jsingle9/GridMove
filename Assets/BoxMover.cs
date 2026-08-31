@@ -75,8 +75,9 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         if (characterSheet.Level < 1) characterSheet.Level = 1;
 
-        // Apply class rules at level 1 (fighter for now)
-        var rules = ClassRulesFactory.Create(CharacterClassType.Fighter);
+        // Apply class rules based on the sheet's ClassId
+        CharacterClassType classType = ClassIdToClassType(characterSheet.ClassId);
+        var rules = ClassRulesFactory.Create(classType);
         rules?.ApplyLevel1(characterSheet);
         rules?.ApplyLevelUp(characterSheet, 2);
 
@@ -102,18 +103,42 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         equippedWeapon = new Weapon("Long Sword", 3, "1d8");
 
+        // Abilities common to all classes
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
-      //abilities.Add(new HealAbility());
 
-      /*  var fireball = new FireballAbility();
-        fireball.SetTelegraphStyle(fireballTelegraphStyle);
-        abilities.Add(fireball); */
-        abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
-        abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
+        // Class-specific abilities driven by FeatureIds
+        if (characterSheet.FeatureIds.Contains(FeatureIds.SecondWind))
+            abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
+            abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
+            abilities.Add(new PsionicFocusAbility());
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.MindThrustI))
+            abilities.Add(new MindThrustAbility());
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
+            abilities.Add(new PsionicStrikeAbility());
+
+        /*  var fireball = new FireballAbility();
+            fireball.SetTelegraphStyle(fireballTelegraphStyle);
+            abilities.Add(fireball); */
 
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
+    }
+
+    private static CharacterClassType ClassIdToClassType(string classId)
+    {
+        switch (classId)
+        {
+            case "mystic":  return CharacterClassType.Mystic;
+            case "fighter":
+            default:        return CharacterClassType.Fighter;
+        }
     }
 
     void Start()
