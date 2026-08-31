@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class QuitMenuActions : MonoBehaviour
 {
@@ -123,38 +124,7 @@ public class QuitMenuActions : MonoBehaviour
 
     public void LoadAfterDeath()
     {
-        Debug.Log("LoadAfterDeath called!");
-
-        var p = ResolvePlayer();
-        if (p == null)
-        {
-            Debug.LogError("LoadAfterDeath failed: no BoxMover found.");
-            return;
-        }
-
-        SaveGame save = SaveLoadService.Load(activeSlot);
-        if (save == null || save.Party == null || save.Party.Count == 0)
-        {
-            Debug.LogWarning($"LoadAfterDeath failed: slot {activeSlot} empty or invalid.");
-            return;
-        }
-
-        int i = Mathf.Clamp(save.ActivePartyIndex, 0, save.Party.Count - 1);
-        CharacterSheet loaded = save.Party[i];
-
-        if (!p.gameObject.activeSelf)
-            p.gameObject.SetActive(true);
-
-        p.SetCharacterSheet(loaded);
-        p.ReviveFromLoad(true);
-
-        // Revive at the location where they died
-        Vector3 deathPos = SaveLoadService.GetLastDeathPosition();
-        Debug.Log($"Reviving player at death location: {deathPos}");
-        p.transform.position = deathPos;
-
-        FindFirstObjectByType<InventoryUIManager>(FindObjectsInactive.Include)?.UpdateUI();
-
-        Debug.Log($"LoadAfterDeath complete. HP={p.CurrentHP}, Position={p.transform.position}");
+        Debug.Log("LoadAfterDeath called - reloading VSlice scene");
+        SceneManager.LoadScene("VSlice");
     }
 }
