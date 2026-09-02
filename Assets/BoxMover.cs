@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-public class BoxMover : MonoBehaviour, ICombatant
+public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 {
     [SerializeField] GridController grid;
     [SerializeField] UnitMover mover;
@@ -37,6 +37,9 @@ public class BoxMover : MonoBehaviour, ICombatant
     public CharacterSheet Sheet => characterSheet;
     public bool SecondWindUsedThisCombat { get; set; }
     public bool ActionSurgeUsedThisCombat { get; set; }
+    [SerializeField] private FighterLoadout startingLoadout;
+    private readonly List<Item> _inventory = new();
+    private ArmorItem equippedArmorItem;
 
     // These now factor in equipped weapons
     public string DamageDice
@@ -75,14 +78,15 @@ public class BoxMover : MonoBehaviour, ICombatant
 
         if (characterSheet.Level < 1) characterSheet.Level = 1;
 
-        // Apply class rules at level 1 (fighter for now)
-        var rules = ClassRulesFactory.Create(CharacterClassType.Fighter);
+        // Apply class rules based on the sheet's ClassId
+        CharacterClassType classType = ClassIdToClassType(characterSheet.ClassId);
+        var rules = ClassRulesFactory.Create(classType);
         rules?.ApplyLevel1(characterSheet);
         rules?.ApplyLevelUp(characterSheet, 2);
 
         // Resolve defs (temp lookup approach)
         classDef = RulesLookups.GetClassDef(characterSheet.ClassId);
-        armorDef = RulesLookups.GetArmorDefOrNull(characterSheet.EquippedArmorId);
+        armorDef = RulesLookups.GetArmorDefOrNull(equippedArmorItem);
 
         // Rules-authoritative sync
         maxHP = RulesService.CalculateMaxHP(characterSheet, classDef);
@@ -100,20 +104,53 @@ public class BoxMover : MonoBehaviour, ICombatant
         characterSheet.ArmorClass = armorClass;
         characterSheet.Speed = speed;
 
-        equippedWeapon = new Weapon("Long Sword", 3, "1d8");
+        // Apply starter loadout here (before abilities/UI are used)
+        if (startingLoadout != null)
+        {
+            FighterLoadoutApplier.ApplyTo(this, startingLoadout);
+            RefreshDerivedCombatStats(); // re-pull AC/speed/etc from rules after equip
+        }
 
+        if (equippedWeapon == null)
+            equippedWeapon = new Weapon("Long Sword", 3, "1d8");
+
+        // Abilities common to all classes
         abilities.Add(new AttackAbility());
         abilities.Add(new RangedAttackAbility());
-      //abilities.Add(new HealAbility());
 
-      /*  var fireball = new FireballAbility();
-        fireball.SetTelegraphStyle(fireballTelegraphStyle);
-        abilities.Add(fireball); */
-        abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
-        abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
+        // Class-specific abilities driven by FeatureIds
+        if (characterSheet.FeatureIds.Contains(FeatureIds.SecondWind))
+            abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
+            abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
+            abilities.Add(new PsionicFocusAbility());
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.MindThrustI))
+            abilities.Add(new MindThrustAbility());
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
+            abilities.Add(new PsionicStrikeAbility());
+
+        /*  var fireball = new FireballAbility();
+            fireball.SetTelegraphStyle(fireballTelegraphStyle);
+            abilities.Add(fireball); */
+
 
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
+    }
+
+    private static CharacterClassType ClassIdToClassType(string classId)
+    {
+        switch (classId)
+        {
+            case "mystic":  return CharacterClassType.Mystic;
+            case "fighter":
+            default:        return CharacterClassType.Fighter;
+        }
     }
 
     void Start()
@@ -717,7 +754,7 @@ public class BoxMover : MonoBehaviour, ICombatant
     private void RefreshDerivedCombatStats()
     {
         classDef = RulesLookups.GetClassDef(characterSheet.ClassId);
-        armorDef = RulesLookups.GetArmorDefOrNull(characterSheet.EquippedArmorId);
+        armorDef = RulesLookups.GetArmorDefOrNull(equippedArmorItem);
 
         maxHP = RulesService.CalculateMaxHP(characterSheet, classDef);
         armorClass = RulesService.CalculateAC(characterSheet, armorDef);
@@ -791,5 +828,46 @@ public class BoxMover : MonoBehaviour, ICombatant
         }
 
         Debug.Log($"ReviveFromLoad: active={gameObject.activeSelf}, HP={currentHP}/{maxHP}, SWUsed={SecondWindUsedThisCombat}, ASUsed={ActionSurgeUsedThisCombat}");
+    }
+
+    public void AddItem(Item item)
+    {
+        if (item != null && !_inventory.Contains(item))
+            _inventory.Add(item);
+    }
+
+    public void EquipWeapon(WeaponItem weapon)
+    {
+        if (weapon == null) return;
+
+        // TEMP bridge to your current Weapon runtime class
+        equippedWeapon = new Weapon(weapon.itemName, 0, weapon.damageDice);
+
+        // Optional: if you later support versatile, choose dice based on hand usage
+        baseDamageDice = weapon.damageDice;
+        Debug.Log($"Equipped weapon asset: {weapon.itemName} ({weapon.damageDice})");
+    }
+
+    public void EquipArmor(ArmorItem armor)
+    {
+        if (armor == null) return;
+
+        equippedArmorItem = armor; // store the actual asset reference
+        armorDef = RulesLookups.GetArmorDefOrNull(equippedArmorItem);
+
+        RefreshDerivedCombatStats();
+        Debug.Log($"Equipped armor asset: {armor.itemName}, AC now {ArmorClass}");
+    }
+
+    public void EquipShield(ShieldItem shield)
+    {
+        if (shield == null) return;
+
+        // If your current rules system doesn't model shield yet,
+        // do a TEMP direct bump and later move into RulesService.
+        armorClass += shield.acBonus;
+        characterSheet.ArmorClass = armorClass;
+
+        Debug.Log($"Equipped shield asset: {shield.itemName}, AC now {ArmorClass}");
     }
 }

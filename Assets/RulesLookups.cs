@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public static class RulesLookups
 {
     public static ClassDef GetClassDef(string classId)
@@ -24,49 +26,62 @@ public static class RulesLookups
         }
     }
 
-    public static ArmorDef GetArmorDefOrNull(string armorId)
+    /// <summary>
+    /// Converts an equipped ArmorItem asset into an ArmorDef used by rules math.
+    /// Returns null when unarmored.
+    /// </summary>
+    public static ArmorDef GetArmorDefOrNull(ArmorItem armorItem)
     {
-        if (string.IsNullOrWhiteSpace(armorId))
+        if (armorItem == null)
             return null; // unarmored
 
-        switch (armorId)
+        return new ArmorDef
         {
-            // Light armor: full DEX
-            case "leather":
-                return new ArmorDef
-                {
-                    ArmorId = "leather",
-                    BaseAC = 11,
-                    DexRule = DexContribution.Full,
-                    DexCap = 99,
-                    IsHeavy = false
-                };
+            // keep ArmorId if you still use it elsewhere (logs/saves/debug UI)
+            ArmorId = string.IsNullOrWhiteSpace(armorItem.armorId)
+                ? armorItem.name.ToLowerInvariant().Replace(" ", "_")
+                : armorItem.armorId,
 
-            // Medium armor: DEX capped at +2
-            case "chain_shirt":
-                return new ArmorDef
-                {
-                    ArmorId = "chain_shirt",
-                    BaseAC = 13,
-                    DexRule = DexContribution.Capped,
-                    DexCap = 2,
-                    IsHeavy = false
-                };
+            BaseAC = armorItem.baseAC,
+            DexRule = ToDexContribution(armorItem.category),
+            DexCap = GetDexCap(armorItem),
+            IsHeavy = armorItem.category == ArmorCategory.Heavy
+        };
+    }
 
-            // Heavy armor: no DEX
-            case "chain_mail":
-                return new ArmorDef
-                {
-                    ArmorId = "chain_mail",
-                    BaseAC = 16,
-                    DexRule = DexContribution.None,
-                    DexCap = 0,
-                    IsHeavy = true
-                };
+    private static DexContribution ToDexContribution(ArmorCategory category)
+    {
+        switch (category)
+        {
+            case ArmorCategory.Light:
+                return DexContribution.Full;
+
+            case ArmorCategory.Medium:
+                return DexContribution.Capped;
+
+            case ArmorCategory.Heavy:
+                return DexContribution.None;
 
             default:
-                // unknown armor ID => treat as unarmored for safety
-                return null;
+                return DexContribution.Full;
+        }
+    }
+
+    private static int GetDexCap(ArmorItem armorItem)
+    {
+        switch (armorItem.category)
+        {
+            case ArmorCategory.Light:
+                return 99; // effectively uncapped
+
+            case ArmorCategory.Medium:
+                return Mathf.Max(0, armorItem.maxDexBonus); // usually 2
+
+            case ArmorCategory.Heavy:
+                return 0;
+
+            default:
+                return 99;
         }
     }
 }

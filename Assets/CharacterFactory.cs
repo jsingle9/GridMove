@@ -32,7 +32,7 @@ public static class CharacterFactory
 
         // TEMP compat fields
         c.MaxHP = c.CurrentHP;
-        c.ArmorClass = RulesService.CalculateAC(c, RulesLookups.GetArmorDefOrNull(c.EquippedArmorId));
+        c.ArmorClass = RulesService.CalculateAC(c, RulesLookups.GetArmorDefOrNull((ArmorItem)null));
         c.Speed = RulesService.CalculateSpeed(c);
 
         c.LastUpdatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
