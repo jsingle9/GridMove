@@ -9,15 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1a302d67b7e54bd3bb2d3ec74444541, type: 3}
-  m_Name: scale_mail
-  m_EditorClassIdentifier: Assembly-CSharp::ArmorItem
-  itemName: scale_mail
+  m_Script: {fileID: 11500000, guid: a70e3cbb8b1bb4ed59928b6e12b0b318, type: 3}
+  m_Name: longsword
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
+  itemName: longsword
   description: 
   consumable: 0
-  category: 1
-  armorId: scale_mail
-  baseAC: 14
-  maxDexBonus: 2
-  stealthDisadvantage: 1
-  strengthRequirement: 0
+  damageDice: 1d8
+  versatileDamageDice: 1d10
+  damageType: 0
+  isMartial: 1

@@ -40,6 +40,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     [SerializeField] private FighterLoadout startingLoadout;
     private readonly List<Item> _inventory = new();
     private ArmorItem equippedArmorItem;
+    private ShieldItem equippedShieldItem;
 
     // These now factor in equipped weapons
     public string DamageDice
@@ -751,19 +752,21 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         return found;
     }
+
     private void RefreshDerivedCombatStats()
     {
         classDef = RulesLookups.GetClassDef(characterSheet.ClassId);
         armorDef = RulesLookups.GetArmorDefOrNull(equippedArmorItem);
 
         maxHP = RulesService.CalculateMaxHP(characterSheet, classDef);
-        armorClass = RulesService.CalculateAC(characterSheet, armorDef);
-        speed = RulesService.CalculateSpeed(characterSheet);
 
+        int dexMod = GetAbilityModifier(characterSheet.Scores.DEX);
+        int shieldBonus = equippedShieldItem != null ? equippedShieldItem.acBonus : 0;
+        armorClass = ArmorCalculator.CalculateAC(equippedArmorItem, dexMod, shieldBonus);
+
+        speed = RulesService.CalculateSpeed(characterSheet);
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
 
-
-        // TEMP compat backfill
         characterSheet.MaxHP = maxHP;
         characterSheet.ArmorClass = armorClass;
         characterSheet.Speed = speed;
@@ -863,11 +866,14 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     {
         if (shield == null) return;
 
-        // If your current rules system doesn't model shield yet,
-        // do a TEMP direct bump and later move into RulesService.
-        armorClass += shield.acBonus;
-        characterSheet.ArmorClass = armorClass;
+        equippedShieldItem = shield; // store equipped shield
+        RefreshDerivedCombatStats();
 
         Debug.Log($"Equipped shield asset: {shield.itemName}, AC now {ArmorClass}");
+    }
+
+    private static int GetAbilityModifier(int score)
+    {
+        return Mathf.FloorToInt((score - 10) / 2f);
     }
 }

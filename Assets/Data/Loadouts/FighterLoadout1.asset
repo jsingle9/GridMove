@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bd871561a654a3ea66faff84e725a7, type: 3}
+  m_Name: FighterLoadout1
+  m_EditorClassIdentifier: Assembly-CSharp::FighterLoadout
+  longsword: {fileID: 11400000, guid: a898d0878ea9c4bbca4be95d05ac64b8, type: 2}
+  scaleMail: {fileID: 11400000, guid: 1714aa34779c745869b50be537f6a88d, type: 2}
+  shield: {fileID: 11400000, guid: 346387c950c5a43a6913996d601e74ff, type: 2}
