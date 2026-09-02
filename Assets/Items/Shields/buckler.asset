@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9bc286e4b8cf422abcf0daab23fb0e1, type: 3}
-  m_Name: shield
+  m_Name: buckler
   m_EditorClassIdentifier: Assembly-CSharp::ShieldItem
-  itemName: shield
-  description: A wooden shield with metal trim
+  itemName: buckler
+  description: 'This small shield is used to deflect incoming blows. It is surprisingly
+    just as effective as its larger counterparts. '
   consumable: 0
   acBonus: 2
