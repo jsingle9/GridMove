@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: plate_mail
   m_EditorClassIdentifier: Assembly-CSharp::ArmorItem
   itemName: plate_mail
-  description: 
+  description: 'Heavy and noisy to move in, this armor is effective at one thing,
+    keeping your guts inside you. '
   consumable: 0
   category: 2
   armorId: plate_mail

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: scale_mail
   m_EditorClassIdentifier: Assembly-CSharp::ArmorItem
   itemName: scale_mail
-  description: 
+  description: The best scales an armorer can slap together!
   consumable: 0
   category: 1
   armorId: scale_mail
