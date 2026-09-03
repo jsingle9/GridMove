@@ -48,32 +48,14 @@ public class AbilityUI : MonoBehaviour
       if(CurrentPhase != PlayerTurnPhase.WaitingForAction)
           return;
 
-      if(Keyboard.current.digit1Key.wasPressedThisFrame){
-          selectedAbility = player.GetAbility(0);
-          CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          BeginTargetingForSelectedAbility("KEYBIND");
-          //grid.HighlightEnemyTiles();
-      }
+          if(CurrentPhase != PlayerTurnPhase.WaitingForAction)
+              return;
 
-      if(Keyboard.current.digit2Key.wasPressedThisFrame){
-          selectedAbility = player.GetAbility(1);
-          CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          BeginTargetingForSelectedAbility("KEYBIND");
-          //grid.HighlightEnemyTiles();
-      }
-      if(Keyboard.current.digit3Key.wasPressedThisFrame){
-          selectedAbility = player.GetAbility(2);
-          CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          BeginTargetingForSelectedAbility("KEYBIND");
-        //  player.ShowTargetingHighlights(selectedAbility);
-
-      }
-      if(Keyboard.current.digit4Key.wasPressedThisFrame){
-          selectedAbility = player.GetAbility(3);
-          CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-          Debug.Log($"Selected: {selectedAbility.AbilityName}");
-
-      }
+          if (Keyboard.current.digit1Key.wasPressedThisFrame) { TryActivateAbilitySlot(0, "KEYBIND"); return; }
+          if (Keyboard.current.digit2Key.wasPressedThisFrame) { TryActivateAbilitySlot(1, "KEYBIND"); return; }
+          if (Keyboard.current.digit3Key.wasPressedThisFrame) { TryActivateAbilitySlot(2, "KEYBIND"); return; }
+          if (Keyboard.current.digit4Key.wasPressedThisFrame) { TryActivateAbilitySlot(3, "KEYBIND"); return; }
+          if (Keyboard.current.digit5Key.wasPressedThisFrame) { TryActivateAbilitySlot(4, "KEYBIND"); return; }
     }
 
     public void SelectAbility(int slot){
@@ -225,6 +207,7 @@ public class AbilityUI : MonoBehaviour
         for (int i = 0; i < abilityButtons.Length; i++)
         {
             Ability a = player.GetAbility(i);
+            abilityButtons[i].gameObject.SetActive(a != null);
             abilityButtons[i].SetAbility(a, i);
         }
     }

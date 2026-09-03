@@ -2,28 +2,33 @@ using UnityEngine;
 
 public static class KnockbackUtility
 {
-    /// <summary>
-    /// Pushes defender away from attacker along the cardinal direction from attacker->defender.
-    /// Stops at first blocked tile. Returns true if moved at least 1 tile.
-    /// </summary>
-    public static bool TryPush(ICombatant defender, Vector3Int attackerCell, Vector3Int defenderCell, int maxTiles)
+    public static bool TryPushAway(ICombatant attacker, ICombatant target, int maxTiles)
     {
-        var grid = GridRegistry.Grid;
-        if (grid == null || defender == null || maxTiles <= 0)
+        if (attacker == null || target == null || maxTiles <= 0)
             return false;
 
+        GridController grid = Object.FindFirstObjectByType<GridController>();
+        if (grid == null)
+            return false;
+
+        Vector3Int attackerCell = grid.WorldToGrid(attacker.GetWorldPosition());
+        Vector3Int targetCell = grid.WorldToGrid(target.GetWorldPosition());
+
         Vector3Int dir = new Vector3Int(
-            Mathf.Clamp(defenderCell.x - attackerCell.x, -1, 1),
-            Mathf.Clamp(defenderCell.y - attackerCell.y, -1, 1),
+            Mathf.Clamp(targetCell.x - attackerCell.x, -1, 1),
+            Mathf.Clamp(targetCell.y - attackerCell.y, -1, 1),
             0
         );
 
-        // Keep knockback cardinal for cleaner behavior
+        if (dir == Vector3Int.zero)
+            return false;
+
+        // prefer cardinal push
         if (Mathf.Abs(dir.x) > 0 && Mathf.Abs(dir.y) > 0)
             dir.y = 0;
 
-        Vector3Int current = defenderCell;
-        Vector3Int lastValid = defenderCell;
+        Vector3Int current = targetCell;
+        Vector3Int lastValid = targetCell;
 
         for (int i = 0; i < maxTiles; i++)
         {
@@ -39,10 +44,14 @@ public static class KnockbackUtility
             current = next;
         }
 
-        if (lastValid == defenderCell)
+        if (lastValid == targetCell)
             return false;
 
-        defender.transform.position = grid.GridToWorld(lastValid);
+        MonoBehaviour mb = target as MonoBehaviour;
+        if (mb == null)
+            return false;
+
+        mb.transform.position = grid.GridToWorld(lastValid);
         return true;
     }
 }

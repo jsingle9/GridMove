@@ -69,19 +69,6 @@ public class AbilityButtonUI : MonoBehaviour
     public void OnButtonClicked()
     {
         Debug.Log($"Button clicked. slot={abilitySlot}, ability={(currentAbility != null ? currentAbility.AbilityName : "null")}");
-
-        if(currentAbility == null)
-            return;
-
-        AbilityUI.Instance.SelectAbility(abilitySlot);
-        AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForTarget;
-
-        GridController grid = FindFirstObjectByType<GridController>();
-        if(grid == null)
-            return;
-
-        grid.ClearAllHighlights();
-
-        AbilityUI.Instance.BeginTargetingForSelectedAbility("BUTTON");
+        AbilityUI.Instance.TryActivateAbilitySlot(abilitySlot, "BUTTON");
     }
 }

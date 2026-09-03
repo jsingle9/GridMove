@@ -2,30 +2,31 @@ using UnityEngine;
 
 public static class SavingThrowUtility
 {
-    public static int RollSave(ICombatant target, AbilityScoreType stat)
+    public static int RollStrSaveTotal(ICombatant target)
     {
-        if (target == null || target.Sheet == null)
-            return Random.Range(1, 21); // fallback d20
-
-        int score = GetScore(target.Sheet.Scores, stat);
-        int mod = Mathf.FloorToInt((score - 10) / 2f);
-
-        // TODO: add proficiency for class saves later
-        int d20 = Random.Range(1, 21);
-        return d20 + mod;
+        int roll = DiceRoller.RollD20();
+        int mod = GetStrMod(target);
+        return roll + mod;
     }
 
-    private static int GetScore(AbilityScores scores, AbilityScoreType stat)
+    public static bool PassesStrSave(ICombatant target, int dc, out int roll, out int mod, out int total)
     {
-        return stat switch
+        roll = DiceRoller.RollD20();
+        mod = GetStrMod(target);
+        total = roll + mod;
+        return total >= dc;
+    }
+
+    private static int GetStrMod(ICombatant target)
+    {
+        // Real value when combatant is BoxMover
+        if (target is BoxMover bm && bm.Sheet != null)
         {
-            AbilityScoreType.STR => scores.STR,
-            AbilityScoreType.DEX => scores.DEX,
-            AbilityScoreType.CON => scores.CON,
-            AbilityScoreType.INT => scores.INT,
-            AbilityScoreType.WIS => scores.WIS,
-            AbilityScoreType.CHA => scores.CHA,
-            _ => 10
-        };
+            int str = bm.Sheet.Scores.STR;
+            return Mathf.FloorToInt((str - 10) / 2f);
+        }
+
+        // Fallback for enemies/NPCs until they expose sheet or save stats
+        return 1;
     }
 }
