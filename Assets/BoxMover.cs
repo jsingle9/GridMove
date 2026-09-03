@@ -126,6 +126,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
             abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
 
+        if (characterSheet.ClassId == "fighter")
+            abilities.Add(new ShieldSlamAbility());    
+
         if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
             abilities.Add(new PsionicFocusAbility());
 
@@ -167,6 +170,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             return;
         }
 
+        GridRegistry.Set(grid);
         targeting = new TargetingSystem(grid);
         mover = GetComponent<UnitMover>();
         mover.Initialize(grid);
