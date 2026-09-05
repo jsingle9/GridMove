@@ -127,7 +127,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
 
         if (characterSheet.ClassId == "fighter")
-            abilities.Add(new ShieldSlamAbility());    
+            abilities.Add(new ShieldSlamAbility());
 
         if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
             abilities.Add(new PsionicFocusAbility());
@@ -879,5 +879,46 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     private static int GetAbilityModifier(int score)
     {
         return Mathf.FloorToInt((score - 10) / 2f);
+    }
+
+    public bool TryForceMoveToCell(Vector3Int destinationCell)
+    {
+        if (grid == null)
+        {
+            Debug.LogError("TryForceMoveToCell failed: grid is null.", this);
+            return false;
+        }
+
+        Vector3Int currentCell = grid.WorldToGrid(GetWorldPosition());
+
+        // Destination validity checks
+        if (!grid.IsWalkable(destinationCell))
+            return false;
+
+        ICombatant occ = grid.GetOccupant(destinationCell);
+        if (occ != null && occ != this)
+            return false;
+
+        // Unregister old occupied cells
+        var oldCells = GetOccupiedCells();
+        if (oldCells != null)
+        {
+            foreach (var c in oldCells)
+                grid.UnregisterOccupant(c);   // <- one arg
+        }
+
+        // Move
+        transform.position = grid.GridToWorld(destinationCell);
+
+        // Register new occupied cells
+        var newCells = GetOccupiedCells();
+        if (newCells != null)
+        {
+            foreach (var c in newCells)
+                grid.RegisterOccupant(c, this); // keep if this one compiles
+        }
+
+        Debug.Log($"{Name} forced move: {currentCell} -> {destinationCell}");
+        return true;
     }
 }

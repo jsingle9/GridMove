@@ -51,7 +51,11 @@ public static class KnockbackUtility
         if (mb == null)
             return false;
 
+        if (target is BoxMover box && box.TryForceMoveToCell(lastValid))
+            return true;
+
+        // fallback (old behavior, not ideal)
         mb.transform.position = grid.GridToWorld(lastValid);
-        return true;
+            return true;
     }
 }
