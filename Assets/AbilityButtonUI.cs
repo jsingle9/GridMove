@@ -37,6 +37,7 @@ public class AbilityButtonUI : MonoBehaviour
 
     public void SetAbility(Ability ability, int slot)
     {
+        Debug.Log($"SetAbility slot={slot} ability={(ability != null ? ability.AbilityName : "null")}");
         player = AbilityUI.Instance != null ? AbilityUI.Instance.player : null;
 
         currentAbility = ability;
@@ -44,9 +45,11 @@ public class AbilityButtonUI : MonoBehaviour
 
         if (ability != null)
         {
-            if(abilityNameText != null)
-                abilityNameText.text = $"[{slot + 1}] {ability.AbilityName}";
+            if(abilityNameText != null){
 
+                abilityNameText.text = $"[{slot + 1}] {ability.AbilityName}";
+                Debug.Log($"[SetAbility:TEXT] set to '{abilityNameText.text}' on {abilityNameText.name}");
+            }
             if(costText != null)
                 costText.text = ability.CostType.ToString();
 
@@ -55,9 +58,10 @@ public class AbilityButtonUI : MonoBehaviour
         }
         else
         {
-            if(abilityNameText != null)
+            if(abilityNameText != null){
                 abilityNameText.text = $"[{slot + 1}] Empty";
-
+                Debug.Log($"[SetAbility:TEXT] set to '{abilityNameText.text}' on {abilityNameText.name}");
+            }
             if(costText != null)
                 costText.text = "";
 

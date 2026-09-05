@@ -4,7 +4,7 @@ public class RangedAttackAbility : Ability
 {
     public RangedAttackAbility()
     {
-        AbilityName = "Bow Shot";
+        AbilityName = "Ranged Attack";
         CostType = AbilityCostType.Action;
         Range = 6f;
         targetingMode = TargetingMode.Enemy;

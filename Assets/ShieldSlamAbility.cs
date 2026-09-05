@@ -9,6 +9,7 @@ public class ShieldSlamAbility : Ability
         AbilityName = "Shield Slam";
         CostType = AbilityCostType.Action;
         Range = 1.5f;   // melee feel, consistent with AttackAbility
+        targetingMode = TargetingMode.Enemy; 
     }
 
     public override AbilityResult TryUse(ICombatant user, TargetData targetData)
