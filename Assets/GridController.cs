@@ -266,6 +266,56 @@ private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
             occupiedTiles.Remove(cell);
     }
 
+    public Vector2Int GetCombatantFootprintSize(ICombatant combatant)
+    {
+        if (combatant == null)
+            return Vector2Int.one;
+
+        List<Vector3Int> cells = combatant.GetOccupiedCells();
+        if (cells == null || cells.Count == 0)
+            return Vector2Int.one;
+
+        int minX = cells[0].x;
+        int maxX = cells[0].x;
+        int minY = cells[0].y;
+        int maxY = cells[0].y;
+
+        foreach (Vector3Int cell in cells)
+        {
+            if (cell.x < minX) minX = cell.x;
+            if (cell.x > maxX) maxX = cell.x;
+            if (cell.y < minY) minY = cell.y;
+            if (cell.y > maxY) maxY = cell.y;
+        }
+
+        return new Vector2Int(
+            (maxX - minX) + 1,
+            (maxY - minY) + 1
+        );
+    }
+
+    public bool TryRelocateCombatant(ICombatant combatant, Vector3Int destinationCell)
+    {
+        if (combatant == null)
+            return false;
+
+        MonoBehaviour mb = combatant as MonoBehaviour;
+        if (mb == null)
+            return false;
+
+        Vector2Int footprint = GetCombatantFootprintSize(combatant);
+
+        if (!CanOccupyFootprint(destinationCell, footprint.x, footprint.y, combatant))
+            return false;
+
+        UnregisterCombatant(combatant);
+
+        mb.transform.position = GridToWorld(destinationCell);
+
+        RegisterCombatant(combatant);
+        return true;
+    }
+
     public bool IsTileOccupied(Vector3Int cell, GameObject ignore = null)
     {
         if(!occupiedTiles.ContainsKey(cell))
