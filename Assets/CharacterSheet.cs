@@ -26,6 +26,8 @@ public class CharacterSheet
     public List<string> SaveProficiencyIds = new();
     public List<string> FeatureIds = new();
 
+    public SpellSlotContainer SpellSlots = new();
+
     public int DataVersion = 1;
     public long LastUpdatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 

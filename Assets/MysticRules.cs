@@ -20,6 +20,10 @@ public class MysticRules : IClassRules
         // Base speed
         if (sheet.BaseSpeed <= 0) sheet.BaseSpeed = 6;
 
+        // Spell slots: level 1 mystic gets 2 slots of 1st level
+        sheet.SpellSlots.Slots[1].Max = 2;
+        sheet.SpellSlots.Slots[1].Current = 2;
+
         // Level 1 features
         AddFeature(sheet, FeatureIds.PsionicFocus);
         AddFeature(sheet, FeatureIds.MindThrustI);
@@ -37,7 +41,22 @@ public class MysticRules : IClassRules
             sheet.MaxHP += hpGain;
 
             if (lvl == 2)
+            {
                 AddFeature(sheet, FeatureIds.PsionicStrike);
+                // Level 2: 3 slots of 1st level, 2 slots of 2nd level
+                sheet.SpellSlots.Slots[1].Max = 3;
+                sheet.SpellSlots.Slots[1].Current = 3;
+                sheet.SpellSlots.Slots[2].Max = 2;
+                sheet.SpellSlots.Slots[2].Current = 2;
+            }
+
+            if (lvl == 3)
+            {
+                AddFeature(sheet, FeatureIds.PsionicAura);
+                // Level 3: 4 slots of 1st level, 2 slots of 2nd level
+                sheet.SpellSlots.Slots[1].Max = 4;
+                sheet.SpellSlots.Slots[1].Current = 4;
+            }
         }
 
         sheet.Level = newLevel;
