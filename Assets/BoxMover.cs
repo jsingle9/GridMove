@@ -203,7 +203,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         CheckForProximityCombat();
 
-        if(GameStateManager.Instance.CurrentState == GameState.Combat)
+        if(GameStateManager.Instance.CurrentGameState == GameState.Combat)
         {
             if(CombatManager.Instance.IsPlayersTurn(this))
             {
@@ -227,18 +227,18 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     public void HandleLeftClick()
     {
-        Debug.Log("HandleLeftClick - State: " + GameStateManager.Instance.CurrentState);
+        Debug.Log("HandleLeftClick - State: " + GameStateManager.Instance.CurrentGameState);
         if(EventSystem.current.IsPointerOverGameObject())
             return;
         // EXPLORE MODE
-        if(GameStateManager.Instance.CurrentState == GameState.FreeExplore)
+        if(GameStateManager.Instance.CurrentGameState == GameState.FreeExplore)
         {
             HandleExploreClick();
             return;
         }
 
         // COMBAT MODE
-        if(GameStateManager.Instance.CurrentState == GameState.Combat)
+        if(GameStateManager.Instance.CurrentGameState == GameState.Combat)
         {
             HandleCombatClickRouter();
         }
@@ -284,7 +284,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
                 if (allowed <= 0)
                 {
-                    if (GameStateManager.Instance.CurrentState != GameState.Combat ||
+                    if (GameStateManager.Instance.CurrentGameState != GameState.Combat ||
                         !CombatManager.Instance.IsPlayersTurn(this))
                     {
                         mover.StartPath(path);
@@ -321,7 +321,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     void CheckForProximityCombat()
     {
-        if (GameStateManager.Instance.CurrentState != GameState.FreeExplore)
+        if (GameStateManager.Instance.CurrentGameState != GameState.FreeExplore)
             return;
 
         if (mover.IsMoving)

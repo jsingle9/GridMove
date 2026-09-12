@@ -195,7 +195,7 @@ public class CombatManager : MonoBehaviour{
         if( c == null || c.IsDead())
           continue;
 
-        // clear out any used action economy resources  
+        // clear out any used action economy resources
         c.EndTurn();
       }
 
@@ -230,7 +230,7 @@ public class CombatManager : MonoBehaviour{
   public bool IsPlayerActive()
   {
       return GameStateManager.Instance != null &&
-             GameStateManager.Instance.CurrentState == GameState.Combat &&
+             GameStateManager.Instance.CurrentGameState == GameState.Combat &&
              currentCombatState == CombatState.PlayerTurn;
   }
 

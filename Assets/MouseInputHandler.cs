@@ -19,7 +19,7 @@ public class MouseInputHandler : MonoBehaviour
     void Update()
     {
         // Show AOE preview on hover (only during targeting phase)
-        if (GameStateManager.Instance.CurrentState == GameState.Combat &&
+        if (GameStateManager.Instance.CurrentGameState == GameState.Combat &&
             CombatManager.Instance.IsPlayersTurn(boxMover) &&
             AbilityUI.Instance.CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
             AbilityUI.Instance.selectedAbility != null &&
@@ -43,8 +43,8 @@ public class MouseInputHandler : MonoBehaviour
         if (!Mouse.current.leftButton.wasPressedThisFrame)
             return;
 
-        if (GameStateManager.Instance.CurrentState != GameState.FreeExplore &&
-            GameStateManager.Instance.CurrentState != GameState.Combat)
+        if (GameStateManager.Instance.CurrentGameState != GameState.FreeExplore &&
+            GameStateManager.Instance.CurrentGameState != GameState.Combat)
             return;
 
         boxMover.HandleLeftClick();
