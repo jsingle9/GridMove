@@ -12,7 +12,7 @@ public class DrakeApproachNarrationTrigger : MonoBehaviour
     void Update()
     {
         if (hasPlayed || player == null || drake == null) return;
-        if (GameStateManager.Instance != null && GameStateManager.Instance.CurrentState == GameState.Combat) return;
+        if (GameStateManager.Instance != null && GameStateManager.Instance.CurrentGameState == GameState.Combat) return;
 
         float dist = Vector3.Distance(player.position, drake.position);
         if (dist <= warningRadius)
