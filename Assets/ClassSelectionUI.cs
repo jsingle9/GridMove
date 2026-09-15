@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Simple class selection UI for the main menu.
@@ -12,8 +13,8 @@ public class ClassSelectionUI : MonoBehaviour
     [SerializeField] private Button mageButton;
     [SerializeField] private Button backButton;
 
-    [SerializeField] private Text classNameDisplay;
-    [SerializeField] private Text classDescriptionDisplay;
+    [SerializeField] private TextMeshProUGUI classNameDisplay;
+    [SerializeField] private TextMeshProUGUI classDescriptionDisplay;
 
     [SerializeField] private MainMenuController mainMenuController;
 
@@ -21,6 +22,12 @@ public class ClassSelectionUI : MonoBehaviour
 
     private void Start()
     {
+      UpdateDisplay();
+
+      LogButtonState("Fighter", fighterButton);
+      LogButtonState("Mystic", mysticButton);
+      LogButtonState("Mage", mageButton);
+
         // Hook up buttons
         if (fighterButton != null)
             fighterButton.onClick.AddListener(() => SelectAndStartClass("fighter"));
@@ -112,6 +119,23 @@ public class ClassSelectionUI : MonoBehaviour
         UpdateDisplay();
         gameObject.SetActive(false);
     }
+
+    private void LogButtonState(string label, Button b)
+    {
+        if (b == null)
+        {
+            Debug.Log($"{label}: NULL");
+            return;
+        }
+
+        var cg = b.GetComponentInParent<CanvasGroup>();
+        Debug.Log(
+            $"{label} | activeInHierarchy={b.gameObject.activeInHierarchy} " +
+            $"interactable={b.interactable} enabled={b.enabled} " +
+            $"imageRaycast={(b.targetGraphic != null ? b.targetGraphic.raycastTarget : false)} " +
+            $"parentCanvasGroup={(cg != null ? $"interactable={cg.interactable}, blocksRaycasts={cg.blocksRaycasts}, alpha={cg.alpha}" : "none")}"
+        );
+    }    
 
     private void OnDestroy()
     {

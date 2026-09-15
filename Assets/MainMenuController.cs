@@ -61,7 +61,7 @@ public class MainMenuController : MonoBehaviour
             classSelectionPanel.SetActive(false);
 
         SceneManager.LoadScene(verticalSliceScene);
-    }    
+    }
 
     public void QuitGame()
     {
