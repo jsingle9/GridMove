@@ -19,11 +19,11 @@ public static class CharacterFactory
         };
 
         c.Scores.STR = 17;
-        c.Scores.DEX = 10;
+        c.Scores.DEX = 12;
         c.Scores.CON = 15;
         c.Scores.INT = 10;
         c.Scores.WIS = 10;
-        c.Scores.CHA = 10;
+        c.Scores.CHA = 12;
 
         var classDef = RulesLookups.GetClassDef(c.ClassId);
         c.CurrentHP = RulesService.CalculateMaxHP(c, classDef);
