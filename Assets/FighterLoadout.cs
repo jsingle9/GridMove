@@ -6,4 +6,6 @@ public class FighterLoadout : ScriptableObject
     public WeaponItem longsword;
     public ArmorItem scaleMail;
     public ShieldItem shield;
+
+    public Sprite classSprite;
 }
