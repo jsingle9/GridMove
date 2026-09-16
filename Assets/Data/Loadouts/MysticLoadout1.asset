@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 443a15b6a14854f078e716b9790fb959, type: 3}
+  m_Name: MysticLoadout1
+  m_EditorClassIdentifier: Assembly-CSharp::MysticLoadout
+  startingWeapon: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
+  startingArmor: {fileID: 11400000, guid: 75287318d7f9f4af7b05bfdd57e2b53e, type: 2}
+  startingShield: {fileID: 0}
+  classSprite: {fileID: -5665058399970730418, guid: 0e32cb0893291470aaf2512c56c0f16f, type: 3}

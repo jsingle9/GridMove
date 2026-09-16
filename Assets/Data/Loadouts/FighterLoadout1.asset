@@ -15,3 +15,4 @@ MonoBehaviour:
   longsword: {fileID: 11400000, guid: a898d0878ea9c4bbca4be95d05ac64b8, type: 2}
   scaleMail: {fileID: 11400000, guid: 1714aa34779c745869b50be537f6a88d, type: 2}
   shield: {fileID: 11400000, guid: 346387c950c5a43a6913996d601e74ff, type: 2}
+  classSprite: {fileID: 5634640814122811094, guid: 49ada504b2749428eb771eb272c30350, type: 3}
