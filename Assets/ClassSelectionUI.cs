@@ -103,6 +103,10 @@ public class ClassSelectionUI : MonoBehaviour
             return;
         }
 
+        PlayerPrefs.SetString("SelectedClassId", selectedClassId);
+        PlayerPrefs.Save();
+        Debug.Log($"Saved SelectedClassId={selectedClassId}");        
+
         if (mainMenuController != null)
         {
             mainMenuController.LoadVerticalSliceWithClass(selectedClassId);
@@ -135,7 +139,7 @@ public class ClassSelectionUI : MonoBehaviour
             $"imageRaycast={(b.targetGraphic != null ? b.targetGraphic.raycastTarget : false)} " +
             $"parentCanvasGroup={(cg != null ? $"interactable={cg.interactable}, blocksRaycasts={cg.blocksRaycasts}, alpha={cg.alpha}" : "none")}"
         );
-    }    
+    }
 
     private void OnDestroy()
     {
