@@ -6,6 +6,9 @@ public class ClassDbBootstrap : MonoBehaviour
 
     private void Awake()
     {
+
         CharacterFactory.ClassDb = classDb;
+        DontDestroyOnLoad(gameObject);
+        Debug.Log($"ClassDbBootstrap: ClassDb set = {(classDb != null)}");
     }
 }
