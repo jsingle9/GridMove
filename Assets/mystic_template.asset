@@ -13,19 +13,22 @@ MonoBehaviour:
   m_Name: mystic_template
   m_EditorClassIdentifier: Assembly-CSharp::ClassTemplate
   classId: mystic
-  defaultName: topper
+  defaultName: Topper
   speciesId: human
   backgroundId: sage
   str: 10
-  dex: 10
-  con: 10
-  intel: 10
-  wis: 10
+  dex: 12
+  con: 12
+  intel: 14
+  wis: 16
   cha: 10
   baseSpeed: 6
   skillProficiencyIds: []
   saveProficiencyIds: []
-  featureIds: []
+  featureIds:
+  - psionic_focus
+  - mind_thrust_i
+  - psionic_strike
   startingWeapon: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
   startingArmor: {fileID: 11400000, guid: 75287318d7f9f4af7b05bfdd57e2b53e, type: 2}
   startingShield: {fileID: 0}

@@ -16,12 +16,12 @@ MonoBehaviour:
   defaultName: Galvin
   speciesId: human
   backgroundId: soldier
-  str: 10
-  dex: 10
-  con: 10
+  str: 17
+  dex: 12
+  con: 15
   intel: 10
   wis: 10
-  cha: 10
+  cha: 12
   baseSpeed: 6
   skillProficiencyIds: []
   saveProficiencyIds: []
