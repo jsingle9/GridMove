@@ -29,7 +29,7 @@ public class AbilityUI : MonoBehaviour
     }
 
     void Start(){
-      RefreshAbilityButtons();
+        RefreshAbilityButtons();
     }
 
     void Update(){
@@ -211,4 +211,5 @@ public class AbilityUI : MonoBehaviour
             abilityButtons[i].SetAbility(a, i);
         }
     }
+
 }

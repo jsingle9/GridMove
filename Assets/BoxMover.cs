@@ -115,28 +115,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (equippedWeapon == null)
             equippedWeapon = new Weapon("Long Sword", 3, "1d8");
 
-        // Abilities common to all classes
-        abilities.Add(new AttackAbility());
-        abilities.Add(new RangedAttackAbility());
-
-        // Class-specific abilities driven by FeatureIds
-        if (characterSheet.FeatureIds.Contains(FeatureIds.SecondWind))
-            abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
-
-        if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
-            abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
-
-        if (characterSheet.ClassId == "fighter")
-            abilities.Add(new ShieldSlamAbility());
-
-        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
-            abilities.Add(new PsionicFocusAbility());
-
-        if (characterSheet.FeatureIds.Contains(FeatureIds.MindThrustI))
-            abilities.Add(new MindThrustAbility());
-
-        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
-            abilities.Add(new PsionicStrikeAbility());
+        RebuildAbilities();
 
         /*  var fireball = new FireballAbility();
             fireball.SetTelegraphStyle(fireballTelegraphStyle);
@@ -159,6 +138,26 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     void Start()
     {
+
+      if (GameStateManager.Instance != null)
+      {
+          CharacterSheet selectedSheet = GameStateManager.Instance.GetPlayerCharacter();
+
+          if (selectedSheet != null)
+          {
+              Debug.Log($"BoxMover: applying selected sheet for class={selectedSheet.ClassId}");
+              SetCharacterSheet(selectedSheet);
+          }
+          else
+          {
+              Debug.LogWarning("BoxMover: GameStateManager has no stored PlayerCharacter. Using default Fighter sheet.");
+          }
+      }
+
+      if(grid == null)
+      {
+          grid = FindFirstObjectByType<GridController>();
+      }
         if(grid == null)
         {
             grid = FindFirstObjectByType<GridController>();
@@ -782,7 +781,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         characterSheet = loadedSheet;
         Debug.Log($"SetCharacterSheet called. Incoming HP={characterSheet.CurrentHP}");
-
+        RebuildAbilities();
         // Recompute maxHP/AC/speed from loaded sheet
         RefreshDerivedCombatStats();
 
@@ -801,6 +800,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         }
     }
 
+    // this method is just for playtesting / debugging purposes
+    // remove from production code
     public void ReviveFromLoad(bool resetCombatResources = true)
     {
         // 1) Ensure actor is active
@@ -876,6 +877,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         Debug.Log($"Equipped shield asset: {shield.itemName}, AC now {ArmorClass}");
     }
 
+    /// ability methods
     private static int GetAbilityModifier(int score)
     {
         return Mathf.FloorToInt((score - 10) / 2f);
@@ -896,5 +898,48 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         Debug.Log($"{Name} forced move: {currentCell} -> {destinationCell}");
         return true;
+    }
+
+    private void RebuildAbilities()
+    {
+        abilities.Clear();
+
+        // Abilities every player always has.
+        abilities.Add(new AttackAbility());
+        abilities.Add(new RangedAttackAbility());
+
+        if (characterSheet == null)
+        {
+            Debug.LogWarning("BoxMover: Cannot add class abilities because CharacterSheet is null.");
+            return;
+        }
+
+        characterSheet.FeatureIds ??= new List<string>();
+
+        // Fighter abilities.
+        if (characterSheet.FeatureIds.Contains(FeatureIds.SecondWind))
+            abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
+            abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
+
+        if (characterSheet.ClassId == "fighter")
+            abilities.Add(new ShieldSlamAbility());
+
+        // Mystic abilities.
+        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
+            abilities.Add(new PsionicFocusAbility());
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.MindThrustI))
+            abilities.Add(new MindThrustAbility());
+
+        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
+            abilities.Add(new PsionicStrikeAbility());
+
+        Debug.Log(
+            $"BoxMover: rebuilt abilities for class={characterSheet.ClassId}; " +
+            $"features=[{string.Join(", ", characterSheet.FeatureIds)}]; " +
+            $"abilityCount={abilities.Count}"
+        );
     }
 }
