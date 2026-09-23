@@ -41,36 +41,25 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     private readonly List<Item> _inventory = new();
     private ArmorItem equippedArmorItem;
     private ShieldItem equippedShieldItem;
-
-    // These now factor in equipped weapons
-    public string DamageDice
-    {
-        get
-        {
-            Weapon equippedMelee = Inventory.Instance.GetEquippedMeleeWeapon();
-            if (equippedMelee != null)
-                return equippedMelee.DamageDice;
-            return baseDamageDice;
-        }
-    }
-
-    public int DamageModifier
-    {
-        get
-        {
-            Weapon equippedMelee = Inventory.Instance.GetEquippedMeleeWeapon();
-            if (equippedMelee != null)
-                return equippedMelee.DamageBonus;
-            return baseDamageModifier;
-        }
-    }
-
     private StatusManager statusManager;
-    private Weapon equippedWeapon;
-    public Weapon EquippedWeapon {
+
+    [SerializeField] private WeaponItem equippedWeapon;
+
+    public WeaponItem EquippedWeapon
+    {
         get => equippedWeapon;
-        set => equippedWeapon = value;
+        private set => equippedWeapon = value;
     }
+
+    public string DamageDice =>
+        EquippedWeapon != null
+            ? EquippedWeapon.damageDice
+            : baseDamageDice;
+
+    public int DamageModifier =>
+        EquippedWeapon != null
+            ? EquippedWeapon.damageBonus
+            : baseDamageModifier;
 
     void Awake()
     {
@@ -111,9 +100,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             FighterLoadoutApplier.ApplyTo(this, startingLoadout);
             RefreshDerivedCombatStats(); // re-pull AC/speed/etc from rules after equip
         }
-
-        if (equippedWeapon == null)
-            equippedWeapon = new Weapon("Long Sword", 3, "1d8");
 
         RebuildAbilities();
 
@@ -443,7 +429,10 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForAction;
 
-        Debug.Log("Choose Action: [1] Melee  [2] Ranged  [3] HealSpell [4] Fireball");
+        Debug.Log(
+            "Choose an ability. The equipped weapon determines " +
+            "whether Attack is melee or ranged."
+        );
 
         statusManager.ProcessTurnStart();
     }
@@ -519,9 +508,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     void HandleAbilityTargetClick()
     {
-        var ability = AbilityUI.Instance.selectedAbility;
+        Ability ability = AbilityUI.Instance.selectedAbility;
 
-        if(ability == null)
+        if (ability == null)
         {
             Debug.Log("No ability selected");
             return;
@@ -535,25 +524,43 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             click
         );
 
-        if(target == null)
+        if (target == null)
         {
             Debug.Log("Invalid target");
             return;
         }
 
-        // Use IntentExecutor to handle ability with movement support
-        AbilityResult result = intentExecutor.ExecuteAbilityWithMovement(this, ability, target);
+        /*
+         * IntentExecutor decides whether an AttackAbility should:
+         *
+         * - resolve immediately for an equipped ranged weapon, or
+         * - move into melee range and retry after movement for a melee weapon.
+         */
+        AbilityResult result = intentExecutor.ExecuteAbilityWithMovement(
+            this,
+            ability,
+            target
+        );
 
-        if(!result.Success && !intentExecutor.IsExecutingAbilityWithMovement())
+        if (!result.Success &&
+            !intentExecutor.IsExecutingAbilityWithMovement())
         {
             Debug.Log($"Ability failed: {result.FailureReason}");
+            return;
         }
 
         grid.ClearAllHighlights();
 
-        if(result.Success && !intentExecutor.IsExecutingAbilityWithMovement())
+        /*
+         * Clear targeting immediately after a successful request—even when
+         * melee movement was queued. IntentExecutor holds its own pending
+         * target/ability state and will resolve the attack after movement.
+         */
+        if (result.Success)
         {
-            AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForAction;
+            AbilityUI.Instance.CurrentPhase =
+                PlayerTurnPhase.WaitingForAction;
+
             AbilityUI.Instance.selectedAbility = null;
         }
     }
@@ -689,14 +696,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         characterSheet.CurrentHP = currentHP;
 
         Debug.Log($"{this} healed to {currentHP}/{maxHP}");
-    }
-
-    public void EquipWeapon(Weapon weapon)
-    {
-        if(weapon == null) return;
-
-        equippedWeapon = weapon;
-        Debug.Log($"Equipped: {weapon.WeaponName} (+{weapon.DamageBonus} damage)");
     }
 
     private IEnumerator FlashRed()
@@ -846,14 +845,18 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     public void EquipWeapon(WeaponItem weapon)
     {
-        if (weapon == null) return;
+        if (weapon == null)
+            return;
 
-        // TEMP bridge to your current Weapon runtime class
-        equippedWeapon = new Weapon(weapon.itemName, 0, weapon.damageDice);
+        EquippedWeapon = weapon;
 
-        // Optional: if you later support versatile, choose dice based on hand usage
-        baseDamageDice = weapon.damageDice;
-        Debug.Log($"Equipped weapon asset: {weapon.itemName} ({weapon.damageDice})");
+        Debug.Log(
+            $"Equipped weapon: {weapon.itemName} | " +
+            $"type={weapon.weaponType} | " +
+            $"range={weapon.range} | " +
+            $"damage={weapon.damageDice} | " +
+            $"bonus={weapon.damageBonus}"
+        );
     }
 
     public void EquipArmor(ArmorItem armor)
@@ -906,7 +909,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         // Abilities every player always has.
         abilities.Add(new AttackAbility());
-        abilities.Add(new RangedAttackAbility());
+        //abilities.Add(new RangedAttackAbility());
 
         if (characterSheet == null)
         {

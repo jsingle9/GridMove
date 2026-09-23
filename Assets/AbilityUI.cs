@@ -3,116 +3,116 @@ using UnityEngine.InputSystem;
 
 public class AbilityUI : MonoBehaviour
 {
-    GridController grid;
-    TargetingSystem targetingSystem;
+    private GridController grid;
+    private TargetingSystem targetingSystem;
+
     public static AbilityUI Instance;
+
     public PlayerTurnPhase CurrentPhase;
     public Ability selectedAbility;
-    public BoxMover player;   // drag player object here in inspector
+    public BoxMover player;
+
     private AOEVisualizer aoeVisualizer;
+
     [SerializeField] private AbilityButtonUI[] abilityButtons;
 
-    void Awake(){
+    private void Awake()
+    {
+        Instance = this;
 
-      Instance = this;
-      grid = FindFirstObjectByType<GridController>();
-      targetingSystem = new TargetingSystem(grid);
-      CurrentPhase = PlayerTurnPhase.WaitingForAction;
-      Debug.Log("AbilityUI Awake() fired");
+        grid = FindFirstObjectByType<GridController>();
+        targetingSystem = new TargetingSystem(grid);
 
-      aoeVisualizer = GetComponent<AOEVisualizer>();
-      if (aoeVisualizer == null){
-          GameObject aoeObj = new GameObject("AOEVisualizer");
-          aoeObj.transform.parent = transform;
-          aoeVisualizer = aoeObj.AddComponent<AOEVisualizer>();
-      }
+        CurrentPhase = PlayerTurnPhase.WaitingForAction;
+
+        Debug.Log("AbilityUI Awake() fired");
+
+        aoeVisualizer = GetComponent<AOEVisualizer>();
+
+        if (aoeVisualizer == null)
+        {
+            GameObject aoeObject = new GameObject("AOEVisualizer");
+            aoeObject.transform.SetParent(transform);
+            aoeVisualizer = aoeObject.AddComponent<AOEVisualizer>();
+        }
     }
 
-    void Start(){
+    private void Start()
+    {
         RefreshAbilityButtons();
     }
 
-    void Update(){
+    private void Update()
+    {
+        // Cancel targeting with Q.
+        if (CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
+            Keyboard.current.qKey.wasPressedThisFrame)
+        {
+            CancelAbility();
+            grid?.ClearAllHighlights();
+            CurrentPhase = PlayerTurnPhase.WaitingForAction;
+            return;
+        }
 
+        if (CurrentPhase != PlayerTurnPhase.WaitingForAction)
+            return;
 
-      // NEW: Add cancel ability input during targeting phase
-      if(CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
-             Keyboard.current.qKey.wasPressedThisFrame)
-      {
-          CancelAbility();
-          grid.ClearAllHighlights();
-          CurrentPhase = PlayerTurnPhase.WaitingForAction;
-          return;
-      }
+        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            TryActivateAbilitySlot(0, "KEYBIND");
+            return;
+        }
 
-      if(CurrentPhase != PlayerTurnPhase.WaitingForAction)
-          return;
+        if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            TryActivateAbilitySlot(1, "KEYBIND");
+            return;
+        }
 
-          if(CurrentPhase != PlayerTurnPhase.WaitingForAction)
-              return;
+        if (Keyboard.current.digit3Key.wasPressedThisFrame)
+        {
+            TryActivateAbilitySlot(2, "KEYBIND");
+            return;
+        }
 
-          if (Keyboard.current.digit1Key.wasPressedThisFrame) { TryActivateAbilitySlot(0, "KEYBIND"); return; }
-          if (Keyboard.current.digit2Key.wasPressedThisFrame) { TryActivateAbilitySlot(1, "KEYBIND"); return; }
-          if (Keyboard.current.digit3Key.wasPressedThisFrame) { TryActivateAbilitySlot(2, "KEYBIND"); return; }
-          if (Keyboard.current.digit4Key.wasPressedThisFrame) { TryActivateAbilitySlot(3, "KEYBIND"); return; }
-          if (Keyboard.current.digit5Key.wasPressedThisFrame) { TryActivateAbilitySlot(4, "KEYBIND"); return; }
+        if (Keyboard.current.digit4Key.wasPressedThisFrame)
+        {
+            TryActivateAbilitySlot(3, "KEYBIND");
+            return;
+        }
+
+        if (Keyboard.current.digit5Key.wasPressedThisFrame)
+        {
+            TryActivateAbilitySlot(4, "KEYBIND");
+        }
     }
 
-    public void SelectAbility(int slot){
+    public void SelectAbility(int slot)
+    {
+        if (player == null)
+        {
+            Debug.LogWarning("SelectAbility: player is null.");
+            return;
+        }
 
-        // the following line is commented out because the context of player changed
-        //var player = CombatManager.Instance.CurrentPlayer;
-        Debug.Log("SelectAbilityFired");
         selectedAbility = player.GetAbility(slot);
 
-        if (selectedAbility == null){
-          Debug.Log("No ability in that slot");
-          return;
-        }
-
-        if (selectedAbility != null && selectedAbility.targetingMode == TargetingMode.Area)
+        if (selectedAbility == null)
         {
-            // Show AOE preview at player position
-            Vector3Int playerGridPos = grid.WorldToGrid(player.GetWorldPosition());
-            //aoeVisualizer.DrawAOE(playerGridPos, selectedAbility.radius);
+            Debug.Log($"No ability in slot {slot}");
+            return;
         }
-
-
 
         Debug.Log($"Selected ability: {selectedAbility.AbilityName}");
     }
 
-    public void CancelAbility(){
-        aoeVisualizer.HideAOE();
+    public void CancelAbility()
+    {
+        aoeVisualizer?.HideAOE();
+
         selectedAbility = null;
+
         Debug.Log("Ability canceled");
-    }
-
-    public void TryUseSelected(TargetData target){
-        if(selectedAbility == null)
-            return;
-
-        Ability ability = selectedAbility;
-        //var player = CombatManager.Instance.CurrentPlayer;
-        if(ability == null){
-                ability = player.GetAbility(0); // default attack
-        }
-        if(ability == null){
-                Debug.LogError("No ability available");
-                return;
-        }
-
-        CombatEvents.Log($"{player.Name} uses {ability.AbilityName}.");
-
-        grid.ClearAllHighlights();
-        AbilityResult result = selectedAbility.TryUse(player, target);
-
-        CombatEvents.Log(result.Success
-            ? $"{ability.AbilityName} resolved successfully."
-            : $"{ability.AbilityName} failed: {result.FailureReason}");
-
-        CurrentPhase = PlayerTurnPhase.WaitingForAction;
-        selectedAbility = null;
     }
 
     public void BeginTargetingForSelectedAbility(string sourceTag)
@@ -132,14 +132,29 @@ public class AbilityUI : MonoBehaviour
 
         if (selectedAbility.targetingMode == TargetingMode.Area)
         {
-            // Let your AOE preview/template system handle visuals.
-            // Example if needed:
-            // Vector3Int p = grid.WorldToGrid(player.GetWorldPosition());
-            // aoeVisualizer.DrawAOE(p, selectedAbility.radius);
+            // Area-target preview belongs here when enabled.
             return;
         }
 
-        targetingSystem.HighlightValidTargets(selectedAbility, player);
+        /*
+         * Attack range now depends on the currently equipped weapon:
+         *
+         * - Melee weapon: remaining movement + 1 tile.
+         * - Ranged weapon: equipped weapon range.
+         *
+         * BoxMover/IntentExecutor still perform the authoritative
+         * pathfinding, movement-cost, range, and line-of-sight checks
+         * after the target is clicked.
+         */
+        if (selectedAbility is AttackAbility attackAbility)
+        {
+            attackAbility.RefreshTargetingRange(player);
+        }
+
+        targetingSystem.HighlightValidTargets(
+            selectedAbility,
+            player
+        );
     }
 
     public void TryActivateAbilitySlot(int slot, string sourceTag)
@@ -151,6 +166,7 @@ public class AbilityUI : MonoBehaviour
         }
 
         Ability ability = player.GetAbility(slot);
+
         if (ability == null)
         {
             Debug.Log($"No ability in slot {slot}");
@@ -165,12 +181,13 @@ public class AbilityUI : MonoBehaviour
 
         selectedAbility = ability;
 
-        if (grid != null)
-            grid.ClearAllHighlights();
+        grid?.ClearAllHighlights();
 
         Debug.Log(
             $"[ABILITY ACTIVATE] source={sourceTag} " +
-            $"slot={slot} ability={ability.AbilityName} mode={ability.targetingMode}"
+            $"slot={slot} " +
+            $"ability={ability.AbilityName} " +
+            $"mode={ability.targetingMode}"
         );
 
         bool selfCast =
@@ -184,32 +201,49 @@ public class AbilityUI : MonoBehaviour
                 primaryTarget = player,
                 user = player
             };
+
             selfTarget.unitsInArea.Add(player);
 
-            AbilityResult result = ability.TryUse(player, selfTarget);
+            AbilityResult result = ability.TryUse(
+                player,
+                selfTarget
+            );
 
             if (!result.Success)
-                Debug.Log($"Ability failed: {result.FailureReason}");
+            {
+                Debug.Log(
+                    $"Ability failed: {result.FailureReason}"
+                );
+            }
 
             CurrentPhase = PlayerTurnPhase.WaitingForAction;
             selectedAbility = null;
+
             return;
         }
 
         CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+
         BeginTargetingForSelectedAbility(sourceTag);
     }
 
     public void RefreshAbilityButtons()
     {
-        if (player == null || abilityButtons == null) return;
+        if (player == null || abilityButtons == null)
+            return;
 
         for (int i = 0; i < abilityButtons.Length; i++)
         {
-            Ability a = player.GetAbility(i);
-            abilityButtons[i].gameObject.SetActive(a != null);
-            abilityButtons[i].SetAbility(a, i);
+            Ability ability = player.GetAbility(i);
+
+            abilityButtons[i].gameObject.SetActive(
+                ability != null
+            );
+
+            if (ability != null)
+            {
+                abilityButtons[i].SetAbility(ability, i);
+            }
         }
     }
-
 }
