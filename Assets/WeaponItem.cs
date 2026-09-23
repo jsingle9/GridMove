@@ -1,19 +1,28 @@
 using UnityEngine;
 
-public enum DamageType { Slashing, Piercing, Bludgeoning }
+public enum DamageType
+{
+   Slashing,
+   Piercing,
+   Bludgeoning
+}
 
 [CreateAssetMenu(menuName = "RPG/Items/Weapon")]
 public class WeaponItem : Item
 {
-    [Header("5e Weapon")]
-    public string damageDice = "1d8";           // longsword 1H
-    public string versatileDamageDice = "1d10"; // longsword 2H
-    public DamageType damageType = DamageType.Slashing;
-    public bool isMartial = true;
+   [Header("Attack")]
+   public WeaponType weaponType = WeaponType.Melee;
+   public int range = 1;
+   public int damageBonus = 0;
 
-    public override void Use(ICombatant user, ICombatant target)
-    {
-        // Usually not "used" like a potion.
-        // You can leave empty for now or route to Equip system later.
-    }
+   [Header("5e Weapon")]
+   public string damageDice = "1d8";
+   public string versatileDamageDice = "1d10";
+   public DamageType damageType = DamageType.Slashing;
+   public bool isMartial = true;
+
+   public override void Use(ICombatant user, ICombatant target)
+   {
+       // Equipment system handles equipping weapons.
+   }
 }

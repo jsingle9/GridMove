@@ -15,7 +15,7 @@ public static class SpellEffectExecutor
             );
         }
 
-        int amount = RollDice(definition.damageDice);
+        int amount = DiceRoller.Roll(definition.damageDice);
         target.primaryTarget.TakeDamage(amount);
 
         return AbilityResult.CreateSuccess();
@@ -34,7 +34,7 @@ public static class SpellEffectExecutor
             );
         }
 
-        int amount = RollDice(definition.damageDice);
+        int amount = DiceRoller.Roll(definition.damageDice);
         target.primaryTarget.Heal(amount);
 
         return AbilityResult.CreateSuccess();
@@ -54,7 +54,7 @@ public static class SpellEffectExecutor
             );
         }
 
-        int amount = RollDice(definition.damageDice);
+        int amount = DiceRoller.Roll(definition.damageDice);
 
         foreach (ICombatant unit in target.unitsInArea)
         {
@@ -120,35 +120,4 @@ public static class SpellEffectExecutor
         );
     }
 
-    private static int RollDice(string diceNotation)
-    {
-        if (string.IsNullOrWhiteSpace(diceNotation))
-        {
-            Debug.LogWarning(
-                "SpellEffectExecutor: Empty damage dice. Using 0 damage."
-            );
-            return 0;
-        }
-
-        string[] parts = diceNotation.ToLower().Split('d');
-
-        if (parts.Length != 2 ||
-            !int.TryParse(parts[0], out int diceCount) ||
-            !int.TryParse(parts[1], out int diceSides) ||
-            diceCount <= 0 ||
-            diceSides <= 0)
-        {
-            Debug.LogWarning(
-                $"SpellEffectExecutor: Invalid dice notation '{diceNotation}'."
-            );
-            return 0;
-        }
-
-        int total = 0;
-
-        for (int i = 0; i < diceCount; i++)
-            total += Random.Range(1, diceSides + 1);
-
-        return total;
-    }
 }
