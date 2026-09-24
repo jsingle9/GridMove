@@ -71,14 +71,12 @@ public class RangedAttackAbility : Ability
             int damageModifier = user.DamageModifier;
 
             BoxMover boxMover = user as BoxMover;
-            if(boxMover != null)
+            if (boxMover != null &&
+                boxMover.EquippedWeapon != null &&
+                boxMover.EquippedWeapon.weaponType == WeaponType.Ranged)
             {
-                Weapon rangedWeapon = Inventory.Instance.GetEquippedRangedWeapon();
-                if(rangedWeapon != null)
-                {
-                    damageDice = rangedWeapon.DamageDice;
-                    damageModifier = rangedWeapon.DamageBonus;
-                }
+                damageDice = boxMover.EquippedWeapon.damageDice;
+                damageModifier = boxMover.EquippedWeapon.damageBonus;
             }
 
             int damage = DiceRoller.Roll(damageDice) + damageModifier;

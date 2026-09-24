@@ -35,23 +35,24 @@ public class InventoryUIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        if (statsDisplay == null)
-            return;
-
-        if (player == null)
+        if (statsDisplay == null || player == null)
             return;
 
         string displayText = $"HP: {player.CurrentHP}\n";
         displayText += $"AC: {player.ArmorClass}\n";
 
-        Weapon melee = Inventory.Instance.GetEquippedMeleeWeapon();
-        Weapon ranged = Inventory.Instance.GetEquippedRangedWeapon();
+        WeaponItem weapon = player.EquippedWeapon;
+        ArmorItem armor = player.GetEquippedItem(EquipmentSlot.Torso) as ArmorItem;
+        ShieldItem shield = player.GetEquippedItem(EquipmentSlot.Shield) as ShieldItem;
 
-        if (melee != null)
-            displayText += $"Melee: {melee.WeaponName}\n";
+        if (weapon != null)
+            displayText += $"Weapon: {weapon.itemName} ({weapon.weaponType})\n";
 
-        if (ranged != null)
-            displayText += $"Ranged: {ranged.WeaponName}";
+        if (armor != null)
+            displayText += $"Armor: {armor.itemName}\n";
+
+        if (shield != null)
+            displayText += $"Shield: {shield.itemName}\n";
 
         statsDisplay.text = displayText;
     }

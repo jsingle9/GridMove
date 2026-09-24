@@ -13,6 +13,9 @@ public class ArmorItem : Item
     public bool stealthDisadvantage = false;
     public int strengthRequirement = 0;
 
+    public override bool CanEquip => true;
+    public override EquipmentSlot? EquipSlot => EquipmentSlot.Torso;
+
     public override void Use(ICombatant user, ICombatant target)
     {
         // Route to Equip(user, this) once your equipment manager exists.

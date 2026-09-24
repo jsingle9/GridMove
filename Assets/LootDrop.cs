@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class LootDrop : MonoBehaviour
 {
-    private Weapon droppedWeapon;
-    private HealingPotion droppedPotion;
-    private bool isWeapon;
+    private Item droppedItem;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
 
@@ -20,7 +18,7 @@ public class LootDrop : MonoBehaviour
 
         circleCollider.radius = 0.3f;
         circleCollider.isTrigger = true;
-        
+
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if(rb == null)
         {
@@ -57,18 +55,33 @@ public class LootDrop : MonoBehaviour
         Debug.Log($"LootDrop position: {transform.position}");
     }
 
-    public void SetWeapon(Weapon weapon)
+    public void SetItem(Item item)
     {
-        droppedWeapon = weapon;
-        isWeapon = true;
-        Debug.Log($"Loot drop: {weapon.WeaponName}");
+        droppedItem = item;
+        Debug.Log($"Loot drop: {(item != null ? item.itemName : "null")}");
     }
 
     public void SetPotion(HealingPotion potion)
     {
-        droppedPotion = potion;
-        isWeapon = false;
-        Debug.Log($"Loot drop: Healing Potion");
+        droppedItem = potion;
+        Debug.Log("Loot drop: Healing Potion");
+    }
+
+    public void SetWeapon(Weapon weapon)
+    {
+        if (weapon == null)
+            return;
+
+        WeaponItem weaponItem = ScriptableObject.CreateInstance<WeaponItem>();
+        weaponItem.itemId = weapon.WeaponName.ToLowerInvariant().Replace(" ", "_");
+        weaponItem.itemName = weapon.WeaponName;
+        weaponItem.damageDice = weapon.DamageDice;
+        weaponItem.damageBonus = weapon.DamageBonus;
+        weaponItem.weaponType = weapon.WeaponType;
+        weaponItem.range = weapon.WeaponType == WeaponType.Ranged ? 6 : 1;
+
+        droppedItem = weaponItem;
+        Debug.Log($"Loot drop converted: {weapon.WeaponName}");
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -76,23 +89,18 @@ public class LootDrop : MonoBehaviour
         Debug.Log("LootDrop triggered by: " + collision.gameObject.name);
 
         BoxMover player = collision.GetComponent<BoxMover>();
-        if(player != null)
+        if (player != null)
         {
             Debug.Log("Player detected! Attempting to add loot...");
 
-            if (isWeapon && droppedWeapon != null)
+            if (droppedItem != null)
             {
-                Debug.Log($"Adding weapon: {droppedWeapon.WeaponName}");
-                Inventory.Instance.AddWeapon(droppedWeapon);
-            }
-            else if (!isWeapon && droppedPotion != null)
-            {
-                Debug.Log("Adding potion to inventory");
-                Inventory.Instance.AddPotion(droppedPotion);
+                player.AddItem(droppedItem);
+                Debug.Log($"Added item: {droppedItem.itemName}");
             }
             else
             {
-                Debug.LogError("No loot to add! isWeapon: " + isWeapon);
+                Debug.LogError("No loot item to add!");
             }
 
             Destroy(gameObject);

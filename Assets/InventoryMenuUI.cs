@@ -9,7 +9,8 @@ public class InventoryMenuUI : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private TextMeshProUGUI menuDisplay;
 
-    private List<InventoryItem> displayItems = new List<InventoryItem>();
+    private List<Item> displayItems = new List<Item>();
+    private BoxMover player;
     private int currentSelectedIndex = 0;
     private bool menuOpen = false;
 
@@ -27,6 +28,7 @@ public class InventoryMenuUI : MonoBehaviour
 
     void Start()
     {
+        player = FindFirstObjectByType<BoxMover>();
         if (menuPanel != null)
             menuPanel.SetActive(false);
     }
@@ -35,7 +37,13 @@ public class InventoryMenuUI : MonoBehaviour
     {
         menuOpen = true;
         currentSelectedIndex = 0;
-        displayItems = new List<InventoryItem>(Inventory.Instance.GetItems());
+
+        if (player == null)
+            player = FindFirstObjectByType<BoxMover>();
+
+        displayItems = player != null
+            ? new List<Item>(player.GetInventoryItems())
+            : new List<Item>();
 
         if (menuPanel != null)
             menuPanel.SetActive(true);
@@ -74,7 +82,7 @@ public class InventoryMenuUI : MonoBehaviour
         UpdateMenuDisplay();
     }
 
-    public InventoryItem GetSelectedItem()
+    public Item GetSelectedItem()
     {
         if (displayItems.Count == 0 || currentSelectedIndex < 0 || currentSelectedIndex >= displayItems.Count)
             return null;
@@ -97,26 +105,20 @@ public class InventoryMenuUI : MonoBehaviour
         {
             for (int i = 0; i < displayItems.Count; i++)
             {
-                string itemName = displayItems[i].GetDisplayName();
+              string itemName = displayItems[i] != null ? displayItems[i].itemName : "(null)";
 
-                if (displayItems[i].isWeapon)
-                {
-                    Weapon w = displayItems[i].weapon;
-                    itemName += $" ({w.WeaponType}, +{w.DamageBonus})";
-                }
-
-                if (i == currentSelectedIndex)
-                {
-                    displayText += $"> {itemName} <\n";
-                }
-                else
-                {
-                    displayText += $"  {itemName}\n";
-                }
+              if (displayItems[i] is WeaponItem w)
+                  itemName += $" ({w.weaponType}, +{w.damageBonus})";
+              else if (displayItems[i] is ArmorItem a)
+                  itemName += $" (AC {a.baseAC})";
+              else if (displayItems[i] is ShieldItem s)
+                  itemName += $" (+{s.acBonus} AC)";
+              else if (displayItems[i] is HealingPotion p)
+                  itemName += $" (Heal {p.healAmount})";
             }
         }
 
-        displayText += "\n[E] Equip | [C] Consume | [I] Close";
+        displayText += "\n[E] Equip | [C] Use/Consume | [I] Close";
 
         menuDisplay.text = displayText;
     }
