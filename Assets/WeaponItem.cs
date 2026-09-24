@@ -21,6 +21,10 @@ public class WeaponItem : Item
    public DamageType damageType = DamageType.Slashing;
    public bool isMartial = true;
 
+   // inline methods 
+   public override bool CanEquip => true;
+   public override EquipmentSlot? EquipSlot => EquipmentSlot.Weapon;
+
    public override void Use(ICombatant user, ICombatant target)
    {
        // Equipment system handles equipping weapons.

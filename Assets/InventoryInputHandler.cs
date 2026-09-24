@@ -27,7 +27,7 @@ public class InventoryInputHandler : MonoBehaviour
             // E key to equip weapon
             if (UnityEngine.InputSystem.Keyboard.current.eKey.wasPressedThisFrame)
             {
-                HandleWeaponEquip();
+                HandleItemEquip();
             }
 
             // C key to consume potion
@@ -50,9 +50,9 @@ public class InventoryInputHandler : MonoBehaviour
         }
     }
 
-    void HandleWeaponEquip()
+    void HandleItemEquip()
     {
-        InventoryItem selectedItem = InventoryMenuUI.Instance.GetSelectedItem();
+        Item selectedItem = InventoryMenuUI.Instance.GetSelectedItem();
 
         if (selectedItem == null)
         {
@@ -60,15 +60,28 @@ public class InventoryInputHandler : MonoBehaviour
             return;
         }
 
-        if (!selectedItem.isWeapon)
+        BoxMover player = FindFirstObjectByType<BoxMover>();
+        if (player == null)
         {
-            Debug.Log("Selected item is not a weapon");
+            Debug.LogError("Player not found!");
             return;
         }
 
-        Inventory.Instance.EquipWeapon(selectedItem.weapon);
-        Debug.Log($"Equipped {selectedItem.weapon.WeaponName}");
-        InventoryUIManager.Instance.UpdateUI(); // Update stats display
+        if (!selectedItem.CanEquip)
+        {
+            Debug.Log("Selected item is not equippable");
+            return;
+        }
+
+        if (!player.TryEquip(selectedItem))
+        {
+            Debug.Log("Equip failed");
+            return;
+        }
+
+        Debug.Log($"Equipped {selectedItem.itemName}");
+        InventoryUIManager.Instance.UpdateUI();
+        InventoryMenuUI.Instance.OpenMenu();
     }
 
     void HandlePotionConsumption()

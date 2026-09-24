@@ -22,6 +22,10 @@ public class CharacterSheet
     public bool HasShieldEquipped = false;
     public int BaseSpeed = 6;
 
+    public string EquippedWeaponId = "";
+    public List<string> InventoryItemIds = new();
+    public List<EquippedItemRecord> EquippedItems = new();
+
     public List<string> SkillProficiencyIds = new();
     public List<string> SaveProficiencyIds = new();
     public List<string> FeatureIds = new();

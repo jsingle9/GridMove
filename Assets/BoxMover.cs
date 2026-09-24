@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 {
@@ -38,10 +39,14 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     public bool SecondWindUsedThisCombat { get; set; }
     public bool ActionSurgeUsedThisCombat { get; set; }
     [SerializeField] private FighterLoadout startingLoadout;
+
+    private StatusManager statusManager;
+
     private readonly List<Item> _inventory = new();
+    private readonly Dictionary<EquipmentSlot, Item> _equippedItems = new();
+
     private ArmorItem equippedArmorItem;
     private ShieldItem equippedShieldItem;
-    private StatusManager statusManager;
 
     [SerializeField] private WeaponItem equippedWeapon;
 
@@ -772,6 +777,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         characterSheet.MaxHP = maxHP;
         characterSheet.ArmorClass = armorClass;
         characterSheet.Speed = speed;
+        characterSheet.HasShieldEquipped = equippedShieldItem != null;
+        characterSheet.EquippedArmorId = equippedArmorItem != null ? equippedArmorItem.armorId : "";
+        characterSheet.EquippedWeaponId = equippedWeapon != null ? equippedWeapon.itemId : "";
     }
 
     public void SetCharacterSheet(CharacterSheet loadedSheet)
@@ -837,10 +845,16 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         Debug.Log($"ReviveFromLoad: active={gameObject.activeSelf}, HP={currentHP}/{maxHP}, SWUsed={SecondWindUsedThisCombat}, ASUsed={ActionSurgeUsedThisCombat}");
     }
 
+    ////////////////////////////////////////////////////////////
+    // inventory and equipment methods
+    ///////////////////////////////////////////////////////////
     public void AddItem(Item item)
     {
-        if (item != null && !_inventory.Contains(item))
-            _inventory.Add(item);
+        if (item == null || _inventory.Contains(item))
+            return;
+
+        _inventory.Add(item);
+        SyncInventoryToSheet();
     }
 
     public void EquipWeapon(WeaponItem weapon)
@@ -848,7 +862,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (weapon == null)
             return;
 
-        EquippedWeapon = weapon;
+        TryEquip(weapon);
 
         Debug.Log(
             $"Equipped weapon: {weapon.itemName} | " +
@@ -861,23 +875,130 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     public void EquipArmor(ArmorItem armor)
     {
-        if (armor == null) return;
+        if (armor == null)
+            return;
 
-        equippedArmorItem = armor; // store the actual asset reference
-        armorDef = RulesLookups.GetArmorDefOrNull(equippedArmorItem);
-
-        RefreshDerivedCombatStats();
+        TryEquip(armor);
         Debug.Log($"Equipped armor asset: {armor.itemName}, AC now {ArmorClass}");
     }
 
     public void EquipShield(ShieldItem shield)
     {
-        if (shield == null) return;
+        if (shield == null)
+            return;
 
-        equippedShieldItem = shield; // store equipped shield
-        RefreshDerivedCombatStats();
-
+        TryEquip(shield);
         Debug.Log($"Equipped shield asset: {shield.itemName}, AC now {ArmorClass}");
+    }
+
+    public IReadOnlyList<Item> GetInventoryItems()
+    {
+        return _inventory;
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (item == null)
+            return;
+
+        _inventory.Remove(item);
+        SyncInventoryToSheet();
+    }
+
+    public Item GetEquippedItem(EquipmentSlot slot)
+    {
+        _equippedItems.TryGetValue(slot, out Item item);
+        return item;
+    }
+
+    public bool TryEquip(Item item)
+    {
+        if (item == null || !item.CanEquip || !item.EquipSlot.HasValue)
+            return false;
+
+        EquipmentSlot slot = item.EquipSlot.Value;
+
+        if (!_inventory.Contains(item))
+            _inventory.Add(item);
+
+        _equippedItems[slot] = item;
+
+        switch (item)
+        {
+            case WeaponItem weapon:
+                equippedWeapon = weapon;
+                break;
+
+            case ArmorItem armor:
+                equippedArmorItem = armor;
+                armorDef = RulesLookups.GetArmorDefOrNull(armor);
+                break;
+
+            case ShieldItem shield:
+                equippedShieldItem = shield;
+                break;
+        }
+
+        RefreshDerivedCombatStats();
+        SyncEquipmentToSheet();
+        SyncInventoryToSheet();
+
+        return true;
+    }
+
+    public bool TryUnequip(EquipmentSlot slot)
+    {
+        if (!_equippedItems.TryGetValue(slot, out Item equipped))
+            return false;
+
+        _equippedItems.Remove(slot);
+
+        switch (slot)
+        {
+            case EquipmentSlot.Weapon:
+                equippedWeapon = null;
+                break;
+
+            case EquipmentSlot.Torso:
+                equippedArmorItem = null;
+                armorDef = null;
+                break;
+
+            case EquipmentSlot.Shield:
+                equippedShieldItem = null;
+                break;
+        }
+
+        RefreshDerivedCombatStats();
+        SyncEquipmentToSheet();
+        SyncInventoryToSheet();
+
+        return true;
+    }
+
+    private void SyncInventoryToSheet()
+    {
+        characterSheet.InventoryItemIds = _inventory
+            .Where(i => i != null && !string.IsNullOrWhiteSpace(i.itemId))
+            .Select(i => i.itemId)
+            .Distinct()
+            .ToList();
+    }
+
+    private void SyncEquipmentToSheet()
+    {
+        characterSheet.EquippedItems = _equippedItems
+            .Where(kvp => kvp.Value != null && !string.IsNullOrWhiteSpace(kvp.Value.itemId))
+            .Select(kvp => new EquippedItemRecord
+            {
+                Slot = kvp.Key,
+                ItemId = kvp.Value.itemId
+            })
+            .ToList();
+
+        characterSheet.EquippedWeaponId = equippedWeapon != null ? equippedWeapon.itemId : "";
+        characterSheet.EquippedArmorId = equippedArmorItem != null ? equippedArmorItem.armorId : "";
+        characterSheet.HasShieldEquipped = equippedShieldItem != null;
     }
 
     /// ability methods
