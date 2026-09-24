@@ -86,17 +86,11 @@ public class InventoryInputHandler : MonoBehaviour
 
     void HandlePotionConsumption()
     {
-        InventoryItem selectedItem = InventoryMenuUI.Instance.GetSelectedItem();
+        Item selectedItem = InventoryMenuUI.Instance.GetSelectedItem();
 
         if (selectedItem == null)
         {
             Debug.Log("No item selected");
-            return;
-        }
-
-        if (selectedItem.isWeapon)
-        {
-            Debug.Log("Selected item is not consumable");
             return;
         }
 
@@ -108,10 +102,19 @@ public class InventoryInputHandler : MonoBehaviour
             return;
         }
 
-        selectedItem.potion.Use(player, player);
-        Inventory.Instance.RemoveItem(selectedItem);
-        Debug.Log("Consumed Healing Potion");
-        InventoryMenuUI.Instance.OpenMenu(); // Refresh menu after consumption
-        InventoryUIManager.Instance.UpdateUI(); // Update stats display
+        if (selectedItem.CanEquip)
+        {
+            Debug.Log("Selected item is equipment, not a consumable");
+            return;
+        }
+
+        selectedItem.Use(player, player);
+
+        if (selectedItem.consumable)
+            player.RemoveItem(selectedItem);
+
+        Debug.Log($"Used {selectedItem.itemName}");
+        InventoryMenuUI.Instance.OpenMenu();
+        InventoryUIManager.Instance.UpdateUI();
     }
 }
