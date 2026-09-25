@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class LootDrop : MonoBehaviour
 {
+
     private Item droppedItem;
+    [SerializeField] private HealingPotion defaultPotionAsset;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
 
@@ -49,6 +51,13 @@ public class LootDrop : MonoBehaviour
             Vector3Int cell = grid.WorldToGrid(transform.position);
             grid.SetWalkable(cell, true);
         }
+
+        // If no item was set via SetItem/SetPotion, default to the potion asset
+        if (droppedItem == null && defaultPotionAsset != null)
+        {
+            droppedItem = defaultPotionAsset;
+        }
+
 
         Debug.Log($"LootDrop ready at {transform.position}");
         Debug.Log($"LootDrop sprite: {spriteRenderer.sprite}");

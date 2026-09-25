@@ -28,9 +28,10 @@ public class InventoryMenuUI : MonoBehaviour
 
     void Start()
     {
-        player = FindFirstObjectByType<BoxMover>();
         if (menuPanel != null)
             menuPanel.SetActive(false);
+
+        player = FindFirstObjectByType<BoxMover>();
     }
 
     public void OpenMenu()
@@ -105,16 +106,25 @@ public class InventoryMenuUI : MonoBehaviour
         {
             for (int i = 0; i < displayItems.Count; i++)
             {
-              string itemName = displayItems[i] != null ? displayItems[i].itemName : "(null)";
+                string itemName = displayItems[i] != null ? displayItems[i].itemName : "(null)";
 
-              if (displayItems[i] is WeaponItem w)
-                  itemName += $" ({w.weaponType}, +{w.damageBonus})";
-              else if (displayItems[i] is ArmorItem a)
-                  itemName += $" (AC {a.baseAC})";
-              else if (displayItems[i] is ShieldItem s)
-                  itemName += $" (+{s.acBonus} AC)";
-              else if (displayItems[i] is HealingPotion p)
-                  itemName += $" (Heal {p.healAmount})";
+                if (displayItems[i] is WeaponItem w)
+                    itemName += $" ({w.weaponType}, +{w.damageBonus})";
+                else if (displayItems[i] is ArmorItem a)
+                    itemName += $" (AC {a.baseAC})";
+                else if (displayItems[i] is ShieldItem s)
+                    itemName += $" (+{s.acBonus} AC)";
+                else if (displayItems[i] is HealingPotion p)
+                    itemName += $" (Heal {p.healAmount})";
+
+                if (i == currentSelectedIndex)
+                {
+                    displayText += $"> {itemName} <\n";
+                }
+                else
+                {
+                    displayText += $"  {itemName}\n";
+                }
             }
         }
 
