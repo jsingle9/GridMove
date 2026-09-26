@@ -106,12 +106,21 @@ public class MeleeEnemy : Enemy
         GameObject potionDropObj = new GameObject("Loot_HealingPotion");
         potionDropObj.transform.position = transform.position;
         LootDrop potionLoot = potionDropObj.AddComponent<LootDrop>();
-        HealingPotion potion = ScriptableObject.CreateInstance<HealingPotion>();
-        potionLoot.SetPotion(potion);
+
+        // Load the potion asset from Resources or drag it in the Inspector
+        Potion potion = Resources.Load<Potion>("Items/Consumables/Potion/potion_of_healing"); // Adjust path as needed
+
+        if (potion != null)
+        {
+            potionLoot.SetItem(potion); // Use SetItem instead of SetPotion
+        }
+        else
+        {
+            Debug.LogError("Failed to load HealingPotion asset!");
+        }
 
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
         gameObject.SetActive(false);
     }
-
 }
