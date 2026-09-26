@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: potion_of_healing
   m_EditorClassIdentifier: Assembly-CSharp::Potion
   itemId: potion_of_healing
-  itemName: Potion of Healing
-  description: 
+  itemName: potion_of_healing
+  description: Potion of healing
   consumable: 1
   potionType: 0
   potency: 10
