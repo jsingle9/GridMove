@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a302d67b7e54bd3bb2d3ec74444541, type: 3}
+  m_Name: chain_mail
+  m_EditorClassIdentifier: Assembly-CSharp::ArmorItem
+  itemId: chain_mail
+  itemName: Chain Mail
+  description: A suit of metal links joined together in a mesh.  Standard gear for
+    martial big hitters.
+  consumable: 1
+  category: 2
+  armorId: chain_mail
+  baseAC: 16
+  maxDexBonus: 0
+  stealthDisadvantage: 1
+  strengthRequirement: 13
