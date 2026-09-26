@@ -28,10 +28,9 @@ public class InventoryMenuUI : MonoBehaviour
 
     void Start()
     {
+        player = FindFirstObjectByType<BoxMover>();
         if (menuPanel != null)
             menuPanel.SetActive(false);
-
-        player = FindFirstObjectByType<BoxMover>();
     }
 
     public void OpenMenu()
@@ -114,8 +113,10 @@ public class InventoryMenuUI : MonoBehaviour
                     itemName += $" (AC {a.baseAC})";
                 else if (displayItems[i] is ShieldItem s)
                     itemName += $" (+{s.acBonus} AC)";
-                else if (displayItems[i] is HealingPotion p)
-                    itemName += $" (Heal {p.healAmount})";
+                else if (displayItems[i] is Potion potion)
+                    itemName += $" (Potency: {potion.potency})";
+                else if (displayItems[i] is Scroll scroll)
+                    itemName += $" ({scroll.scrollType}, Power: {scroll.spellPower})";
 
                 if (i == currentSelectedIndex)
                 {

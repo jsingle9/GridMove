@@ -4,7 +4,7 @@ public class LootDrop : MonoBehaviour
 {
 
     private Item droppedItem;
-    [SerializeField] private HealingPotion defaultPotionAsset;
+    [SerializeField] private Potion defaultPotionAsset;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
 

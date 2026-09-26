@@ -14713,8 +14713,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3232374790215942160, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 898881516}
   m_SourcePrefab: {fileID: 100100000, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+--- !u!1 &898881514 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3232374790215942160, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+  m_PrefabInstance: {fileID: 898881513}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &898881515 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1430031138876199061, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+  m_PrefabInstance: {fileID: 898881513}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &898881516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898881514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dce168185f343a5b819883f049181f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantActionFlash
+  spriteRenderer: {fileID: 898881515}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.12
 --- !u!1 &926080446
 GameObject:
   m_ObjectHideFlags: 0
@@ -24027,6 +24055,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e14d16b48b98b472bbec3b5b6dc91680, type: 3}
+--- !u!1 &1877237709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1877237711}
+  - component: {fileID: 1877237710}
+  m_Layer: 0
+  m_Name: LootDrop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1877237710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877237709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a0b6523cd7b45c7929bd893ba84445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDrop
+  defaultPotionAsset: {fileID: 11400000, guid: 7711a60d4fd334c389b37239ac2441b3, type: 2}
+--- !u!4 &1877237711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877237709}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 907.6163, y: 523.11194, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1912593372
 GameObject:
   m_ObjectHideFlags: 0
@@ -25169,3 +25242,4 @@ SceneRoots:
   - {fileID: 664656118}
   - {fileID: 1999481191}
   - {fileID: 1131614036}
+  - {fileID: 1877237711}
