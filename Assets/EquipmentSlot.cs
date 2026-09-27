@@ -8,5 +8,6 @@ public enum EquipmentSlot
     Feet,
     RingLeft,
     RingRight,
-    Waist
+    Waist,
+    Neck
 }

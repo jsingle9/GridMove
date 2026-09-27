@@ -44,6 +44,7 @@ public class InventoryUIManager : MonoBehaviour
         WeaponItem weapon = player.EquippedWeapon;
         ArmorItem armor = player.GetEquippedItem(EquipmentSlot.Torso) as ArmorItem;
         ShieldItem shield = player.GetEquippedItem(EquipmentSlot.Shield) as ShieldItem;
+        NeckItem neck = player.GetEquippedItem(EquipmentSlot.Neck) as NeckItem;  // Add this
 
         if (weapon != null)
             displayText += $"Weapon: {weapon.itemName} ({weapon.weaponType})\n";
@@ -54,11 +55,14 @@ public class InventoryUIManager : MonoBehaviour
         if (shield != null)
             displayText += $"Shield: {shield.itemName}\n";
 
+        if (neck != null)  // Add this
+            displayText += $"Neck: {neck.itemName}\n";
+
         statsDisplay.text = displayText;
     }
 
     void OnDestroy()
     {
         player = null;
-    }    
+    }
 }
