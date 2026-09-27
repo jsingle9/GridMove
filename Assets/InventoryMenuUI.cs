@@ -35,15 +35,18 @@ public class InventoryMenuUI : MonoBehaviour
 
     public void OpenMenu()
     {
-        menuOpen = true;
-        currentSelectedIndex = 0;
-
         if (player == null)
             player = FindFirstObjectByType<BoxMover>();
 
-        displayItems = player != null
-            ? new List<Item>(player.GetInventoryItems())
-            : new List<Item>();
+        if (player == null)
+        {
+            Debug.LogWarning("Cannot open inventory menu: player not found");
+            return;
+        }
+
+        menuOpen = true;
+        currentSelectedIndex = 0;
+        displayItems = new List<Item>(player.GetInventoryItems());
 
         if (menuPanel != null)
             menuPanel.SetActive(true);
@@ -56,6 +59,8 @@ public class InventoryMenuUI : MonoBehaviour
         menuOpen = false;
         if (menuPanel != null)
             menuPanel.SetActive(false);
+
+        displayItems.Clear();
     }
 
     public bool IsMenuOpen()
@@ -132,5 +137,10 @@ public class InventoryMenuUI : MonoBehaviour
         displayText += "\n[E] Equip | [C] Use/Consume | [I] Close";
 
         menuDisplay.text = displayText;
+    }
+
+    void OnDestroy(){
+
+        CloseMenu();
     }
 }

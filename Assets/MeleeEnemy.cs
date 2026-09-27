@@ -102,22 +102,19 @@ public class MeleeEnemy : Enemy
         Vector3Int deathCell = grid.WorldToGrid(transform.position);
         grid.UnregisterOccupant(deathCell);
 
-        // Melee enemies drop healing potions
+        // Create a new potion instance for this drop
         GameObject potionDropObj = new GameObject("Loot_HealingPotion");
         potionDropObj.transform.position = transform.position;
         LootDrop potionLoot = potionDropObj.AddComponent<LootDrop>();
 
-        // Load the potion asset from Resources or drag it in the Inspector
-        Potion potion = Resources.Load<Potion>("Items/Consumables/Potion/potion_of_healing"); // Adjust path as needed
+        Potion potion = ScriptableObject.CreateInstance<Potion>();
+        potion.itemId = "potion_of_healing";
+        potion.itemName = "Potion of Healing";
+        potion.description = "Restores 10 HP";
+        potion.consumable = true;
+        potion.potency = 10;
 
-        if (potion != null)
-        {
-            potionLoot.SetItem(potion); // Use SetItem instead of SetPotion
-        }
-        else
-        {
-            Debug.LogError("Failed to load HealingPotion asset!");
-        }
+        potionLoot.SetItem(potion);
 
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
