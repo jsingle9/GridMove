@@ -104,7 +104,7 @@ public class InventoryInputHandler : MonoBehaviour
 
         if (selectedItem.CanEquip)
         {
-            Debug.Log("Selected item is equipment, not a consumable");
+            Debug.Log("Selected item is equipment, not consumable");
             return;
         }
 
@@ -116,5 +116,11 @@ public class InventoryInputHandler : MonoBehaviour
         Debug.Log($"Used {selectedItem.itemName}");
         InventoryMenuUI.Instance.OpenMenu();
         InventoryUIManager.Instance.UpdateUI();
+    }
+
+    void OnDestroy()
+    {
+        if (InventoryMenuUI.Instance != null)
+            InventoryMenuUI.Instance.CloseMenu();
     }
 }

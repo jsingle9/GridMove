@@ -10,7 +10,7 @@ public class GridController : MonoBehaviour
         new Dictionary<Vector3Int, ICombatant>();
     Dictionary<Vector3Int, GoldPileObstacle> goldPiles =
         new Dictionary<Vector3Int, GoldPileObstacle>();
-private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
+    private Dictionary<Vector3Int, DifficultTerrain> difficultTerrainByCell =
         new Dictionary<Vector3Int, DifficultTerrain>();
 
     public GameObject tilePrefab;

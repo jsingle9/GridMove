@@ -56,4 +56,9 @@ public class InventoryUIManager : MonoBehaviour
 
         statsDisplay.text = displayText;
     }
+
+    void OnDestroy()
+    {
+        player = null;
+    }    
 }
