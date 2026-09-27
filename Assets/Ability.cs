@@ -13,6 +13,10 @@ public abstract class Ability
     public TargetingMode targetingMode;
     public int range = 1;
     public int radius = 0;
+    public SpellAreaShape areaShape = SpellAreaShape.Single;
+    public int coneLength = 0;
+    public float coneAngleDegrees = 60f;
+    public int coneMinRange = 0;
 
     public virtual bool CanUse(ICombatant user)
     {
