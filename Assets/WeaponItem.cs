@@ -21,7 +21,7 @@ public class WeaponItem : Item
    public DamageType damageType = DamageType.Slashing;
    public bool isMartial = true;
 
-   // inline methods 
+   // inline methods
    public override bool CanEquip => true;
    public override EquipmentSlot? EquipSlot => EquipmentSlot.Weapon;
 
