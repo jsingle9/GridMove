@@ -22,6 +22,14 @@ public class SpellDefinition : ScriptableObject
     public TargetingMode targetingMode;
     public float range;
     public int radius;
+    public SpellAreaShape areaShape = SpellAreaShape.Single;
+    [Min(0)]
+    public int coneLength = 0;
+    [Range(1f, 179f)]
+    public float coneAngleDegrees = 60f;
+    [Tooltip("Optional minimum range in tiles before cone can begin.")]
+    [Min(0)]
+    public int coneMinRange = 0;
 
     [Header("Effect")]
     public SpellEffectType effectType;
