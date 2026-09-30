@@ -7,5 +7,6 @@ public enum SpellEffectType
     ApplyStatus,
     AreaDamage,
     Teleport,
-    Utility
+    Utility,
+    AttackWithSave
 }

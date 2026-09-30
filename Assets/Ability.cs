@@ -2,7 +2,8 @@ public enum AbilityCostType
 {
     Action,
     BonusAction,
-    Free
+    Free,
+    Reaction
 }
 
 public abstract class Ability

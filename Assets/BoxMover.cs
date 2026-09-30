@@ -39,7 +39,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     public bool SecondWindUsedThisCombat { get; set; }
     public bool ActionSurgeUsedThisCombat { get; set; }
     [SerializeField] private FighterLoadout startingLoadout;
-
+    [SerializeField] private SpellSlots spellSlots = new SpellSlots();
+    public SpellSlots Spellcasting => spellSlots;
     private StatusManager statusManager;
 
     private readonly List<Item> _inventory = new();
@@ -65,6 +66,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         EquippedWeapon != null
             ? EquippedWeapon.damageBonus
             : baseDamageModifier;
+
+
 
     void Awake()
     {
@@ -1065,5 +1068,17 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             $"features=[{string.Join(", ", characterSheet.FeatureIds)}]; " +
             $"abilityCount={abilities.Count}"
         );
+    }
+
+    public bool CanCastSpell(int spellLevel)
+    {
+        if (spellLevel == 0) return true;  // Cantrips
+        return Spellcasting.GetAvailableSlots(spellLevel) > 0;
+    }
+
+    public bool TryCastSpell(int spellLevel)
+    {
+        if (spellLevel == 0) return true;  // Cantrips
+        return Spellcasting.TrySpendSlot(spellLevel);
     }
 }

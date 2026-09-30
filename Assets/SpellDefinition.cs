@@ -2,7 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(
     fileName = "SpellDefinition",
-    menuName = "Game/Spells/Spell Definition"
+    menuName = "RPG/Spells/Spell Definition"
 )]
 public class SpellDefinition : ScriptableObject
 {
@@ -33,8 +33,22 @@ public class SpellDefinition : ScriptableObject
 
     [Header("Effect")]
     public SpellEffectType effectType;
+    [Tooltip("Damage dice (e.g., '2d6', '3d6'). For upcast spells, this is the base; extras scale per level slot.")]
     public string damageDice;
+    [Tooltip("Which ability score to save against (STR, DEX, CON, INT, WIS, CHA)")]
+    public SavingThrowUtility.AbilityScore saveAbility = SavingThrowUtility.AbilityScore.DEX;
+
+    [Tooltip("Optional: extra dice per spell slot level above base (e.g., Fireball adds 1d6 per slot above 3).")]
+    public string upcastDamageBonus;  // e.g., "1d6" means +1d6 per slot level above base level
     public string damageType;
+
+    [Tooltip("What happens on a failed save (e.g., 'Lose Reaction', 'Prone', etc)")]
+    public string failureEffect = "Lose Reaction";
+
+    [Tooltip("DC for the saving throw")]
+    [Min(8)]
+    public int saveDC = 12;  // Default DC
+
 
     [Header("Presentation")]
     public Sprite icon;
