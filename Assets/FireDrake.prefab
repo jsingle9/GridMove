@@ -147,10 +147,13 @@ MonoBehaviour:
   damageDice: 1d6
   damageModifier: 0
   speed: 4
+  encounterId: encounter_01
   breathEveryNTurns: 4
   breathRange: 4
   breathDamage: 8
+  breathDamageBonus: 0
   telegraphDuration: 0.8
+  bossScoreManager: {fileID: 0}
   breathTelegrapher: {fileID: 8238553862976105362}
 --- !u!114 &5202734630167250568
 MonoBehaviour:
@@ -164,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c745511de00d74db9b8580bc23fd8908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitMover
-  moveSpeed: 5
+  moveSpeed: 4
 --- !u!61 &5708959088380797300
 BoxCollider2D:
   m_ObjectHideFlags: 0
