@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5acee7a2ed57e42a09b86f63ce815eb6, type: 3}
+  m_Name: burning_hands
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDefinition
+  spellId: burning_hands
+  displayName: burning_hands
+  description: 
+  spellLevel: 1
+  targetingMode: 4
+  range: 0
+  radius: 0
+  areaShape: 2
+  coneLength: 3
+  coneAngleDegrees: 30
+  coneMinRange: 0
+  effectType: 0
+  damageDice: 3d6
+  saveAbility: 1
+  upcastDamageBonus: 1d6
+  damageType: 
+  failureEffect: 
+  saveDC: 12
+  icon: {fileID: -24568505368720062, guid: 56a3b5149926b4979abbac26270054ec, type: 3}

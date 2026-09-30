@@ -4,5 +4,6 @@ public enum TargetingMode
     Ally,
     Tile,
     Self,
-    Area
+    Area,
+    AllyOrSelf
 }
