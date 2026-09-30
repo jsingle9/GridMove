@@ -14,10 +14,6 @@ public class SpellAbility : Ability
             Range = 0f;
             range = 0;
             radius = 0;
-            areaShape = SpellAreaShape.Single;
-            coneLength = 0;
-            coneAngleDegrees = 60f;
-            coneMinRange = 0;
             return;
         }
 
@@ -27,14 +23,6 @@ public class SpellAbility : Ability
         Range = definition.range;
         range = (int)definition.range;
         radius = definition.radius;
-        areaShape = definition.areaShape;
-        coneLength = definition.coneLength;
-        coneAngleDegrees = definition.coneAngleDegrees;
-        coneMinRange = definition.coneMinRange;
-
-        // Backward compatibility: existing area spells may only define radius.
-        if (radius > 0 && areaShape == SpellAreaShape.Single)
-            areaShape = SpellAreaShape.Area;
     }
 
     public override AbilityResult TryUse(
@@ -125,6 +113,14 @@ public class SpellAbility : Ability
                     definition
                 );
                 break;
+
+            case SpellEffectType.AttackWithSave:
+                result = SpellEffectExecutor.ApplyAttackWithSave(
+                    user,
+                    target,
+                    definition
+                );
+                break;                
 
             default:
                 result = AbilityResult.CreateFailure(
