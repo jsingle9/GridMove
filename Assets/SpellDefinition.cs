@@ -47,7 +47,7 @@ public class SpellDefinition : ScriptableObject
 
     [Tooltip("DC for the saving throw")]
     [Min(8)]
-    public int saveDC = 12;  // Default DC
+    public int saveDC = 0;  // Default DC
 
 
     [Header("Presentation")]
