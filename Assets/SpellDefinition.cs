@@ -45,6 +45,9 @@ public class SpellDefinition : ScriptableObject
     [Tooltip("What happens on a failed save (e.g., 'Lose Reaction', 'Prone', etc)")]
     public string failureEffect = "Lose Reaction";
 
+    [Tooltip("Does this spell require targets to make a saving throw?")]
+    public bool requiresSave = false;
+
     [Tooltip("DC for the saving throw")]
     [Min(8)]
     public int saveDC = 0;  // Default DC

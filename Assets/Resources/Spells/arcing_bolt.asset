@@ -27,7 +27,8 @@ MonoBehaviour:
   damageDice: 1d6
   saveAbility: 1
   upcastDamageBonus: 
-  damageType: 
+  damageType: lightning
   failureEffect: Lose Reaction
+  requiresSave: 1
   saveDC: 12
   icon: {fileID: 0}
