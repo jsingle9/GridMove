@@ -24,10 +24,11 @@ MonoBehaviour:
   coneAngleDegrees: 60
   coneMinRange: 0
   effectType: 0
-  damageDice: 3d4
+  damageDice: 3d4+3
   saveAbility: 1
-  upcastDamageBonus: 
-  damageType: 
+  upcastDamageBonus: 1d4+1
+  damageType: force
   failureEffect: 
+  requiresSave: 0
   saveDC: 8
   icon: {fileID: 0}

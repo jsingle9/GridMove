@@ -29,5 +29,6 @@ MonoBehaviour:
   upcastDamageBonus: 
   damageType: 
   failureEffect: 
-  saveDC: 12
+  requiresSave: 0
+  saveDC: 8
   icon: {fileID: 0}

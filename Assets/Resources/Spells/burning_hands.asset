@@ -27,7 +27,8 @@ MonoBehaviour:
   damageDice: 3d6
   saveAbility: 1
   upcastDamageBonus: 1d6
-  damageType: 
+  damageType: fire
   failureEffect: 
+  requiresSave: 1
   saveDC: 12
   icon: {fileID: -24568505368720062, guid: 56a3b5149926b4979abbac26270054ec, type: 3}

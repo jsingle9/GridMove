@@ -29,5 +29,6 @@ MonoBehaviour:
   upcastDamageBonus: 2D8
   damageType: 
   failureEffect: 
-  saveDC: 12
+  requiresSave: 0
+  saveDC: 8
   icon: {fileID: 2903848411162822477, guid: 9a79aba3fd32843c2b56398d22ff8262, type: 3}
