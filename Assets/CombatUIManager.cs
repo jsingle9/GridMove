@@ -118,7 +118,7 @@ public class CombatUIManager : MonoBehaviour
         if (currentPlayer == null || abilityButtons == null || abilityButtons.Length == 0)
             return;
 
-        for (int i = 0; i < abilityButtons.Length && i < 4; i++)
+        for (int i = 0; i < abilityButtons.Length; i++)
         {
             Ability ability = currentPlayer.GetAbility(i);
             abilityButtons[i].SetAbility(ability, i);
@@ -190,7 +190,7 @@ public class CombatUIManager : MonoBehaviour
         else
             AddLog($"{attacker} attacks {target}. Miss! ({roll} -> {total} vs AC {targetAC})");
     }
-    
+
     public void LogAbilityDamage(string source, string abilityName, string target, int damage, string damageType = "")
     {
         string dtype = string.IsNullOrWhiteSpace(damageType) ? "" : $" {damageType}";

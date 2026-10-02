@@ -9,6 +9,7 @@ public class MouseInputHandler : MonoBehaviour
 
     void Start()
     {
+        boxMover = FindFirstObjectByType<BoxMover>();
         grid = FindFirstObjectByType<GridController>();
         if (grid != null)
         {

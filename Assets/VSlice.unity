@@ -12846,12 +12846,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7691496456947112657, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691496456947112657, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691496456947112657, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1
+      value: 0.88
       objectReference: {fileID: 0}
     - target: {fileID: 7691496456947112657, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1
+      value: 1.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -24383,6 +24391,7 @@ MonoBehaviour:
   - {fileID: 1479124537}
   - {fileID: 157384005}
   - {fileID: 312225577}
+  - {fileID: 266630982}
   endTurnButton: {fileID: 181793734}
   maxLogLines: 5
 --- !u!114 &1914821113
