@@ -120,7 +120,7 @@ public class SpellAbility : Ability
                     target,
                     definition
                 );
-                break;                
+                break;
 
             default:
                 result = AbilityResult.CreateFailure(
@@ -134,6 +134,11 @@ public class SpellAbility : Ability
 
         return result;
     }
+
+    public int GetSpellLevel()
+    {
+        return definition != null ? definition.spellLevel : 0;
+    }    
 
     protected override void Execute(
         ICombatant user,
