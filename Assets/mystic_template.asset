@@ -29,6 +29,7 @@ MonoBehaviour:
   - psionic_focus
   - mind_thrust_i
   - psionic_strike
+  - cast_spell
   startingWeapon: {fileID: 11400000, guid: 3b042e6e849b942e59c3843d9638a3e9, type: 2}
   startingArmor: {fileID: 11400000, guid: 75287318d7f9f4af7b05bfdd57e2b53e, type: 2}
   startingShield: {fileID: 0}

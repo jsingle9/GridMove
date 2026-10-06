@@ -9,4 +9,5 @@ public static class FeatureIds
     public const string MindThrustI = "mind_thrust_i";
     public const string PsionicStrike = "psionic_strike";
     public const string PsionicAura = "psionic_aura";
+    public const string CastSpell = "cast_spell";
 }

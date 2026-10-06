@@ -80,11 +80,23 @@ public class AbilityUI : MonoBehaviour
             TryActivateAbilitySlot(3, "KEYBIND");
             return;
         }
-
+        
         if (Keyboard.current.digit5Key.wasPressedThisFrame)
         {
+            Debug.Log("===== DIGIT 5 PRESSED =====");
+            Debug.Log($"CurrentPhase: {CurrentPhase}");
+            Debug.Log($"Player: {player}");
+            if (player != null)
+            {
+                Debug.Log($"Player ability count: {player.GetAbilityCount()}");
+                Ability ability = player.GetAbility(4);
+                Debug.Log($"Ability at slot 4: {(ability != null ? ability.AbilityName : "NULL")}");
+            }
             TryActivateAbilitySlot(4, "KEYBIND");
+            return;
         }
+
+
     }
 
     public void SelectAbility(int slot)
