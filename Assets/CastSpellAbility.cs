@@ -10,26 +10,38 @@ public class CastSpellAbility : Ability
     {
         AbilityName = "Cast Spell";
         CostType = AbilityCostType.Action;
-        targetingMode = TargetingMode.None;  // Opens menu instead
+        targetingMode = TargetingMode.AllyOrSelf;  // Opens menu instead
         Range = 0f;
     }
 
     public override AbilityResult TryUse(ICombatant user, TargetData target)
     {
-        // This ability opens the spell menu, doesn't actually cast
+        Debug.Log("[CastSpellAbility] Searching for SpellSelectionPanel...");
+
+        // Find the panel EVEN IF INACTIVE
+        SpellSelectionPanel panel = Object.FindFirstObjectByType<SpellSelectionPanel>(FindObjectsInactive.Include);
+        Debug.Log($"[CastSpellAbility] FindFirstObjectByType result: {(panel != null ? "FOUND" : "NULL")}");
+
+        // If that fails, try GetComponent on all objects
+        if (panel == null)
+        {
+            SpellSelectionPanel[] allPanels = Object.FindObjectsOfType<SpellSelectionPanel>();
+            Debug.Log($"[CastSpellAbility] FindObjectsOfType result: {allPanels.Length} panels found");
+            if (allPanels.Length > 0)
+                panel = allPanels[0];
+        }
+
+        if (panel == null)
+        {
+            Debug.Log("[CastSpellAbility] SpellSelectionPanel still not found!");
+            return AbilityResult.CreateFailure("Spell menu not available.");
+        }
+
+        Debug.Log($"[CastSpellAbility] Panel found: {panel.name}");
+
         if (user is BoxMover caster)
         {
-            SpellSelectionPanel panel = Object.FindFirstObjectByType<SpellSelectionPanel>();
-            if (panel != null)
-            {
-                panel.Open(caster);
-                Debug.Log($"[CastSpellAbility] Opened spell selection panel for {caster.Name}");
-            }
-            else
-            {
-                Debug.LogError("[CastSpellAbility] SpellSelectionPanel not found in scene!");
-                return AbilityResult.CreateFailure("Spell menu not available.");
-            }
+            panel.Open(caster);
         }
 
         return AbilityResult.CreateSuccess();

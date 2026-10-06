@@ -40,6 +40,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     public bool ActionSurgeUsedThisCombat { get; set; }
     [SerializeField] private FighterLoadout startingLoadout;
     [SerializeField] private SpellSlots spellSlots = new SpellSlots();
+    [SerializeField] private SpellDefinition arcingBoltSpell;
+    [SerializeField] private SpellDefinition breathOfLifeSpell;
+    [SerializeField] private SpellDefinition cureWoundsSpell;
     public SpellSlots Spellcasting => spellSlots;
     private StatusManager statusManager;
 
@@ -146,6 +149,11 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
           {
               Debug.LogWarning("BoxMover: GameStateManager has no stored PlayerCharacter. Using default Fighter sheet.");
           }
+          Debug.Log($"[BoxMover.Start] Current scene: {gameObject.scene.name}");
+          Debug.Log("[BoxMover.Start] Looking for SpellSelectionPanel...");
+          SpellSelectionPanel panel = FindFirstObjectByType<SpellSelectionPanel>();
+          Debug.Log($"[BoxMover.Start] Panel found: {(panel != null ? panel.name : "NOT FOUND")}");
+
       }
 
       if(grid == null)
@@ -1032,8 +1040,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         abilities.Clear();
 
         // Abilities every player always has.
-        abilities.Add(new AttackAbility());
-        //abilities.Add(new RangedAttackAbility());
+        abilities.Add(new AttackAbility());           // Slot 0
 
         if (characterSheet == null)
         {
@@ -1063,11 +1070,19 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
             abilities.Add(new PsionicStrikeAbility());
 
+        // ONLY Mystic gets Cast Spell button
+        if (characterSheet.ClassId == "mystic")
+            abilities.Add(new CastSpellAbility());    // Slot 4 (button 5)
+
         Debug.Log(
             $"BoxMover: rebuilt abilities for class={characterSheet.ClassId}; " +
             $"features=[{string.Join(", ", characterSheet.FeatureIds)}]; " +
             $"abilityCount={abilities.Count}"
+
         );
+
+
+
     }
 
     public bool CanCastSpell(int spellLevel)
@@ -1080,5 +1095,10 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     {
         if (spellLevel == 0) return true;  // Cantrips
         return Spellcasting.TrySpendSlot(spellLevel);
+    }
+
+    public int GetAbilityCount()
+    {
+        return abilities.Count;
     }
 }

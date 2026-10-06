@@ -17,12 +17,15 @@ public class SpellSelectionPanel : MonoBehaviour
     private BoxMover player;
     private List<SpellButton> spellButtons = new List<SpellButton>();
 
-    private void Awake()
+    void Awake()
     {
-        if (closeButton != null)
-            closeButton.onClick.AddListener(Close);
+        Debug.Log($"[SpellSelectionPanel] Awake called! GameObject: {gameObject.name}, Scene: {gameObject.scene.name}");
+        Debug.Log($"[SpellSelectionPanel] This component type: {this.GetType().Name}");
+        Debug.Log($"[SpellSelectionPanel] gameObject active: {gameObject.activeSelf}, activeInHierarchy: {gameObject.activeInHierarchy}");
 
-        // Start hidden
+        // Try to find itself
+        SpellSelectionPanel found = Object.FindFirstObjectByType<SpellSelectionPanel>();
+        Debug.Log($"[SpellSelectionPanel] Can find itself immediately after Awake: {(found != null ? "YES" : "NO")}");
         gameObject.SetActive(false);
     }
 
@@ -81,11 +84,36 @@ public class SpellSelectionPanel : MonoBehaviour
     {
         Debug.Log($"[SpellSelectionPanel] Selected spell: {spell.AbilityName} at slot {slotIndex}");
 
-        // Select the spell in AbilityUI for targeting
+        // Select the spell in AbilityUI
         AbilityUI.Instance.SelectAbility(slotIndex);
+
+        // Trigger targeting mode for the selected spell
+        if (spell.targetingMode != TargetingMode.Self && spell.Range > 0f)
+        {
+            AbilityUI.Instance.BeginTargetingForSelectedAbility("SPELL_MENU");
+        }
+        else
+        {
+            // Self-cast spell, execute immediately
+            TargetData selfTarget = new TargetData
+            {
+                primaryTarget = player,
+                user = player
+            };
+            selfTarget.unitsInArea.Add(player);
+
+            AbilityResult result = spell.TryUse(player, selfTarget);
+            if (!result.Success)
+                Debug.Log($"Spell failed: {result.FailureReason}");
+        }
 
         // Close panel
         Close();
+    }
+
+    void OnEnable()
+    {
+        Debug.Log("[SpellSelectionPanel] OnEnable called!");
     }
 
     public void Close()
