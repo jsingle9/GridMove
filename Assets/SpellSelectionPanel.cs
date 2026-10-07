@@ -47,32 +47,32 @@ public class SpellSelectionPanel : MonoBehaviour
 
     private void PopulateSpells()
     {
+        Debug.Log($"[SpellSelectionPanel] PopulateSpells called! Player has {player.GetSpellCount()} spells");
+        Debug.Log($"[SpellSelectionPanel] spellButtonContainer is: {(spellButtonContainer != null ? spellButtonContainer.name : "NULL")}");
+
         // Clear old buttons
         foreach (Transform child in spellButtonContainer)
             Destroy(child.gameObject);
         spellButtons.Clear();
 
-        // Create a button for each spell ability
-        for (int i = 0; i < player.GetAbilityCount(); i++)
+        // Loop through the spells list directly
+        List<SpellAbility> playerSpells = player.GetSpells();
+        for (int i = 0; i < playerSpells.Count; i++)
         {
-            Ability ability = player.GetAbility(i);
+            SpellAbility spellAbility = playerSpells[i];
 
-            // Only show spell abilities (not CastSpellAbility itself)
-            if (ability is SpellAbility spellAbility)
+            GameObject buttonObj = Instantiate(spellButtonPrefab, spellButtonContainer);
+            SpellButton spellButton = buttonObj.GetComponent<SpellButton>();
+
+            if (spellButton != null)
             {
-                GameObject buttonObj = Instantiate(spellButtonPrefab, spellButtonContainer);
-                SpellButton spellButton = buttonObj.GetComponent<SpellButton>();
-
-                if (spellButton != null)
-                {
-                    spellButton.Setup(spellAbility, i, OnSpellSelected);
-                    spellButtons.Add(spellButton);
-                }
-                else
-                {
-                    Debug.LogError("[SpellSelectionPanel] Spell button prefab missing SpellButton component!");
-                    Destroy(buttonObj);
-                }
+                spellButton.Setup(spellAbility, i, OnSpellSelected);
+                spellButtons.Add(spellButton);
+            }
+            else
+            {
+                Debug.LogError("[SpellSelectionPanel] Spell button prefab missing SpellButton component!");
+                Destroy(buttonObj);
             }
         }
 

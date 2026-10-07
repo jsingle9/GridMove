@@ -71,6 +71,10 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             : baseDamageModifier;
 
 
+    //spell list and spell helpers
+    private List<SpellAbility> spells = new List<SpellAbility>();
+
+
 
     void Awake()
     {
@@ -1038,6 +1042,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     private void RebuildAbilities()
     {
         abilities.Clear();
+        spells.Clear();
 
         // Abilities every player always has.
         abilities.Add(new AttackAbility());           // Slot 0
@@ -1065,24 +1070,44 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             abilities.Add(new PsionicFocusAbility());
 
         if (characterSheet.FeatureIds.Contains(FeatureIds.MindThrustI))
-            abilities.Add(new MindThrustAbility());
+            abilities.Add(new MindThrustAbility());  // STAYS IN ABILITIES
 
         if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
-            abilities.Add(new PsionicStrikeAbility());
+            abilities.Add(new PsionicStrikeAbility());  // STAYS IN ABILITIES
 
         // ONLY Mystic gets Cast Spell button
         if (characterSheet.ClassId == "mystic")
             abilities.Add(new CastSpellAbility());    // Slot 4 (button 5)
 
+        // ADD SPELLS TO SPELLS LIST
+        if (characterSheet.ClassId == "mystic")
+        {
+            if (arcingBoltSpell != null)
+                spells.Add(new SpellAbility(arcingBoltSpell));
+            if (breathOfLifeSpell != null)
+                spells.Add(new SpellAbility(breathOfLifeSpell));
+            if (cureWoundsSpell != null)
+                spells.Add(new SpellAbility(cureWoundsSpell));
+            // Add burningHands if you have it serialized
+            // if (burningHandsSpell != null)
+            //     spells.Add(new SpellAbility(burningHandsSpell));
+        }
+
         Debug.Log(
             $"BoxMover: rebuilt abilities for class={characterSheet.ClassId}; " +
             $"features=[{string.Join(", ", characterSheet.FeatureIds)}]; " +
-            $"abilityCount={abilities.Count}"
-
+            $"abilityCount={abilities.Count}; spellCount={spells.Count}"
         );
+    }
+    // spell helpers
+    public List<SpellAbility> GetSpells()
+    {
+        return spells;
+    }
 
-
-
+    public int GetSpellCount()
+    {
+        return spells.Count;
     }
 
     public bool CanCastSpell(int spellLevel)
