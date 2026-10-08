@@ -84,17 +84,9 @@ public class SpellSelectionPanel : MonoBehaviour
     {
         Debug.Log($"[SpellSelectionPanel] Selected spell: {spell.AbilityName} at slot {slotIndex}");
 
-        // Select the spell in AbilityUI
-        AbilityUI.Instance.SelectAbility(slotIndex);
-
-        // Trigger targeting mode for the selected spell
-        if (spell.targetingMode != TargetingMode.Self && spell.Range > 0f)
+        // For Self-only spells, execute immediately
+        if (spell.targetingMode == TargetingMode.Self)
         {
-            AbilityUI.Instance.BeginTargetingForSelectedAbility("SPELL_MENU");
-        }
-        else
-        {
-            // Self-cast spell, execute immediately
             TargetData selfTarget = new TargetData
             {
                 primaryTarget = player,
@@ -105,10 +97,18 @@ public class SpellSelectionPanel : MonoBehaviour
             AbilityResult result = spell.TryUse(player, selfTarget);
             if (!result.Success)
                 Debug.Log($"Spell failed: {result.FailureReason}");
+
+            Close();
+            return;
         }
 
-        // Close panel
+        // For targeting modes, store the spell and begin targeting
+        AbilityUI.Instance.selectedSpell = spell;
+        AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForTarget;
+        AbilityUI.Instance.BeginTargetingForSelectedAbility("SPELL_MENU");
+
         Close();
+        return;
     }
 
     void OnEnable()

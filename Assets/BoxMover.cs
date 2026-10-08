@@ -529,17 +529,21 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     void HandleAbilityTargetClick()
     {
         Ability ability = AbilityUI.Instance.selectedAbility;
+        SpellAbility spell = AbilityUI.Instance.selectedSpell;
 
-        if (ability == null)
+        if (ability == null && spell == null)
         {
-            Debug.Log("No ability selected");
+            Debug.Log("No ability or spell selected");
             return;
         }
+
+        // Use spell if available, otherwise use ability
+        Ability toExecute = spell ?? ability;
 
         Vector3 click = GetMouseWorld();
 
         TargetData target = targeting.ResolveTarget(
-            ability,
+            toExecute,
             this,
             click
         );
@@ -558,7 +562,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
          */
         AbilityResult result = intentExecutor.ExecuteAbilityWithMovement(
             this,
-            ability,
+            toExecute,
             target
         );
 
@@ -582,6 +586,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
                 PlayerTurnPhase.WaitingForAction;
 
             AbilityUI.Instance.selectedAbility = null;
+            AbilityUI.Instance.selectedSpell = null;
         }
     }
 
