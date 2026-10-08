@@ -11,6 +11,7 @@ public class AbilityUI : MonoBehaviour
     public PlayerTurnPhase CurrentPhase;
     public Ability selectedAbility;
     public BoxMover player;
+    public SpellAbility selectedSpell;
 
     private AOEVisualizer aoeVisualizer;
 
@@ -80,7 +81,7 @@ public class AbilityUI : MonoBehaviour
             TryActivateAbilitySlot(3, "KEYBIND");
             return;
         }
-        
+
         if (Keyboard.current.digit5Key.wasPressedThisFrame)
         {
             Debug.Log("===== DIGIT 5 PRESSED =====");

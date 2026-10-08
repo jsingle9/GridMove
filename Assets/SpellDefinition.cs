@@ -49,7 +49,7 @@ public class SpellDefinition : ScriptableObject
     public bool requiresSave = false;
 
     [Tooltip("DC for the saving throw")]
-    [Min(8)]
+    [Min(0)]
     public int saveDC = 0;  // Default DC
 
 
