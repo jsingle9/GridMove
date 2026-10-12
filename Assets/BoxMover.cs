@@ -12,7 +12,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     TargetingSystem targeting;
     IntentExecutor intentExecutor;
     // To telegraph fireball for now
-    [SerializeField] TelegraphStyle fireballTelegraphStyle;
+    //[SerializeField] TelegraphStyle fireballTelegraphStyle;
     IntentResolver resolver;
     MoveIntent currentMoveIntent; // Only for exploration movement
     [SerializeField] int maxHP = 45;
@@ -43,6 +43,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     [SerializeField] private SpellDefinition arcingBoltSpell;
     [SerializeField] private SpellDefinition breathOfLifeSpell;
     [SerializeField] private SpellDefinition cureWoundsSpell;
+    [SerializeField] private SpellDefinition burningHandsSpell;
+    [SerializeField] private SpellTelegrapher spellTelegrapher;
     public SpellSlots Spellcasting => spellSlots;
     private StatusManager statusManager;
 
@@ -208,6 +210,39 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         CheckForProximityCombat();
 
+        // Telegraph preview for targeted spells
+        if(AbilityUI.Instance.CurrentPhase == PlayerTurnPhase.WaitingForTarget)
+        {
+            Vector3 mouseWorld = GetMouseWorld();
+            Vector3Int gridPos = grid.WorldToGrid(mouseWorld);
+
+            SpellAbility spell = AbilityUI.Instance.selectedSpell;
+            if (spell != null)
+            {
+                List<Vector3Int> affectedCells = new();
+
+                // Check if cone spell
+                if (spell.definition.areaShape == SpellAreaShape.Cone)
+                {
+                    affectedCells = targeting.GetCellsInCone(grid.WorldToGrid(this.GetWorldPosition()), gridPos, spell.definition);
+                    Debug.Log($"[Cone Telegraph] Affected cells: {affectedCells.Count}");
+                }
+                // Otherwise radius
+                else if (spell.radius > 0)
+                {
+                    List<GridNode> affectedNodes = grid.GetNodesInRadius(gridPos, spell.radius);
+                    foreach (var node in affectedNodes)
+                        affectedCells.Add(node.gridPos);
+                    Debug.Log($"[Radius Telegraph] Affected cells: {affectedCells.Count}");
+                }
+
+                if (affectedCells.Count > 0){
+                    Debug.Log($"[Telegraph] Showing {affectedCells.Count} cells");
+                    spellTelegrapher.Show(grid, affectedCells, spell.definition.telegraphStyle);
+                }
+            }
+        }
+
         if(GameStateManager.Instance.CurrentGameState == GameState.Combat)
         {
             if(CombatManager.Instance.IsPlayersTurn(this))
@@ -225,9 +260,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
                 }
             }
         }
-      //  Debug.Log($"anyKeyDown: {Input.anyKeyDown}");
-      //  Debug.Log($"F: {Input.GetKeyDown(KeyCode.F)}");
-      //  Debug.Log($"Space: {Input.GetKeyDown(KeyCode.Space)}");
     }
 
     public void HandleLeftClick()
@@ -1094,8 +1126,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             if (cureWoundsSpell != null)
                 spells.Add(new SpellAbility(cureWoundsSpell));
             // Add burningHands if you have it serialized
-            // if (burningHandsSpell != null)
-            //     spells.Add(new SpellAbility(burningHandsSpell));
+            if (burningHandsSpell != null)
+                spells.Add(new SpellAbility(burningHandsSpell));
         }
 
         Debug.Log(

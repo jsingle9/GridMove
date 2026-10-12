@@ -12716,11 +12716,19 @@ PrefabInstance:
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: startingLoadout
       value: 
-      objectReference: {fileID: 11400000, guid: 1c40140a0f4a3419996c8871328c977c, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: spellTelegrapher
+      value: 
+      objectReference: {fileID: 1999481190}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: breathOfLifeSpell
       value: 
       objectReference: {fileID: 11400000, guid: 30c7f494049434ba88b3b1b891f55700, type: 2}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: burningHandsSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: 233f2b6c206b44a7b92caa1e7d41c8f9, type: 2}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: fireballTelegraphStyle
       value: 
@@ -25145,7 +25153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b429680667cb407b935d69059550599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellTelegrapher
-  defaultTilePrefab: {fileID: 0}
+  defaultTilePrefab: {fileID: 2558282750347030104, guid: 53ed2ac8e9f6849b7b001ee8db48eb39, type: 3}
   root: {fileID: 0}
 --- !u!4 &1999481191
 Transform:
@@ -25749,6 +25757,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f9d8774bba694d02a4c63477e284375, type: 3}
+--- !u!1001 &7073541295257120820
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1171.7423
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 916.37067
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968964974355425866, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8460565348705258009, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
+      propertyPath: m_Name
+      value: FireTelegraphPrefab
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3aeabb078e7f140cca7f1f4feb58e194, type: 3}
 --- !u!1001 &8053484545600390823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26013,3 +26078,4 @@ SceneRoots:
   - {fileID: 1999481191}
   - {fileID: 1131614036}
   - {fileID: 1877237711}
+  - {fileID: 7073541295257120820}
