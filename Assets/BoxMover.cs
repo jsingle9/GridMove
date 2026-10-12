@@ -614,6 +614,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
          */
         if (result.Success)
         {
+            spellTelegrapher.Clear();
             AbilityUI.Instance.CurrentPhase =
                 PlayerTurnPhase.WaitingForAction;
 
