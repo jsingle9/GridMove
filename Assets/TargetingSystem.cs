@@ -243,4 +243,38 @@ public class TargetingSystem
             }
         }
     }
+
+    public List<Vector3Int> GetCellsInCone(Vector3Int origin, Vector3Int targetCell, SpellDefinition spell)
+    {
+        List<Vector3Int> cells = new();
+
+        if (spell.coneLength <= 0)
+            return cells;
+
+        // Direction from origin to target
+        Vector3 direction = (grid.GridToWorld(targetCell) - grid.GridToWorld(origin)).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        float coneHalfAngle = spell.coneAngleDegrees / 2f;
+
+        // Get all nodes and check if they're in cone
+        for (int x = origin.x - spell.coneLength; x <= origin.x + spell.coneLength; x++)
+        {
+            for (int y = origin.y - spell.coneLength; y <= origin.y + spell.coneLength; y++)
+            {
+                Vector3Int cell = new(x, y, 0);
+                if (!grid.IsInBounds(cell)) continue;
+
+                Vector3 toCell = (grid.GridToWorld(cell) - grid.GridToWorld(origin)).normalized;
+                float cellAngle = Mathf.Atan2(toCell.y, toCell.x) * Mathf.Rad2Deg;
+                float angleDiff = Mathf.Abs(Mathf.DeltaAngle(angle, cellAngle));
+
+                if (angleDiff <= coneHalfAngle && Vector3.Distance(grid.GridToWorld(origin), grid.GridToWorld(cell)) <= spell.coneLength)
+                    cells.Add(cell);
+            }
+        }
+
+        return cells;
+    }
+
 }

@@ -1,6 +1,6 @@
 public class SpellAbility : Ability
 {
-    private readonly SpellDefinition definition;
+    public readonly SpellDefinition definition;
 
     public SpellAbility(SpellDefinition definition)
     {
@@ -138,7 +138,7 @@ public class SpellAbility : Ability
     public int GetSpellLevel()
     {
         return definition != null ? definition.spellLevel : 0;
-    }    
+    }
 
     protected override void Execute(
         ICombatant user,

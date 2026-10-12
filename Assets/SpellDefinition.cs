@@ -55,4 +55,5 @@ public class SpellDefinition : ScriptableObject
 
     [Header("Presentation")]
     public Sprite icon;
+    public TelegraphStyle telegraphStyle;
 }
