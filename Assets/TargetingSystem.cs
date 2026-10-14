@@ -71,6 +71,27 @@ public class TargetingSystem
             }
         }
 
+        // Handle cone spells
+        SpellAbility spellAbility = ability as SpellAbility;
+        if (spellAbility != null && spellAbility.definition.areaShape == SpellAreaShape.Cone)
+        {
+            List<Vector3Int> coneCells = GetCellsInCone(grid.WorldToGrid(user.GetWorldPosition()), gridPos, spellAbility.definition);
+            data.unitsInArea = new();
+
+            foreach (var cell in coneCells)
+            {
+                ICombatant unit = grid.GetOccupant(cell);
+                if (unit != null && IsEnemy(user, unit))
+                    data.unitsInArea.Add(unit);
+            }
+
+            if (data.unitsInArea.Count > 0)
+                data.primaryTarget = data.unitsInArea[0];
+
+            return data;
+        }
+
+        // Handle radius spells
         if (ability.radius > 0)
             data.unitsInArea = GetUnitsInRadius(gridPos, ability.radius);
         else if (data.primaryTarget != null)
@@ -251,7 +272,7 @@ public class TargetingSystem
         if (spell.coneLength <= 0)
             return cells;
 
-        // Direction from origin to target
+            // Direction from origin to target
         Vector3 direction = (grid.GridToWorld(targetCell) - grid.GridToWorld(origin)).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
@@ -265,16 +286,24 @@ public class TargetingSystem
                 Vector3Int cell = new(x, y, 0);
                 if (!grid.IsInBounds(cell)) continue;
 
-                Vector3 toCell = (grid.GridToWorld(cell) - grid.GridToWorld(origin)).normalized;
-                float cellAngle = Mathf.Atan2(toCell.y, toCell.x) * Mathf.Rad2Deg;
-                float angleDiff = Mathf.Abs(Mathf.DeltaAngle(angle, cellAngle));
+                Vector3 toCell = grid.GridToWorld(cell) - grid.GridToWorld(origin);
+                float distance = toCell.magnitude;
 
-                if (angleDiff <= coneHalfAngle && Vector3.Distance(grid.GridToWorld(origin), grid.GridToWorld(cell)) <= spell.coneLength)
+                // Check distance first
+                if (distance > spell.coneLength)
+                    continue;
+
+                    // Then check angle
+                Vector3 toCellNormalized = toCell.normalized;
+                float cellAngle = Mathf.Atan2(toCellNormalized.y, toCellNormalized.x) * Mathf.Rad2Deg;
+                float angleDiff = Mathf.DeltaAngle(angle, cellAngle);
+
+                if (Mathf.Abs(angleDiff) <= coneHalfAngle)
                     cells.Add(cell);
             }
         }
 
-        return cells;
-    }
+      return cells;
+  }
 
 }
