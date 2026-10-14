@@ -582,6 +582,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         if (target == null)
         {
+            spellTelegrapher.Clear();
             Debug.Log("Invalid target");
             return;
         }
@@ -601,6 +602,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (!result.Success &&
             !intentExecutor.IsExecutingAbilityWithMovement())
         {
+            spellTelegrapher.Clear();
             Debug.Log($"Ability failed: {result.FailureReason}");
             return;
         }

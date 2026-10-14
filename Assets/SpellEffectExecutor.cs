@@ -66,7 +66,7 @@ public static class SpellEffectExecutor
                 "No targets in the area."
             );
         }
-
+        // same damage for each target
         int amount = DiceRoller.Roll(definition.damageDice);
 
         foreach (ICombatant unit in target.unitsInArea)

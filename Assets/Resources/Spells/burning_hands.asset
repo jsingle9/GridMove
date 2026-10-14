@@ -30,6 +30,6 @@ MonoBehaviour:
   damageType: fire
   failureEffect: 
   requiresSave: 1
-  saveDC: 12
+  saveDC: 13
   icon: {fileID: -24568505368720062, guid: 56a3b5149926b4979abbac26270054ec, type: 3}
   telegraphStyle: {fileID: 11400000, guid: 89d02eeadff9b4d4588ca0d9997832eb, type: 2}
