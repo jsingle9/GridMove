@@ -127,4 +127,6 @@ public class QuitMenuActions : MonoBehaviour
         Debug.Log("LoadAfterDeath called - reloading VSlice scene");
         SceneManager.LoadScene("VSlice");
     }
+
+    
 }

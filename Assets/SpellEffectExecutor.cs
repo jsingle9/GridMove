@@ -59,6 +59,8 @@ public static class SpellEffectExecutor
         SpellDefinition definition
     )
     {
+        Debug.Log($"[ApplyAreaDamage] Called with {target.unitsInArea?.Count ?? 0} units");
+
         if (target.unitsInArea == null ||
             target.unitsInArea.Count == 0)
         {
@@ -66,15 +68,23 @@ public static class SpellEffectExecutor
                 "No targets in the area."
             );
         }
-        // same damage for each target
-        int amount = DiceRoller.Roll(definition.damageDice);
 
-        foreach (ICombatant unit in target.unitsInArea)
+        int amount = DiceRoller.Roll(definition.damageDice);
+        Debug.Log($"[ApplyAreaDamage] Damage roll: {amount}");
+
+        for (int i = 0; i < target.unitsInArea.Count; i++)
         {
+            ICombatant unit = target.unitsInArea[i];
+            Debug.Log($"[ApplyAreaDamage] Iteration {i}: unit={unit?.ToString() ?? "null"}");
+
             if (unit != null)
+            {
+                Debug.Log($"[ApplyAreaDamage] Damaging {unit.ToString()} for {amount}");
                 unit.TakeDamage(amount);
+            }
         }
 
+        Debug.Log($"[ApplyAreaDamage] Finished");
         return AbilityResult.CreateSuccess();
     }
 

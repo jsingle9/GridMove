@@ -76,15 +76,17 @@ public class TargetingSystem
         if (spellAbility != null && spellAbility.definition.areaShape == SpellAreaShape.Cone)
         {
             List<Vector3Int> coneCells = GetCellsInCone(grid.WorldToGrid(user.GetWorldPosition()), gridPos, spellAbility.definition);
+            Debug.Log($"[ResolveTarget] Cone cells: {coneCells.Count}");
             data.unitsInArea = new();
 
             foreach (var cell in coneCells)
             {
                 ICombatant unit = grid.GetOccupant(cell);
+                Debug.Log($"[ResolveTarget] Adding enemy to area: {unit}");
                 if (unit != null && IsEnemy(user, unit))
                     data.unitsInArea.Add(unit);
             }
-
+            Debug.Log($"[ResolveTarget] Total enemies in area: {data.unitsInArea.Count}");
             if (data.unitsInArea.Count > 0)
                 data.primaryTarget = data.unitsInArea[0];
 
@@ -278,6 +280,9 @@ public class TargetingSystem
 
         float coneHalfAngle = spell.coneAngleDegrees / 2f;
 
+        Debug.Log($"[GetCellsInCone] Origin: {origin}, Target: {targetCell}, Angle: {angle}, HalfAngle: {coneHalfAngle}, Length: {spell.coneLength}");
+
+
         // Get all nodes and check if they're in cone
         for (int x = origin.x - spell.coneLength; x <= origin.x + spell.coneLength; x++)
         {
@@ -298,11 +303,12 @@ public class TargetingSystem
                 float cellAngle = Mathf.Atan2(toCellNormalized.y, toCellNormalized.x) * Mathf.Rad2Deg;
                 float angleDiff = Mathf.DeltaAngle(angle, cellAngle);
 
+                Debug.Log($"  Cell {cell}: distance={distance:F2}, cellAngle={cellAngle:F1}, angleDiff={angleDiff:F1}, inCone={Mathf.Abs(angleDiff) <= coneHalfAngle}");
                 if (Mathf.Abs(angleDiff) <= coneHalfAngle)
                     cells.Add(cell);
             }
         }
-
+      Debug.Log($"[GetCellsInCone] Total cells: {cells.Count}");  
       return cells;
   }
 

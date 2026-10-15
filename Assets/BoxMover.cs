@@ -80,50 +80,53 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     void Awake()
     {
+        // FIRST: Try to load from GameStateManager
+        if (GameStateManager.Instance != null)
+        {
+            CharacterSheet selectedSheet = GameStateManager.Instance.GetPlayerCharacter();
+            if (selectedSheet != null)
+            {
+                Debug.Log($"[BoxMover.Awake] Loading saved character: {selectedSheet.ClassId}");
+                characterSheet = selectedSheet;
+            }
+        }
+
+        // THEN: Use loaded sheet (or default if nothing loaded)
         if (characterSheet == null)
             characterSheet = new CharacterSheet();
 
-        if (characterSheet.Level < 1) characterSheet.Level = 1;
+        if (characterSheet.Level < 1)
+            characterSheet.Level = 1;
 
-        // Apply class rules based on the sheet's ClassId
+        // [REST OF YOUR EXISTING AWAKE CODE HERE - unchanged]
         CharacterClassType classType = ClassIdToClassType(characterSheet.ClassId);
         var rules = ClassRulesFactory.Create(classType);
         rules?.ApplyLevel1(characterSheet);
         rules?.ApplyLevelUp(characterSheet, 2);
 
-        // Resolve defs (temp lookup approach)
         classDef = RulesLookups.GetClassDef(characterSheet.ClassId);
         armorDef = RulesLookups.GetArmorDefOrNull(equippedArmorItem);
 
-        // Rules-authoritative sync
         maxHP = RulesService.CalculateMaxHP(characterSheet, classDef);
         armorClass = RulesService.CalculateAC(characterSheet, armorDef);
         speed = RulesService.CalculateSpeed(characterSheet);
 
-        // Keep current HP valid
         if (characterSheet.CurrentHP <= 0)
             characterSheet.CurrentHP = maxHP;
 
         currentHP = Mathf.Clamp(characterSheet.CurrentHP, 0, maxHP);
 
-        // TEMP compat backfill (safe during migration)
         characterSheet.MaxHP = maxHP;
         characterSheet.ArmorClass = armorClass;
         characterSheet.Speed = speed;
 
-        // Apply starter loadout here (before abilities/UI are used)
         if (startingLoadout != null)
         {
             FighterLoadoutApplier.ApplyTo(this, startingLoadout);
-            RefreshDerivedCombatStats(); // re-pull AC/speed/etc from rules after equip
+            RefreshDerivedCombatStats();
         }
 
         RebuildAbilities();
-
-        /*  var fireball = new FireballAbility();
-            fireball.SetTelegraphStyle(fireballTelegraphStyle);
-            abilities.Add(fireball); */
-
 
         Debug.Log("Player abilities: " + abilities.Count);
         statusManager = new StatusManager(this);
@@ -141,31 +144,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     void Start()
     {
-
-      if (GameStateManager.Instance != null)
-      {
-          CharacterSheet selectedSheet = GameStateManager.Instance.GetPlayerCharacter();
-
-          if (selectedSheet != null)
-          {
-              Debug.Log($"BoxMover: applying selected sheet for class={selectedSheet.ClassId}");
-              SetCharacterSheet(selectedSheet);
-          }
-          else
-          {
-              Debug.LogWarning("BoxMover: GameStateManager has no stored PlayerCharacter. Using default Fighter sheet.");
-          }
-          Debug.Log($"[BoxMover.Start] Current scene: {gameObject.scene.name}");
-          Debug.Log("[BoxMover.Start] Looking for SpellSelectionPanel...");
-          SpellSelectionPanel panel = FindFirstObjectByType<SpellSelectionPanel>();
-          Debug.Log($"[BoxMover.Start] Panel found: {(panel != null ? panel.name : "NOT FOUND")}");
-
-      }
-
-      if(grid == null)
-      {
-          grid = FindFirstObjectByType<GridController>();
-      }
+        // Character data already loaded in Awake, just set up infrastructure
         if(grid == null)
         {
             grid = FindFirstObjectByType<GridController>();
@@ -181,18 +160,17 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         targeting = new TargetingSystem(grid);
         mover = GetComponent<UnitMover>();
         mover.Initialize(grid);
-
         resolver = new IntentResolver(grid);
-
-        // Initialize IntentExecutor
         intentExecutor = new IntentExecutor();
         intentExecutor.Initialize(grid, mover);
-        // Wire UI to this player and refresh ability buttons
+
         if (AbilityUI.Instance != null)
         {
             AbilityUI.Instance.player = this;
             AbilityUI.Instance.RefreshAbilityButtons();
         }
+
+        Debug.Log($"[BoxMover.Start] Character ready: {characterSheet.ClassId}, HP={currentHP}/{maxHP}");
     }
 
     void Update()
@@ -707,6 +685,13 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     {
         Debug.Log($"{name} died at position: {transform.position}");
         SaveLoadService.SetLastDeathPosition(transform.position);
+
+        // Save character state before death reload
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetPlayerCharacter(characterSheet);
+            Debug.Log($"[BoxMover.Die] Saved character state: {characterSheet.ClassId}");
+        }
 
         statusManager.Clear();
         CombatManager.Instance.NotifyDeath(this);
