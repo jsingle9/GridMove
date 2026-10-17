@@ -104,12 +104,7 @@ public class PauseMenuController : MonoBehaviour
     public void QuitGame()
     {
         ResumeGameTime();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        GameExitUtility.Quit();
     }
 
     private void ResumeGameTime()

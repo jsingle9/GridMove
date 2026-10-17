@@ -118,8 +118,7 @@ public class QuitMenuActions : MonoBehaviour
 
     private void QuitGame()
     {
-        Debug.Log("Quitting game...");
-        Application.Quit();
+        GameExitUtility.Quit();
     }
 
     public void LoadAfterDeath()
