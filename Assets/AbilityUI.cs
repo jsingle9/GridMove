@@ -49,9 +49,7 @@ public class AbilityUI : MonoBehaviour
         if (CurrentPhase == PlayerTurnPhase.WaitingForTarget &&
             Keyboard.current.qKey.wasPressedThisFrame)
         {
-            CancelAbility();
-            grid?.ClearAllHighlights();
-            CurrentPhase = PlayerTurnPhase.WaitingForAction;
+            CancelTargeting();
             return;
         }
 
@@ -117,6 +115,17 @@ public class AbilityUI : MonoBehaviour
         }
 
         Debug.Log($"Selected ability: {selectedAbility.AbilityName}");
+    }
+
+    public bool IsTargeting => CurrentPhase == PlayerTurnPhase.WaitingForTarget;
+
+    public void CancelTargeting()
+    {
+        CancelAbility();
+        selectedSpell = null;
+        grid?.ClearAllHighlights();
+        FindFirstObjectByType<SpellTelegrapher>()?.Clear();
+        CurrentPhase = PlayerTurnPhase.WaitingForAction;
     }
 
     public void CancelAbility()
