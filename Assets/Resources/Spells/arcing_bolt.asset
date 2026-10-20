@@ -17,7 +17,7 @@ MonoBehaviour:
   description: 
   spellLevel: 0
   targetingMode: 0
-  range: 0
+  range: 6
   radius: 0
   areaShape: 0
   coneLength: 0
@@ -32,3 +32,4 @@ MonoBehaviour:
   requiresSave: 1
   saveDC: 12
   icon: {fileID: 0}
+  telegraphStyle: {fileID: 0}
