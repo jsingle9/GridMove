@@ -104,6 +104,7 @@ public class SpellSelectionPanel : MonoBehaviour
 
         // For targeting modes, store the spell and begin targeting
         AbilityUI.Instance.selectedSpell = spell;
+        AbilityUI.Instance.selectedAbility = spell; // Also set as selectedAbility
         AbilityUI.Instance.CurrentPhase = PlayerTurnPhase.WaitingForTarget;
         AbilityUI.Instance.BeginTargetingForSelectedAbility("SPELL_MENU");
 
