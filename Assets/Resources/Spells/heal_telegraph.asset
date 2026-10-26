@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8b44eff6c6b4492ac8214d62a1cdfd, type: 3}
+  m_Name: heal_telegraph
+  m_EditorClassIdentifier: Assembly-CSharp::TelegraphStyle
+  tilePrefab: {fileID: 6354791809239082548, guid: 66bf8a9fba4cb45379c2ff1b96c93617, type: 3}
+  color: {r: 0.048460312, g: 0.9339623, b: 0.0731031, a: 0.5}
+  scale: {x: 1, y: 1, z: 1}
+  duration: 1.8

@@ -78,16 +78,16 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1585228169
+  m_SortingLayer: 2
+  m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: b2c9efb48130641fa9b359b617af5ce7, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 5d290a6b65b6d4475b709e097d9e8b45, type: 3}
   m_Color: {r: 0.015886439, g: 0.1981132, b: 0.06581156, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -105,3 +105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileVisual
   isHighlighted: 0
+  sortingLayerName: Highlight
+  baseSortingOrder: 2
+  highlightSortingOrder: 2

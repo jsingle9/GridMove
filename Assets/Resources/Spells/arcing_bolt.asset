@@ -32,4 +32,4 @@ MonoBehaviour:
   requiresSave: 1
   saveDC: 12
   icon: {fileID: 0}
-  telegraphStyle: {fileID: 0}
+  telegraphStyle: {fileID: 11400000, guid: 8081cdb9b5c8d471eade5ab5a8bacccf, type: 2}

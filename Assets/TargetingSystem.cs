@@ -173,33 +173,55 @@ public class TargetingSystem
 
     public void HighlightValidTargets(Ability ability, ICombatant user)
     {
+        Debug.Log("[HighlightValidTargets] Starting");
         ClearTargetHighlights();
+        Debug.Log("[HighlightValidTargets] Cleared highlights");
 
         List<ICombatant> targets = GetValidTargets(ability, user);
+        Debug.Log($"[HighlightValidTargets] Got {targets?.Count ?? 0} valid targets");
+
+        if (targets == null || targets.Count == 0)
+        {
+            Debug.LogWarning("[HighlightValidTargets] No targets found!");
+            return;
+        }
 
         foreach (ICombatant target in targets)
         {
+            Debug.Log($"[HighlightValidTargets] Processing target: {target?.Name ?? "null"}");
+
             if (target == null || target.IsDead())
-                continue;
+            {
+                Debug.Log($"[HighlightValidTargets] Target is null or dead, skipping");
+                 continue;
+            }
 
             // Multi-tile safe
             List<Vector3Int> cells = target.GetOccupiedCells();
+            Debug.Log($"[HighlightValidTargets] Target {target.Name} has {cells?.Count ?? 0} occupied cells");
+
             if (cells == null || cells.Count == 0)
             {
                 // fallback for older units
                 cells = new List<Vector3Int> { grid.WorldToGrid(target.GetWorldPosition()) };
+                Debug.Log($"[HighlightValidTargets] Used fallback cell");
             }
 
             foreach (Vector3Int pos in cells)
             {
                 TileVisual visual = grid.GetTileVisual(pos);
+                Debug.Log($"[HighlightValidTargets] Cell {pos}: visual={visual?.gameObject?.name ?? "null"}");
+
                 if (visual != null && !highlightedVisuals.Contains(visual))
                 {
                     visual.Highlight();
                     highlightedVisuals.Add(visual);
+                    Debug.Log($"[HighlightValidTargets] Highlighted {visual.gameObject.name}");
                 }
             }
         }
+
+        Debug.Log($"[HighlightValidTargets] Completed. Total highlighted: {highlightedVisuals.Count}");
     }
 
     public void ClearTargetHighlights()
@@ -308,7 +330,7 @@ public class TargetingSystem
                     cells.Add(cell);
             }
         }
-      Debug.Log($"[GetCellsInCone] Total cells: {cells.Count}");  
+      Debug.Log($"[GetCellsInCone] Total cells: {cells.Count}");
       return cells;
   }
 

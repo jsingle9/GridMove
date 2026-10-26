@@ -7,7 +7,7 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private GameObject pauseMenuRoot;
     [SerializeField] private GameObject confirmReturnRoot;
     [SerializeField] private string mainMenuSceneName = "MainMenu";
-  //  [SerializeField] private AbilityUI abilityUI;
+    [SerializeField] private AbilityUI abilityUI;
 
     private bool isPaused = false;
 
@@ -30,11 +30,12 @@ public class PauseMenuController : MonoBehaviour
         if (!Keyboard.current.escapeKey.wasPressedThisFrame)
             return;
 
-      /*  if (AbilityTargetingIsActive())
+        // If player is targeting an ability, cancel targeting instead of opening menu
+        if (IsAbilityTargetingActive())
         {
-            abilityUI.CancelAbility();
+            CancelAbilityTargeting();
             return;
-        }*/
+        }
 
         if (confirmReturnRoot != null && confirmReturnRoot.activeSelf)
         {
@@ -51,13 +52,23 @@ public class PauseMenuController : MonoBehaviour
         OpenPauseMenu();
     }
 
-/*    private bool AbilityTargetingIsActive()
+    private bool IsAbilityTargetingActive()
     {
         if (abilityUI == null)
             return false;
 
-        return abilityUI.selectedAbility != null;
-    }*/
+        return abilityUI.CurrentPhase == PlayerTurnPhase.WaitingForTarget;
+    }
+
+    private void CancelAbilityTargeting()
+    {
+        GridController grid;
+        grid = FindFirstObjectByType<GridController>();
+        abilityUI.CancelAbility();
+        abilityUI.CurrentPhase = PlayerTurnPhase.WaitingForAction;
+        if (grid != null)
+            grid.ClearAllHighlights();
+    }
 
     public void OpenPauseMenu()
     {
