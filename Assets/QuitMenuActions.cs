@@ -116,10 +116,10 @@ public class QuitMenuActions : MonoBehaviour
         QuitGame();
     }
 
-    private void QuitGame()
+    public void QuitGame()
     {
-        Debug.Log("Quitting game...");
-        Application.Quit();
+        //ResumeGameTime();
+        GameExitUtility.Quit();
     }
 
     public void LoadAfterDeath()
@@ -128,5 +128,5 @@ public class QuitMenuActions : MonoBehaviour
         SceneManager.LoadScene("VSlice");
     }
 
-    
+
 }

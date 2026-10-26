@@ -84,7 +84,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1585228169
   m_SortingLayer: 2
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6786252317489502799, guid: dfc1b27ffcf244703af04dd79add8a6d, type: 3}
   m_Color: {r: 0.9411765, g: 0.9254902, b: 0.9395693, a: 0.90588236}
@@ -188,6 +188,7 @@ MonoBehaviour:
   damageDice: 1d6
   damageModifier: 0
   speed: 6
+  encounterId: encounter_01
 --- !u!114 &3863489209067587066
 MonoBehaviour:
   m_ObjectHideFlags: 0

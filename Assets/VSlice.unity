@@ -296,8 +296,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1092271485
-  m_SortingLayer: 1
+  m_SortingLayerID: -1585228169
+  m_SortingLayer: 2
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
@@ -1513,7 +1513,7 @@ PrefabInstance:
       objectReference: {fileID: 43542802}
     - target: {fileID: 5202666880556560269, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: m_SortingOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7936433725972694691, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14975,6 +14975,10 @@ PrefabInstance:
       propertyPath: breathDamage
       value: 3d8
       objectReference: {fileID: 0}
+    - target: {fileID: 3303993204624572881, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
+      propertyPath: bossScoreManager
+      value: 
+      objectReference: {fileID: 664656117}
     - target: {fileID: 8833428039547803963, guid: 239096d1fdbee4707a641ef10d539632, type: 3}
       propertyPath: m_Name
       value: FireDrake
@@ -21134,8 +21138,8 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1092271485
-  m_SortingLayer: 1
+  m_SortingLayerID: -1585228169
+  m_SortingLayer: 2
   m_SortingOrder: 4
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -24482,7 +24486,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityUI
   CurrentPhase: 0
   player: {fileID: 1676257078}
-  abilityButtons: []
+  abilityButtons:
+  - {fileID: 346860637}
+  - {fileID: 1479124537}
+  - {fileID: 157384005}
+  - {fileID: 312225577}
+  - {fileID: 266630982}
 --- !u!4 &1817286354
 Transform:
   m_ObjectHideFlags: 0
@@ -25820,6 +25829,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f9d8774bba694d02a4c63477e284375, type: 3}
+--- !u!1001 &6891971806912789229
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1130.5269
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 965.8293
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432172433439764737, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+      propertyPath: m_Name
+      value: LightningTelegraphPrefab
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
 --- !u!1001 &7073541295257120820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26005,6 +26071,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 4730973195907625397, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
+      propertyPath: abilityUI
+      value: 
+      objectReference: {fileID: 1817286353}
     - target: {fileID: 5110187358978451443, guid: 66dcb3b8b0f514e839965e6827c09177, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -26142,3 +26212,4 @@ SceneRoots:
   - {fileID: 1131614036}
   - {fileID: 1877237711}
   - {fileID: 7073541295257120820}
+  - {fileID: 6891971806912789229}

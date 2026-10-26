@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a8b44eff6c6b4492ac8214d62a1cdfd, type: 3}
-  m_Name: HealTelegraph
+  m_Name: lightning_telegraph
   m_EditorClassIdentifier: Assembly-CSharp::TelegraphStyle
-  tilePrefab: {fileID: 0}
-  color: {r: 1, g: 0.3, b: 0.1, a: 0.5}
+  tilePrefab: {fileID: 4432172433439764737, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
+  color: {r: 1, g: 0.98039216, b: 0.03921567, a: 0.5}
   scale: {x: 1, y: 1, z: 1}
   duration: 1.8

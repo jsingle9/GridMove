@@ -17,13 +17,13 @@ MonoBehaviour:
   description: 
   spellLevel: 0
   targetingMode: 4
-  range: 0
+  range: 6
   radius: 2
   areaShape: 1
   coneLength: 0
   coneAngleDegrees: 60
   coneMinRange: 0
-  effectType: 0
+  effectType: 5
   damageDice: 2d8
   saveAbility: 1
   upcastDamageBonus: 1d8

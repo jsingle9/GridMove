@@ -143,12 +143,6 @@ public class AbilityUI : MonoBehaviour
             $"user={player.Name}"
         );
 
-        if (selectedAbility.targetingMode == TargetingMode.Area)
-        {
-            // Area-target preview belongs here when enabled.
-            return;
-        }
-
         /*
          * Attack range now depends on the currently equipped weapon:
          *
@@ -164,10 +158,20 @@ public class AbilityUI : MonoBehaviour
             attackAbility.RefreshTargetingRange(player);
         }
 
-        targetingSystem.HighlightValidTargets(
+        Debug.Log($"[BeginTargetingForSelectedAbility] About to highlight targets. " +
+            $"selectedAbility={selectedAbility?.AbilityName} " +
+            $"player={player?.Name} " +
+            $"grid={grid}");
+
+        targetingSystem.HighlightValidTargets(selectedAbility, player);
+
+        Debug.Log("[BeginTargetingForSelectedAbility] HighlightValidTargets completed");        
+
+        // Highlight valid targets for all ability types
+        /*targetingSystem.HighlightValidTargets(
             selectedAbility,
             player
-        );
+        );*/
     }
 
     public void TryActivateAbilitySlot(int slot, string sourceTag)
