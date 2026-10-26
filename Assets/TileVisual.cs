@@ -13,13 +13,13 @@ public class TileVisual : MonoBehaviour
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        Debug.Log($"[TileVisual.Awake] {gameObject.name}: sr={sr?.gameObject.name ?? "null"}");
+        //Debug.Log($"[TileVisual.Awake] {gameObject.name}: sr={sr?.gameObject.name ?? "null"}");
 
         if (sr != null)
         {
             sr.sortingLayerName = sortingLayerName;
             sr.sortingOrder = baseSortingOrder;
-            Debug.Log($"[TileVisual.Awake] Set sorting layer to '{sortingLayerName}' order {baseSortingOrder}");
+          //  Debug.Log($"[TileVisual.Awake] Set sorting layer to '{sortingLayerName}' order {baseSortingOrder}");
         }
     }
 
