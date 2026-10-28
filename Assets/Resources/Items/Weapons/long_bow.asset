@@ -23,3 +23,4 @@ MonoBehaviour:
   versatileDamageDice: 
   damageType: 1
   isMartial: 1
+  telegraphStyle: {fileID: 11400000, guid: e3d267953d9df443ca5bfc96eb1204f7, type: 2}

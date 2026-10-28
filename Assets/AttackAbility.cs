@@ -306,6 +306,16 @@ public class AttackAbility : Ability
         Debug.Log($"Hit for {damage} damage");
         target.TakeDamage(damage);
 
+        // Show damage telegraph based on weapon type
+        if (weapon != null && weapon.telegraphStyle != null)
+        {
+            DamageTelegraphSystem telegraphSystem = Object.FindFirstObjectByType<DamageTelegraphSystem>();
+            if (telegraphSystem != null)
+            {
+                telegraphSystem.ShowDamageTelegraph(target, damage, weapon.telegraphStyle, 1f);
+            }
+        }
+
         CombatUIManager.Instance?.LogAttack(
             user.Name,
             target.Name,
