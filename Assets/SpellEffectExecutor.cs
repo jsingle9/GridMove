@@ -3,36 +3,44 @@ using UnityEngine;
 public static class SpellEffectExecutor
 {
 
-    public static AbilityResult ApplyDamage(
-        ICombatant user,
-        TargetData target,
-        SpellDefinition definition
-    )
-    {
+  public static AbilityResult ApplyDamage(
+      ICombatant user,
+      TargetData target,
+      SpellDefinition definition
+  )
+  {
 
-        if (target.primaryTarget == null)
-        {
-            return AbilityResult.CreateFailure(
-                "No target to damage."
-            );
-        }
+      if (target.primaryTarget == null)
+      {
+          return AbilityResult.CreateFailure(
+              "No target to damage."
+          );
+      }
 
-        int slotLevel = 0;
-        int baseSlotLevel = definition.spellLevel;
-        int baseDamage = DiceRoller.Roll(definition.damageDice);
-        int upcastDamage = 0;
+      int slotLevel = 0;
+      int baseSlotLevel = definition.spellLevel;
+      int baseDamage = DiceRoller.Roll(definition.damageDice);
+      int upcastDamage = 0;
 
-        if (slotLevel > baseSlotLevel && !string.IsNullOrEmpty(definition.upcastDamageBonus))
-        {
-            int extraLevels = slotLevel - baseSlotLevel;
-            for (int i = 0; i < extraLevels; i++)
-                upcastDamage += DiceRoller.Roll(definition.upcastDamageBonus);
-        }
+      if (slotLevel > baseSlotLevel && !string.IsNullOrEmpty(definition.upcastDamageBonus))
+      {
+          int extraLevels = slotLevel - baseSlotLevel;
+          for (int i = 0; i < extraLevels; i++)
+              upcastDamage += DiceRoller.Roll(definition.upcastDamageBonus);
+      }
 
-        int totalDamage = baseDamage + upcastDamage;
-        target.primaryTarget.TakeDamage(totalDamage);
-        return AbilityResult.CreateSuccess();
-    }
+      int totalDamage = baseDamage + upcastDamage;
+      target.primaryTarget.TakeDamage(totalDamage);
+
+      // Show damage telegraph
+      DamageTelegraphSystem telegraphSystem = Object.FindFirstObjectByType<DamageTelegraphSystem>();
+      if (telegraphSystem != null)
+      {
+          telegraphSystem.ShowDamageTelegraph(target.primaryTarget, totalDamage, definition.telegraphStyle, 1f);
+      }
+
+      return AbilityResult.CreateSuccess();
+  }
 
     public static AbilityResult ApplyHeal(
         ICombatant user,
