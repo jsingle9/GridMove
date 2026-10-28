@@ -1564,52 +1564,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f5d78cf8f4174fdca15aeed04d539da, type: 3}
---- !u!1 &297538954
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 297538956}
-  - component: {fileID: 297538955}
-  m_Layer: 0
-  m_Name: DamageTelegraphSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &297538955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297538954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b6e23a201d144c3827e9ea97ea5bd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageTelegraphSystem
-  defaultDamageTilePrefab: {fileID: 0}
-  root: {fileID: 0}
---- !u!4 &297538956
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297538954}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 112.55592, y: 76.40498, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &298699499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25875,6 +25829,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f9d8774bba694d02a4c63477e284375, type: 3}
+--- !u!1001 &4335801773282394209
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6061642888034532120, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_Name
+      value: DamageTelegraphSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 112.55592
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 76.40498
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538881976929179453, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c3092ed7e70a245f4b0630400192ef61, type: 3}
 --- !u!1001 &6891971806912789229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25885,11 +25896,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1130.5269
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 965.8293
+      value: 74.5
       objectReference: {fileID: 0}
     - target: {fileID: 16061199861252395, guid: 5cf4fe461e9ab484399820cb2e5c9303, type: 3}
       propertyPath: m_LocalPosition.z
@@ -26259,4 +26270,4 @@ SceneRoots:
   - {fileID: 1877237711}
   - {fileID: 7073541295257120820}
   - {fileID: 6891971806912789229}
-  - {fileID: 297538956}
+  - {fileID: 4335801773282394209}

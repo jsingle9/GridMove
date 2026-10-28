@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a70e3cbb8b1bb4ed59928b6e12b0b318, type: 3}
   m_Name: battle_axe
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
+  itemId: 
   itemName: battle_axe
   description: 'A simple, sharp, and effective weapon.  A preferred weapon of lumberjacks
     everywhere!  '
   consumable: 0
+  weaponType: 0
+  range: 1
+  damageBonus: 0
   damageDice: 1d8
   versatileDamageDice: 1d10
   damageType: 0
   isMartial: 1
+  telegraphStyle: {fileID: 11400000, guid: e3d267953d9df443ca5bfc96eb1204f7, type: 2}

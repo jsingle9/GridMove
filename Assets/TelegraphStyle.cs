@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 [CreateAssetMenu(menuName = "Combat/Telegraph Style", fileName = "TelegraphStyle")]
 public class TelegraphStyle : ScriptableObject
 {

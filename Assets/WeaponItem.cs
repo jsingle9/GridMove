@@ -21,6 +21,10 @@ public class WeaponItem : Item
    public DamageType damageType = DamageType.Slashing;
    public bool isMartial = true;
 
+   [Header("Presentation")]
+   [SerializeReference]
+   public TelegraphStyle telegraphStyle;
+
    // inline methods
    public override bool CanEquip => true;
    public override EquipmentSlot? EquipSlot => EquipmentSlot.Weapon;
