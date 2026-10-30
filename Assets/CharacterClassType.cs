@@ -1,5 +1,6 @@
 public enum CharacterClassType
 {
     Fighter,
-    Mystic
+    Mystic,
+    Mage
 }

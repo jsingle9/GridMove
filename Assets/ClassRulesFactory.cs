@@ -6,6 +6,7 @@ public static class ClassRulesFactory
         {
             case CharacterClassType.Fighter: return new FighterRules();
             case CharacterClassType.Mystic:  return new MysticRules();
+            case CharacterClassType.Mage: return new MageRules();
             default: return null;
         }
     }
