@@ -15,3 +15,4 @@ MonoBehaviour:
   templates:
   - {fileID: 11400000, guid: 75f69dd2d4a874dce83ec02ef0a1c0aa, type: 2}
   - {fileID: 11400000, guid: 41f3358ff5759450cbc2832c79d2dd3b, type: 2}
+  - {fileID: 11400000, guid: fbad96e935c6b47daa2977502a197efa, type: 2}
