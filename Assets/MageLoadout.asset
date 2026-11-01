@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d11a36009c65a4c038cb34aa98a85930, type: 3}
+  m_Name: MageLoadout
+  m_EditorClassIdentifier: Assembly-CSharp::MageLoadout
+  startingWeapon: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
+  startingArmor: {fileID: 0}
+  startingShield: {fileID: 0}
+  level0Spells:
+  - {fileID: 11400000, guid: 4679137fdaf9a4ba7bbe706504661ba3, type: 2}
+  - {fileID: 11400000, guid: fe0ab7a9e66574b2882ddf02c07d10e6, type: 2}
+  - {fileID: 0}
+  level1Spells:
+  - {fileID: 11400000, guid: 746d84ae1f81b49cab66eab6e1d710b0, type: 2}
+  - {fileID: 11400000, guid: 233f2b6c206b44a7b92caa1e7d41c8f9, type: 2}
+  - {fileID: 11400000, guid: d4035c3cd19d14572ba5666d7509895e, type: 2}
+  classSprite: {fileID: 4579277247581207231, guid: 636375639d4724d8b84d0b0031a80433, type: 3}
