@@ -44,6 +44,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     [SerializeField] private SpellDefinition breathOfLifeSpell;
     [SerializeField] private SpellDefinition cureWoundsSpell;
     [SerializeField] private SpellDefinition burningHandsSpell;
+    [SerializeField] private SpellDefinition magicMissleSpell;
+    [SerializeField] private SpellDefinition shatterSpell;
+    [SerializeField] private SpellDefinition fireBoltSpell;
     [SerializeField] private SpellTelegrapher spellTelegrapher;
     public SpellSlots Spellcasting => spellSlots;
     private StatusManager statusManager;
@@ -1100,8 +1103,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
             abilities.Add(new PsionicStrikeAbility());  // STAYS IN ABILITIES
 
-        // ONLY Mystic gets Cast Spell button
-        if (characterSheet.ClassId == "mystic")
+        // Mystic & Mage get Cast Spell button
+        if (characterSheet.ClassId == "mystic" || characterSheet.ClassId == "mage")
             abilities.Add(new CastSpellAbility());    // Slot 4 (button 5)
 
         // ADD SPELLS TO SPELLS LIST
@@ -1113,6 +1116,23 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
                 spells.Add(new SpellAbility(breathOfLifeSpell));
             if (cureWoundsSpell != null)
                 spells.Add(new SpellAbility(cureWoundsSpell));
+            // Add burningHands if you have it serialized
+            if (burningHandsSpell != null)
+                spells.Add(new SpellAbility(burningHandsSpell));
+        }
+
+
+        if (characterSheet.ClassId == "mage")
+        {
+            // level 0 cantrips
+            if (arcingBoltSpell != null)
+                spells.Add(new SpellAbility(arcingBoltSpell));
+            if (fireBoltSpell != null)
+                spells.Add(new SpellAbility(fireBoltSpell));
+
+            // level 1 spells
+            if (magicMissleSpell != null)
+                spells.Add(new SpellAbility(magicMissleSpell));
             // Add burningHands if you have it serialized
             if (burningHandsSpell != null)
                 spells.Add(new SpellAbility(burningHandsSpell));

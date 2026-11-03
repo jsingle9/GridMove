@@ -15,7 +15,7 @@ MonoBehaviour:
   classId: mage
   defaultName: Andres
   speciesId: human
-  backgroundId: 
+  backgroundId: sage
   str: 10
   dex: 12
   con: 12
@@ -23,10 +23,13 @@ MonoBehaviour:
   wis: 14
   cha: 10
   baseSpeed: 6
-  skillProficiencyIds: []
+  skillProficiencyIds:
+  - 
   saveProficiencyIds: []
-  featureIds: []
-  startingWeapon: {fileID: 0}
-  startingArmor: {fileID: 0}
+  featureIds:
+  - cast_spell
+  - 
+  startingWeapon: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
+  startingArmor: {fileID: 11400000, guid: 15cd78b42b19e4da08ce886cc2644929, type: 2}
   startingShield: {fileID: 0}
   classSprite: {fileID: 4579277247581207231, guid: 636375639d4724d8b84d0b0031a80433, type: 3}

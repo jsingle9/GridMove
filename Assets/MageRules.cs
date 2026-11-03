@@ -21,6 +21,7 @@ public class MageRules : IClassRules
         if (sheet.BaseSpeed <= 0) sheet.BaseSpeed = 6;
 
         // Mage features
+        AddFeature(sheet, FeatureIds.CastSpell);
         AddFeature(sheet, FeatureIds.ArcaneRecovery);
     }
 
