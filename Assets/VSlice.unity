@@ -12703,6 +12703,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 43542802}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: shatterSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: d4035c3cd19d14572ba5666d7509895e, type: 2}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: fireBoltSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: fe0ab7a9e66574b2882ddf02c07d10e6, type: 2}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: equippedWeapon
       value: 
       objectReference: {fileID: 0}
@@ -12718,6 +12726,10 @@ PrefabInstance:
       propertyPath: startingLoadout
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: magicMissleSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: 746d84ae1f81b49cab66eab6e1d710b0, type: 2}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: spellTelegrapher
       value: 

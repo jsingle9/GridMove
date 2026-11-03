@@ -154,10 +154,10 @@ MonoBehaviour:
   spellSlots:
     slotsPerLevel: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
     usedSlots: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
-  arcingBoltSpell: {fileID: 0}
-  breathOfLifeSpell: {fileID: 0}
-  cureWoundsSpell: {fileID: 0}
-  burningHandsSpell: {fileID: 0}
+  arcingBoltSpell: {fileID: 11400000, guid: 4679137fdaf9a4ba7bbe706504661ba3, type: 2}
+  breathOfLifeSpell: {fileID: 11400000, guid: 30c7f494049434ba88b3b1b891f55700, type: 2}
+  cureWoundsSpell: {fileID: 11400000, guid: 47c51c33e70c94e70982d32bc33146ef, type: 2}
+  burningHandsSpell: {fileID: 11400000, guid: 233f2b6c206b44a7b92caa1e7d41c8f9, type: 2}
   spellTelegrapher: {fileID: 0}
   equippedWeapon: {fileID: 0}
 --- !u!114 &3931830472813988512
