@@ -1084,14 +1084,18 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         characterSheet.FeatureIds ??= new List<string>();
 
         // Fighter abilities.
-        if (characterSheet.FeatureIds.Contains(FeatureIds.SecondWind))
-            abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
 
-        if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
-            abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
 
-        if (characterSheet.ClassId == "fighter")
+        if (characterSheet.ClassId == "fighter"){
+
+            if (characterSheet.FeatureIds.Contains(FeatureIds.SecondWind))
+                abilities.Add(new SecondWindAbility(new DefaultSecondWindConfig()));
+
+            if (characterSheet.FeatureIds.Contains(FeatureIds.ActionSurge))
+                abilities.Add(new ActionSurgeAbility(new DefaultActionSurgeConfig()));
+
             abilities.Add(new ShieldSlamAbility());
+        }
 
         // Mystic abilities.
         if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicFocus))
@@ -1121,7 +1125,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
                 spells.Add(new SpellAbility(burningHandsSpell));
         }
 
+        // mage specific abilities
 
+        // MAGE SPELL LIST
         if (characterSheet.ClassId == "mage")
         {
             // level 0 cantrips
