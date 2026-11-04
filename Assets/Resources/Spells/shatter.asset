@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acee7a2ed57e42a09b86f63ce815eb6, type: 3}
   m_Name: shatter
   m_EditorClassIdentifier: Assembly-CSharp::SpellDefinition
-  spellId: 
-  displayName: 
+  spellId: shatter
+  displayName: shatter
   description: 
   spellLevel: 0
   targetingMode: 4
@@ -32,4 +32,4 @@ MonoBehaviour:
   requiresSave: 1
   saveDC: 13
   icon: {fileID: 0}
-  telegraphStyle: {fileID: 0}
+  telegraphStyle: {fileID: 11400000, guid: 8081cdb9b5c8d471eade5ab5a8bacccf, type: 2}
