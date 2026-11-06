@@ -23,16 +23,31 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     public bool HasBonusAction { get; set; }
     public int RemainingMovement { get; set; }
     public bool turnStarted = false;
-    [SerializeField] int armorClass = 16;
+    public int armorClass;
+
+
     [SerializeField] int attackBonus = 5;
     [SerializeField] string baseDamageDice = "1d8";      // Base damage without weapon
-    [SerializeField] int baseDamageModifier = 3;         // Base modifier without weapon
+    [SerializeField] private int baseDamageModifier = 3;         // Base modifier without weapon
     [SerializeField] int speed = 6;
     private ClassDef classDef;
     private ArmorDef armorDef;
     public string Name => name;
-    public int Speed => speed;
-    public int ArmorClass => armorClass;
+
+    // Stats getter /setters
+    public int Speed
+    {
+        get => speed;
+        set => speed = value;
+    }
+
+    //  Getter / Setter for AC
+    public int ArmorClass
+    {
+        get => armorClass;
+        set => armorClass = value;
+    }
+
     public int AttackBonus => attackBonus;
     [SerializeField] private CharacterSheet characterSheet = new CharacterSheet();
     public CharacterSheet Sheet => characterSheet;
@@ -75,6 +90,15 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             ? EquippedWeapon.damageBonus
             : baseDamageModifier;
 
+    public int BaseDamageModifier
+    {
+            get => baseDamageModifier;
+            set => baseDamageModifier = value;
+    }
+
+    public int GetBaseDamageModifier(){
+        return baseDamageModifier;
+    }
 
     //spell list and spell helpers
     private List<SpellAbility> spells = new List<SpellAbility>();
@@ -140,7 +164,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         switch (classId)
         {
             case "mystic":  return CharacterClassType.Mystic;
-            case "fighter":
+            case "fighter": return CharacterClassType.Fighter;
+            case "mage":    return CharacterClassType.Mage;
             default:        return CharacterClassType.Fighter;
         }
     }
@@ -1127,9 +1152,11 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         // mage specific abilities
 
-        // MAGE SPELL LIST
+        // ADD MAGE ABILITIES AND SPELL LIST
         if (characterSheet.ClassId == "mage")
         {
+            if (characterSheet.FeatureIds.Contains(FeatureIds.ArcaneFortitude))
+                abilities.Add(new ArcaneFortitudeAbility());
             // level 0 cantrips
             if (arcingBoltSpell != null)
                 spells.Add(new SpellAbility(arcingBoltSpell));
@@ -1139,6 +1166,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             // level 1 spells
             if (magicMissleSpell != null)
                 spells.Add(new SpellAbility(magicMissleSpell));
+            if (shatterSpell != null)
+                spells.Add(new SpellAbility(shatterSpell));
             // Add burningHands if you have it serialized
             if (burningHandsSpell != null)
                 spells.Add(new SpellAbility(burningHandsSpell));

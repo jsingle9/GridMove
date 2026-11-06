@@ -23,6 +23,7 @@ public class MageRules : IClassRules
         // Mage features
         AddFeature(sheet, FeatureIds.CastSpell);
         AddFeature(sheet, FeatureIds.ArcaneRecovery);
+        AddFeature(sheet, FeatureIds.ArcaneFortitude);
     }
 
     public void ApplyLevelUp(CharacterSheet sheet, int newLevel)

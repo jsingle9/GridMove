@@ -12713,7 +12713,7 @@ PrefabInstance:
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: equippedWeapon
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: arcingBoltSpell
       value: 
