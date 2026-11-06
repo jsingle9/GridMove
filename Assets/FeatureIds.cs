@@ -12,6 +12,6 @@ public static class FeatureIds
     public const string CastSpell = "cast_spell";
 
     // Mage
-    public const string FireBolt = "fire_bolt";
     public const string ArcaneRecovery = "arcane_recovery";
+    public const string ArcaneFortitude = "arcane_fortitude";
 }

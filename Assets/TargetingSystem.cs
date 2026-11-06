@@ -75,12 +75,16 @@ public class TargetingSystem
         SpellAbility spellAbility = ability as SpellAbility;
         if (spellAbility != null && spellAbility.definition.areaShape == SpellAreaShape.Cone)
         {
+            Vector3Int userCell = grid.WorldToGrid(user.GetWorldPosition());
             List<Vector3Int> coneCells = GetCellsInCone(grid.WorldToGrid(user.GetWorldPosition()), gridPos, spellAbility.definition);
             Debug.Log($"[ResolveTarget] Cone cells: {coneCells.Count}");
             data.unitsInArea = new();
 
             foreach (var cell in coneCells)
             {
+                if (cell == userCell)
+                    continue;
+
                 ICombatant unit = grid.GetOccupant(cell);
                 Debug.Log($"[ResolveTarget] Adding enemy to area: {unit}");
                 if (unit != null && IsEnemy(user, unit))
@@ -311,6 +315,11 @@ public class TargetingSystem
             for (int y = origin.y - spell.coneLength; y <= origin.y + spell.coneLength; y++)
             {
                 Vector3Int cell = new(x, y, 0);
+
+                // EXCLUDE THE ORIGIN CELL
+                if (cell == origin)
+                    continue;    
+
                 if (!grid.IsInBounds(cell)) continue;
 
                 Vector3 toCell = grid.GridToWorld(cell) - grid.GridToWorld(origin);

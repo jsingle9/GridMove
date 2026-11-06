@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acee7a2ed57e42a09b86f63ce815eb6, type: 3}
   m_Name: magic_missile
   m_EditorClassIdentifier: Assembly-CSharp::SpellDefinition
-  spellId: 
-  displayName: 
+  spellId: magic_missle
+  displayName: magic_missle
   description: 
   spellLevel: 0
   targetingMode: 0
-  range: 0
+  range: 8
   radius: 0
   areaShape: 0
   coneLength: 0
@@ -30,5 +30,6 @@ MonoBehaviour:
   damageType: force
   failureEffect: 
   requiresSave: 0
-  saveDC: 8
+  saveDC: 0
   icon: {fileID: 0}
+  telegraphStyle: {fileID: 0}

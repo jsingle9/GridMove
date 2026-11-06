@@ -102,9 +102,42 @@ public static class SpellEffectExecutor
         SpellDefinition definition
     )
     {
-        return AbilityResult.CreateFailure(
-            "Buff effects are not implemented yet."
-        );
+        if (target.primaryTarget == null)
+            return AbilityResult.CreateFailure("No target to buff.");
+
+        // Parse buff type from the spell's damageType field
+        // Expected format: "ac_bonus" or "movement_bonus"
+        string buffType = string.IsNullOrEmpty(definition.damageType)
+            ? "ac_bonus"
+            : definition.damageType.ToLowerInvariant();
+
+        int buffAmount = 2;  // Default buff value, or parse from damageDice if needed
+        int duration = 3;    // Default 3 turns
+
+        StatusEffect buff = null;
+
+        switch (buffType)
+        {
+            case "ac_bonus":
+                buff = new ArmorClassBuff(buffAmount, duration);
+                break;
+
+            case "movement_bonus":
+            case "speed_bonus":
+                buff = new MovementBuff(buffAmount, duration);
+                break;
+
+            default:
+                return AbilityResult.CreateFailure($"Unknown buff type: {buffType}");
+        }
+
+        if (buff == null)
+            return AbilityResult.CreateFailure("Buff creation failed.");
+
+        target.primaryTarget.AddStatus(buff);
+        Debug.Log($"{user.Name} cast {definition.displayName} on {target.primaryTarget.Name}");
+
+        return AbilityResult.CreateSuccess();
     }
 
     public static AbilityResult ApplyDebuff(
@@ -113,9 +146,37 @@ public static class SpellEffectExecutor
         SpellDefinition definition
     )
     {
-        return AbilityResult.CreateFailure(
-            "Debuff effects are not implemented yet."
-        );
+        if (target.primaryTarget == null)
+            return AbilityResult.CreateFailure("No target to debuff.");
+
+        // Parse debuff type from the damageType field
+        // Expected format: "weakness" or "vulnerability"
+        string debuffType = string.IsNullOrEmpty(definition.damageType)
+            ? "weakness"
+            : definition.damageType.ToLowerInvariant();
+
+        int debuffAmount = 2;  // Default debuff value
+        int duration = 2;      // Default 2 turns
+
+        StatusEffect debuff = null;
+
+        switch (debuffType)
+        {
+            case "weakness":
+                debuff = new Weakness(debuffAmount, duration);
+                break;
+
+            default:
+                return AbilityResult.CreateFailure($"Unknown debuff type: {debuffType}");
+        }
+
+        if (debuff == null)
+            return AbilityResult.CreateFailure("Debuff creation failed.");
+
+        target.primaryTarget.AddStatus(debuff);
+        Debug.Log($"{user.Name} cast {definition.displayName} on {target.primaryTarget.Name}");
+
+        return AbilityResult.CreateSuccess();
     }
 
     public static AbilityResult ApplyStatus(
