@@ -62,6 +62,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     [SerializeField] private SpellDefinition magicMissleSpell;
     [SerializeField] private SpellDefinition shatterSpell;
     [SerializeField] private SpellDefinition fireBoltSpell;
+    [SerializeField] private SpellDefinition vineGraspSpell;
     [SerializeField] private SpellTelegrapher spellTelegrapher;
     public SpellSlots Spellcasting => spellSlots;
     private StatusManager statusManager;
@@ -1148,6 +1149,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             // Add burningHands if you have it serialized
             if (burningHandsSpell != null)
                 spells.Add(new SpellAbility(burningHandsSpell));
+            if (vineGraspSpell != null)
+                spells.Add(new SpellAbility(vineGraspSpell));
         }
 
         // mage specific abilities

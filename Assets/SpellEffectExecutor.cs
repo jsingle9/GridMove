@@ -149,29 +149,38 @@ public static class SpellEffectExecutor
         if (target.primaryTarget == null)
             return AbilityResult.CreateFailure("No target to debuff.");
 
-        // Parse debuff type from the damageType field
-        // Expected format: "weakness" or "vulnerability"
+        // Check if this debuff requires a save
+        if (definition.requiresSave)
+        {
+            int dc = SavingThrowUtility.CalculateCasterDC(user);
+
+            if (SavingThrowUtility.PassesSave(target.primaryTarget, dc, definition.saveAbility, out int roll, out int mod, out int total))
+            {
+                // Save succeeded - no effect
+                Debug.Log($"{target.primaryTarget.Name} saved against {definition.displayName} (rolled {roll}, needed {dc})");
+                return AbilityResult.CreateSuccess();  // Success but no debuff applied
+            }
+
+            Debug.Log($"{target.primaryTarget.Name} failed save against {definition.displayName} (rolled {roll}, needed {dc})");
+        }
+
+        // Apply the debuff (either no save required, or save was failed)
         string debuffType = string.IsNullOrEmpty(definition.damageType)
             ? "weakness"
             : definition.damageType.ToLowerInvariant();
 
-        int debuffAmount = 2;  // Default debuff value
-        int duration = 2;      // Default 2 turns
+        int debuffAmount = 2;
+        int duration = 2;
 
-        StatusEffect debuff = null;
-
-        switch (debuffType)
+        StatusEffect debuff = debuffType switch
         {
-            case "weakness":
-                debuff = new Weakness(debuffAmount, duration);
-                break;
-
-            default:
-                return AbilityResult.CreateFailure($"Unknown debuff type: {debuffType}");
-        }
+            "weakness" => new Weakness(debuffAmount, duration),
+            "movement_reduction" => new MovementReduction(target.primaryTarget.Speed, duration),  // Reduce by full speed
+            _ => null
+        };
 
         if (debuff == null)
-            return AbilityResult.CreateFailure("Debuff creation failed.");
+            return AbilityResult.CreateFailure($"Unknown debuff type: {debuffType}");
 
         target.primaryTarget.AddStatus(debuff);
         Debug.Log($"{user.Name} cast {definition.displayName} on {target.primaryTarget.Name}");
