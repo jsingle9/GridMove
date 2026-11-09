@@ -56,4 +56,24 @@ public static class SavingThrowUtility
         // Fallback for enemies/NPCs until they expose sheet or save stats
         return 10;
     }
+
+    public static int CalculateCasterDC(ICombatant caster)
+    {
+        // Default DC = 8 + proficiency + spellcasting ability mod
+        // For now, use INT for Mages, WIS for Mystics
+        int baseDC = 8;
+        int proficiency = 2;  // You can derive this from level later
+
+        int spellMod = 0;
+        if (caster is BoxMover bm && bm.Sheet != null)
+        {
+            // Determine caster's primary spellcasting ability
+            if (bm.Sheet.ClassId == "mage")
+                spellMod = GetAbilityMod(caster, AbilityScore.INT);
+            else if (bm.Sheet.ClassId == "mystic")
+                spellMod = GetAbilityMod(caster, AbilityScore.WIS);
+        }
+
+        return baseDC + proficiency + spellMod;
+    }    
 }
