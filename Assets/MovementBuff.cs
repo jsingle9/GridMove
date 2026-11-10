@@ -17,22 +17,14 @@ public class MovementBuff : StatusEffect
 
     public override void OnApply(ICombatant target)
     {
-        MonoBehaviour mb = target as MonoBehaviour;
-        if (mb != null && mb.TryGetComponent<BoxMover>(out var bm))
-        {
-            originalSpeed = bm.Speed;
-            bm.Speed += speedBonus;
-            Debug.Log($"{target.Name} gains +{speedBonus} movement for {RemainingTurns} turns (now {bm.Speed})");
-        }
+        originalSpeed = target.Speed;
+        target.Speed += speedBonus;
+        Debug.Log($"{target.Name} gains +{speedBonus} movement for {RemainingTurns} turns (now {target.Speed})");
     }
 
     public override void OnExpire(ICombatant target)
     {
-        MonoBehaviour mb = target as MonoBehaviour;
-        if (mb != null && mb.TryGetComponent<BoxMover>(out var bm))
-        {
-            bm.Speed = originalSpeed;
-            Debug.Log($"{target.Name}'s movement bonus expired (back to {originalSpeed})");
-        }
+        target.Speed = originalSpeed;
+        Debug.Log($"{target.Name}'s movement bonus expired (back to {originalSpeed})");
     }
 }

@@ -17,22 +17,15 @@ public class ArmorClassBuff : StatusEffect
 
     public override void OnApply(ICombatant target)
     {
-        MonoBehaviour mb = target as MonoBehaviour;
-        if (mb != null && mb.TryGetComponent<BoxMover>(out var bm))
-        {
-            originalAC = bm.ArmorClass;
-            bm.ArmorClass += acBonus;
-            Debug.Log($"{target.Name} gains +{acBonus} AC for {RemainingTurns} turns (now {bm.ArmorClass})");
-        }
+        originalAC = target.ArmorClass;
+        target.ArmorClass += acBonus;
+        Debug.Log($"{target.Name} gains +{acBonus} AC for {RemainingTurns} turns (now {target.ArmorClass})");
     }
+
 
     public override void OnExpire(ICombatant target)
     {
-        MonoBehaviour mb = target as MonoBehaviour;
-        if (mb != null && mb.TryGetComponent<BoxMover>(out var bm))
-        {
-            bm.ArmorClass = originalAC;
-            Debug.Log($"{target.Name}'s AC bonus expired (back to {originalAC})");
-        }
+        target.ArmorClass = originalAC;
+        Debug.Log($"{target.Name}'s AC bonus expired (back to {originalAC})");
     }
 }

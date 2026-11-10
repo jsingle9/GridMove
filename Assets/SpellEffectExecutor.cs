@@ -146,28 +146,38 @@ public static class SpellEffectExecutor
         SpellDefinition definition
     )
     {
+        Debug.Log($"[ApplyDebuff] Called for spell: {definition.displayName}");
+
         if (target.primaryTarget == null)
+        {
+            Debug.Log("[ApplyDebuff] No primary target!");
             return AbilityResult.CreateFailure("No target to debuff.");
+        }
+
+        Debug.Log($"[ApplyDebuff] Target: {target.primaryTarget.Name}, Requires Save: {definition.requiresSave}");
 
         // Check if this debuff requires a save
         if (definition.requiresSave)
         {
             int dc = SavingThrowUtility.CalculateCasterDC(user);
+            Debug.Log($"[ApplyDebuff] Calculated DC from caster {user.Name}: {dc}");
 
             if (SavingThrowUtility.PassesSave(target.primaryTarget, dc, definition.saveAbility, out int roll, out int mod, out int total))
             {
                 // Save succeeded - no effect
-                Debug.Log($"{target.primaryTarget.Name} saved against {definition.displayName} (rolled {roll}, needed {dc})");
+                Debug.Log($"[ApplyDebuff] {target.primaryTarget.Name} saved against {definition.displayName} (rolled {roll}+{mod}={total}, needed {dc})");
                 return AbilityResult.CreateSuccess();  // Success but no debuff applied
             }
 
-            Debug.Log($"{target.primaryTarget.Name} failed save against {definition.displayName} (rolled {roll}, needed {dc})");
+            Debug.Log($"[ApplyDebuff] {target.primaryTarget.Name} failed save against {definition.displayName} (rolled {roll}+{mod}={total}, needed {dc})");
         }
 
-        // Apply the debuff (either no save required, or save was failed)
+        // Apply the debuff
         string debuffType = string.IsNullOrEmpty(definition.damageType)
             ? "weakness"
             : definition.damageType.ToLowerInvariant();
+
+        Debug.Log($"[ApplyDebuff] Debuff type from spell: {debuffType}");
 
         int debuffAmount = 2;
         int duration = 2;
@@ -175,13 +185,17 @@ public static class SpellEffectExecutor
         StatusEffect debuff = debuffType switch
         {
             "weakness" => new Weakness(debuffAmount, duration),
-            "movement_reduction" => new MovementReduction(target.primaryTarget.Speed, duration),  // Reduce by full speed
+            "movement_reduction" => new MovementReduction(target.primaryTarget.Speed, duration),
             _ => null
         };
 
         if (debuff == null)
+        {
+            Debug.Log($"[ApplyDebuff] Unknown debuff type: {debuffType}");
             return AbilityResult.CreateFailure($"Unknown debuff type: {debuffType}");
+        }
 
+        Debug.Log($"[ApplyDebuff] Applying {debuff.Name} to {target.primaryTarget.Name}");
         target.primaryTarget.AddStatus(debuff);
         Debug.Log($"{user.Name} cast {definition.displayName} on {target.primaryTarget.Name}");
 
