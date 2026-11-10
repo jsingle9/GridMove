@@ -20,7 +20,7 @@ MonoBehaviour:
   dex: 12
   con: 12
   intel: 14
-  wis: 16
+  wis: 20
   cha: 10
   baseSpeed: 6
   skillProficiencyIds: []

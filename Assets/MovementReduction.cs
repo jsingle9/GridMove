@@ -10,26 +10,24 @@ public class MovementReduction : StatusEffect
         : base($"Immobilized", duration)
     {
         movementReduction = reduction;
+        Debug.Log($"[MovementReduction] Created with reduction value: {reduction}");
     }
 
     public override void OnApply(ICombatant target)
     {
-        MonoBehaviour mb = target as MonoBehaviour;
-        if (mb != null && mb.TryGetComponent<BoxMover>(out var bm))
-        {
-            originalSpeed = bm.Speed;
-            bm.Speed = Mathf.Max(0, bm.Speed - movementReduction);
-            Debug.Log($"{target.Name} is immobilized for {RemainingTurns} turn(s) (speed: {originalSpeed} → {bm.Speed})");
-        }
+        originalSpeed = target.Speed;
+        target.Speed = Mathf.Max(0, target.Speed - movementReduction);
+        Debug.Log($"[MovementReduction.OnApply] {target.Name} immobilized. Speed: {originalSpeed} → {target.Speed}, Duration: {RemainingTurns}");
+    }
+
+    public override void OnTurnStart(ICombatant target)
+    {
+        Debug.Log($"[MovementReduction.OnTurnStart] {target.Name} turn start, immobilized for {RemainingTurns} more turns");
     }
 
     public override void OnExpire(ICombatant target)
     {
-        MonoBehaviour mb = target as MonoBehaviour;
-        if (mb != null && mb.TryGetComponent<BoxMover>(out var bm))
-        {
-            bm.Speed = originalSpeed;
-            Debug.Log($"{target.Name}'s immobilization expired (speed restored to {originalSpeed})");
-        }
+        target.Speed = originalSpeed;
+        Debug.Log($"[MovementReduction.OnExpire] {target.Name}'s immobilization expired. Speed restored to {originalSpeed}");
     }
 }

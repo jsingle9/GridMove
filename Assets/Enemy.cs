@@ -24,7 +24,11 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     [SerializeField] protected string damageDice = "1d6";
     [SerializeField] protected int damageModifier = 0;
     [SerializeField] protected int speed = 6;
-    public int Speed => speed;
+    public int Speed
+    {
+        get => speed;
+        set => speed = value;
+    }
     public string Name => name;
     public int MaxHP => maxHP;
     [Header("Encounter")]
@@ -107,8 +111,10 @@ public abstract class Enemy : MonoBehaviour, ICombatant
         HasMove = true;
         HasAction = true;
         HasBonusAction = true;
-        RemainingMovement = Speed;
+
+        // here is where status effects and buffs get computed
         statusManager.ProcessTurnStart();
+        RemainingMovement = Speed;
 
         if(IsDead())
         {
@@ -144,7 +150,11 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     }
 
     public int CurrentHP => currentHP;
-    public int ArmorClass => armorClass;
+    public int ArmorClass
+    {
+        get => armorClass;
+        set => armorClass = value;
+    }
     public int AttackBonus => attackBonus;
     public string DamageDice => damageDice;
     public int DamageModifier => damageModifier;
@@ -278,6 +288,6 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     public void SetEncounterId(string id)
     {
         encounterId = string.IsNullOrWhiteSpace(id) ? "encounter_01" : id;
-    }    
+    }
 
 }

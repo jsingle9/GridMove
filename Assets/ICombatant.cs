@@ -17,11 +17,11 @@ public interface ICombatant
     bool HasAction { get; set; }
     bool HasBonusAction { get; set; }
 
-    int ArmorClass { get; }
+    int ArmorClass { get; set; }
     int AttackBonus { get; }
     string DamageDice { get; }
     int DamageModifier { get; }
-    int Speed { get; }
+    int Speed { get; set; }
     int RemainingMovement { get; set; }
 
     void AddStatus(StatusEffect status);

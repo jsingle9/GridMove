@@ -12715,6 +12715,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: vineGraspSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: 6e8601efc1ae84aeeb358d84e3c46687, type: 2}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: arcingBoltSpell
       value: 
       objectReference: {fileID: 11400000, guid: 4679137fdaf9a4ba7bbe706504661ba3, type: 2}

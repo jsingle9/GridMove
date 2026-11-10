@@ -25,7 +25,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     public bool turnStarted = false;
     public int armorClass;
 
-
     [SerializeField] int attackBonus = 5;
     [SerializeField] string baseDamageDice = "1d8";      // Base damage without weapon
     [SerializeField] private int baseDamageModifier = 3;         // Base modifier without weapon
