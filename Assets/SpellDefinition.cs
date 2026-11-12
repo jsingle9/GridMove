@@ -41,6 +41,18 @@ public class SpellDefinition : ScriptableObject
     [Tooltip("Optional: extra dice per spell slot level above base (e.g., Fireball adds 1d6 per slot above 3).")]
     public string upcastDamageBonus;  // e.g., "1d6" means +1d6 per slot level above base level
     public string damageType;
+    
+    [SerializeField] private int damageAmount = 0;
+    [SerializeField] private int movementBonus = 0;
+    [SerializeField] private int armorBonus = 0;
+    [SerializeField] private int movementReduction = 0;
+    [SerializeField] private int duration = 0;
+
+    public int DamageAmount => damageAmount;
+    public int MovementBonus => movementBonus;
+    public int ArmorBonus => armorBonus;
+    public int MovementReduction => movementReduction;
+    public int Duration => duration;
 
     [Tooltip("What happens on a failed save (e.g., 'Lose Reaction', 'Prone', etc)")]
     public string failureEffect = "Lose Reaction";

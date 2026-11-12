@@ -12731,6 +12731,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+      propertyPath: longstriderSpell
+      value: 
+      objectReference: {fileID: 11400000, guid: 466371d7dc86f478bb1ea994b716b6e3, type: 2}
+    - target: {fileID: 3008226962890745494, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
       propertyPath: magicMissleSpell
       value: 
       objectReference: {fileID: 11400000, guid: 746d84ae1f81b49cab66eab6e1d710b0, type: 2}

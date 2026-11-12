@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5acee7a2ed57e42a09b86f63ce815eb6, type: 3}
+  m_Name: SpellDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDefinition
+  spellId: 
+  displayName: 
+  description: 
+  spellLevel: 0
+  targetingMode: 0
+  range: 0
+  radius: 0
+  areaShape: 0
+  coneLength: 0
+  coneAngleDegrees: 60
+  coneMinRange: 0
+  effectType: 0
+  damageDice: 
+  saveAbility: 1
+  upcastDamageBonus: 
+  damageType: 
+  damageAmount: 0
+  movementBonus: 0
+  armorBonus: 0
+  movementReduction: 0
+  failureEffect: Lose Reaction
+  requiresSave: 0
+  saveDC: 0
+  icon: {fileID: 0}
+  telegraphStyle: {fileID: 0}

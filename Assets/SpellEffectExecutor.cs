@@ -102,38 +102,38 @@ public static class SpellEffectExecutor
         SpellDefinition definition
     )
     {
+        Debug.Log($"[ApplyBuff] Called for spell: {definition.displayName}");
+
         if (target.primaryTarget == null)
-            return AbilityResult.CreateFailure("No target to buff.");
-
-        // Parse buff type from the spell's damageType field
-        // Expected format: "ac_bonus" or "movement_bonus"
-        string buffType = string.IsNullOrEmpty(definition.damageType)
-            ? "ac_bonus"
-            : definition.damageType.ToLowerInvariant();
-
-        int buffAmount = 2;  // Default buff value, or parse from damageDice if needed
-        int duration = 3;    // Default 3 turns
-
-        StatusEffect buff = null;
-
-        switch (buffType)
         {
-            case "ac_bonus":
-                buff = new ArmorClassBuff(buffAmount, duration);
-                break;
-
-            case "movement_bonus":
-            case "speed_bonus":
-                buff = new MovementBuff(buffAmount, duration);
-                break;
-
-            default:
-                return AbilityResult.CreateFailure($"Unknown buff type: {buffType}");
+            Debug.Log("[ApplyBuff] No primary target!");
+            return AbilityResult.CreateFailure("No target to buff.");
         }
 
-        if (buff == null)
-            return AbilityResult.CreateFailure("Buff creation failed.");
+        Debug.Log($"[ApplyBuff] Target: {target.primaryTarget.Name}");
 
+        string buffType = string.IsNullOrEmpty(definition.damageType)
+            ? "unknown"
+            : definition.damageType.ToLowerInvariant();
+
+        Debug.Log($"[ApplyBuff] Buff type from spell: {buffType}");
+
+        int duration = definition.Duration;
+
+        StatusEffect buff = buffType switch
+        {
+            "movement_bonus" => new MovementBuff(definition.MovementBonus, duration),
+            "armor_bonus" => new ArmorClassBuff(definition.ArmorBonus, duration),
+            _ => null
+        };
+
+        if (buff == null)
+        {
+            Debug.Log($"[ApplyBuff] Unknown buff type: {buffType}");
+            return AbilityResult.CreateFailure($"Unknown buff type: {buffType}");
+        }
+
+        Debug.Log($"[ApplyBuff] Applying {buff.Name} to {target.primaryTarget.Name}");
         target.primaryTarget.AddStatus(buff);
         Debug.Log($"{user.Name} cast {definition.displayName} on {target.primaryTarget.Name}");
 
@@ -179,13 +179,12 @@ public static class SpellEffectExecutor
 
         Debug.Log($"[ApplyDebuff] Debuff type from spell: {debuffType}");
 
-        int debuffAmount = 2;
-        int duration = 2;
+        int duration = definition.Duration;
 
         StatusEffect debuff = debuffType switch
         {
-            "weakness" => new Weakness(debuffAmount, duration),
-            "movement_reduction" => new MovementReduction(target.primaryTarget.Speed, duration),
+            "weakness" => new Weakness(definition.DamageAmount, duration),
+            "movement_reduction" => new MovementReduction(definition.MovementReduction, duration),
             _ => null
         };
 

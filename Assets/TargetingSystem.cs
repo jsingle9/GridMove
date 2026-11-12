@@ -157,6 +157,9 @@ public class TargetingSystem
                 case TargetingMode.Ally:
                     if (IsAlly(user, c)) validTargets.Add(c);
                     break;
+                case TargetingMode.AllyOrSelf:
+                    if (c == user || IsAlly(user, c)) validTargets.Add(c);
+                    break;
                 case TargetingMode.Enemy:
                     if (IsEnemy(user, c)) validTargets.Add(c);
                     break;
@@ -318,7 +321,7 @@ public class TargetingSystem
 
                 // EXCLUDE THE ORIGIN CELL
                 if (cell == origin)
-                    continue;    
+                    continue;
 
                 if (!grid.IsInBounds(cell)) continue;
 
