@@ -27,7 +27,8 @@ MonoBehaviour:
   damageDice: 2d8
   saveAbility: 1
   upcastDamageBonus: 1d8
-  damageType: 
+  damageType: Thunder
+  movementBonus: 0
   failureEffect: 
   requiresSave: 1
   saveDC: 13

@@ -62,6 +62,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     [SerializeField] private SpellDefinition shatterSpell;
     [SerializeField] private SpellDefinition fireBoltSpell;
     [SerializeField] private SpellDefinition vineGraspSpell;
+    [SerializeField] private SpellDefinition longstriderSpell;
     [SerializeField] private SpellTelegrapher spellTelegrapher;
     public SpellSlots Spellcasting => spellSlots;
     private StatusManager statusManager;
@@ -1153,7 +1154,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         }
 
         // mage specific abilities
-
         // ADD MAGE ABILITIES AND SPELL LIST
         if (characterSheet.ClassId == "mage")
         {
@@ -1164,12 +1164,18 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
                 spells.Add(new SpellAbility(arcingBoltSpell));
             if (fireBoltSpell != null)
                 spells.Add(new SpellAbility(fireBoltSpell));
+            if (vineGraspSpell != null)
+                spells.Add(new SpellAbility(vineGraspSpell));
+//            if (longstriderSpell != null)
+//                spells.Add(new SpellAbility(longstriderSpell));
 
             // level 1 spells
             if (magicMissleSpell != null)
                 spells.Add(new SpellAbility(magicMissleSpell));
             if (shatterSpell != null)
                 spells.Add(new SpellAbility(shatterSpell));
+            if (longstriderSpell != null)
+                spells.Add(new SpellAbility(longstriderSpell));
             // Add burningHands if you have it serialized
             if (burningHandsSpell != null)
                 spells.Add(new SpellAbility(burningHandsSpell));

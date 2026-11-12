@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class SpellAbility : Ability
 {
     public readonly SpellDefinition definition;
@@ -67,6 +69,7 @@ public class SpellAbility : Ability
                 break;
 
             case SpellEffectType.Buff:
+                Debug.Log($"[SpellAbility] Route: Buff");
                 result = SpellEffectExecutor.ApplyBuff(
                     user,
                     target,

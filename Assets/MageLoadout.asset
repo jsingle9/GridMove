@@ -18,7 +18,7 @@ MonoBehaviour:
   level0Spells:
   - {fileID: 11400000, guid: 4679137fdaf9a4ba7bbe706504661ba3, type: 2}
   - {fileID: 11400000, guid: fe0ab7a9e66574b2882ddf02c07d10e6, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6e8601efc1ae84aeeb358d84e3c46687, type: 2}
   level1Spells:
   - {fileID: 11400000, guid: 746d84ae1f81b49cab66eab6e1d710b0, type: 2}
   - {fileID: 11400000, guid: 233f2b6c206b44a7b92caa1e7d41c8f9, type: 2}
