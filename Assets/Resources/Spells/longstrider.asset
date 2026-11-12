@@ -27,7 +27,7 @@ MonoBehaviour:
   damageDice: 
   saveAbility: 1
   upcastDamageBonus: 
-  damageType: 
+  damageType: movement_bonus
   damageAmount: 0
   movementBonus: 3
   armorBonus: 0

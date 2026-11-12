@@ -20,6 +20,8 @@ public class TargetingSystem
         data.preferredTargetCell = gridPos;
         data.tile = grid.GetNodeFromWorld(grid.GridToWorld(gridPos));
 
+        Debug.Log($"[ResolveTarget] Click at world {worldClick}, grid {gridPos}, targeting mode: {ability.targetingMode}");
+
         // Heal special case (keep if you added it)
         if (ability is HealAbility)
         {
@@ -36,6 +38,7 @@ public class TargetingSystem
         }
 
         ICombatant occupant = grid.GetOccupant(gridPos);
+        Debug.Log($"[ResolveTarget] Occupant at {gridPos}: {occupant?.Name ?? "null"}");
 
         // NEW: multi-tile fallback
         if (occupant == null)
@@ -54,6 +57,8 @@ public class TargetingSystem
 
         if (occupant != null)
         {
+            Debug.Log($"[ResolveTarget] Checking targeting mode: {ability.targetingMode}");
+
             switch (ability.targetingMode)
             {
                 case TargetingMode.Self:
@@ -62,6 +67,9 @@ public class TargetingSystem
                 case TargetingMode.Ally:
                     if (IsAlly(user, occupant)) data.primaryTarget = occupant;
                     break;
+                case TargetingMode.AllyOrSelf:
+                    if (occupant == user || IsAlly(user, occupant)) data.primaryTarget = occupant;
+                    break;    
                 case TargetingMode.Enemy:
                     if (IsEnemy(user, occupant)) data.primaryTarget = occupant;
                     break;
@@ -69,6 +77,8 @@ public class TargetingSystem
                     data.primaryTarget = occupant;
                     break;
             }
+            Debug.Log($"[ResolveTarget] After switch, primaryTarget: {data.primaryTarget?.Name ?? "null"}");
+
         }
 
         // Handle cone spells
@@ -94,6 +104,7 @@ public class TargetingSystem
             if (data.unitsInArea.Count > 0)
                 data.primaryTarget = data.unitsInArea[0];
 
+            Debug.Log($"[ResolveTarget] Returning with primaryTarget: {data.primaryTarget?.Name ?? "null"}");
             return data;
         }
 
