@@ -94,7 +94,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant
 
     void OnTriggerEnter2D(Collider2D other){
         Debug.Log("Trigger entered by: " + other.name);
-        if(other.GetComponent<BoxMover>())
+        if (PartyManager.Instance != null && PartyManager.Instance.IsPlayerControlled(other.GetComponent<ICombatant>()))
         {
             GameStateManager.Instance.EnterCombat();
         }

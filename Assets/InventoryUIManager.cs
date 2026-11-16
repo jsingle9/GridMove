@@ -22,7 +22,7 @@ public class InventoryUIManager : MonoBehaviour
 
     void Start()
     {
-        player = FindFirstObjectByType<BoxMover>();
+      //  player = FindFirstObjectByType<BoxMover>();
         UpdateUI(); // Initial update
     }
 
@@ -32,6 +32,27 @@ public class InventoryUIManager : MonoBehaviour
         UpdateUI();
     }
 
+    private void OnEnable()
+    {
+        if (PartyManager.Instance != null)
+        {
+            player = PartyManager.Instance.ActiveMember;
+            PartyManager.Instance.OnPartyMemberChanged += OnPartyMemberChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (PartyManager.Instance != null)
+        {
+            PartyManager.Instance.OnPartyMemberChanged -= OnPartyMemberChanged;
+        }
+    }
+
+    private void OnPartyMemberChanged(BoxMover newMember)
+    {
+        player = newMember;
+    }
 
     public void UpdateUI()
     {
