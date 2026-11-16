@@ -69,7 +69,7 @@ public class TargetingSystem
                     break;
                 case TargetingMode.AllyOrSelf:
                     if (occupant == user || IsAlly(user, occupant)) data.primaryTarget = occupant;
-                    break;    
+                    break;
                 case TargetingMode.Enemy:
                     if (IsEnemy(user, occupant)) data.primaryTarget = occupant;
                     break;
@@ -185,8 +185,9 @@ public class TargetingSystem
 
     private ICombatant FindPlayerBoxCombatant()
     {
-        BoxMover box = Object.FindFirstObjectByType<BoxMover>();
-        return box as ICombatant;
+        if (PartyManager.Instance != null && PartyManager.Instance.ActiveMember != null)
+            return PartyManager.Instance.ActiveMember as ICombatant;
+        return null;
     }
 
     public void HighlightValidTargets(Ability ability, ICombatant user)

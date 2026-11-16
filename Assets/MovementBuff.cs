@@ -19,6 +19,7 @@ public class MovementBuff : StatusEffect
     {
         originalSpeed = target.Speed;
         target.Speed += speedBonus;
+        target.RemainingMovement += speedBonus;
         Debug.Log($"{target.Name} gains +{speedBonus} movement for {RemainingTurns} turns (now {target.Speed})");
     }
 

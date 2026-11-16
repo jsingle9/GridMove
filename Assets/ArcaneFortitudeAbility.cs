@@ -7,7 +7,7 @@ public class ArcaneFortitudeAbility : Ability
     private int durationTurns;
     private bool usedThisCombat;
 
-    public ArcaneFortitudeAbility(int boost = 2, int duration = 3)
+    public ArcaneFortitudeAbility(int boost = 4, int duration = 3)
     {
         AbilityName = "Arcane Fortitude";
         CostType = AbilityCostType.BonusAction;

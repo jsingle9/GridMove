@@ -3,17 +3,16 @@ using UnityEngine.InputSystem;
 
 public class MouseInputHandler : MonoBehaviour
 {
-    public BoxMover boxMover;
+    private BoxMover boxMover;
     private GridController grid;
     private TargetingSystem targetingSystem;
 
-    void Start()
+    private void Start()
     {
-        boxMover = FindFirstObjectByType<BoxMover>();
-        grid = FindFirstObjectByType<GridController>();
-        if (grid != null)
+        if (PartyManager.Instance != null)
         {
-            targetingSystem = new TargetingSystem(grid);
+            boxMover = PartyManager.Instance.ActiveMember;
+            PartyManager.Instance.OnPartyMemberChanged += OnPartyMemberChanged;
         }
     }
 
@@ -50,4 +49,18 @@ public class MouseInputHandler : MonoBehaviour
 
         boxMover.HandleLeftClick();
     }
+
+    private void OnDestroy()
+    {
+        if (PartyManager.Instance != null)
+        {
+            PartyManager.Instance.OnPartyMemberChanged -= OnPartyMemberChanged;
+        }
+    }
+
+    private void OnPartyMemberChanged(BoxMover newMember)
+    {
+        boxMover = newMember;
+    }
+
 }

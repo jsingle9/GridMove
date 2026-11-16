@@ -51,12 +51,40 @@ public class CombatUIManager : MonoBehaviour
         UpdateAbilityButtons();
     }
 
+    private void OnEnable()
+    {
+      if (PartyManager.Instance != null && PartyManager.Instance.ActiveMember != null)
+      {
+          currentPlayer = PartyManager.Instance.ActiveMember;
+          PartyManager.Instance.OnPartyMemberChanged += OnPartyMemberChanged;
+      }
+    }
+
+    private void OnDisable()
+    {
+        if (PartyManager.Instance != null)
+        {
+            PartyManager.Instance.OnPartyMemberChanged -= OnPartyMemberChanged;
+        }
+    }
+
+    private void OnPartyMemberChanged(BoxMover newMember)
+    {
+        currentPlayer = newMember;
+
+        // Refresh UI to show the new member's abilities and resources
+        if (CombatManager.Instance != null && CombatManager.Instance.IsPlayerActive())
+        {
+            RefreshCombatUI();
+        }
+    }
+
     public void OnCombatStart()
     {
         if (combatUIPanel != null)
             combatUIPanel.SetActive(true);
 
-        currentPlayer = FindFirstObjectByType<BoxMover>();
+        //currentPlayer = FindFirstObjectByType<BoxMover>();
         RefreshCombatUI();
         AddLog("Combat begins!");
     }
