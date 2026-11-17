@@ -9,15 +9,43 @@ public class MouseInputHandler : MonoBehaviour
 
     private void Start()
     {
+        grid = FindFirstObjectByType<GridController>();
+        if (grid == null)
+        {
+            //grid = FindFirstObjectByType<GridController>();
+            Debug.Log($"GridController found: {grid}");
+        }
+
+        targetingSystem = null;
+        //if (targetingSystem == null)
+        /*{
+            //targetingSystem = FindFirstObjectByType<TargetingSystem>();
+            Debug.Log($"TargetingSystem found: {targetingSystem}");
+        }*/
+
         if (PartyManager.Instance != null)
         {
             boxMover = PartyManager.Instance.ActiveMember;
+            Debug.Log($"boxMover set to: {boxMover}");
             PartyManager.Instance.OnPartyMemberChanged += OnPartyMemberChanged;
+        }
+        else
+        {
+            Debug.LogError("PartyManager.Instance is NULL!");
         }
     }
 
     void Update()
     {
+        if (Keyboard.current.tabKey.wasPressedThisFrame)
+        {
+            if (PartyManager.Instance != null && PartyManager.Instance.Members.Count > 0)
+            {
+                int nextIndex = (PartyManager.Instance.GetActiveIndex() + 1) % PartyManager.Instance.Members.Count;
+                PartyManager.Instance.SetActiveByIndex(nextIndex);
+                Debug.Log($"Switched to party member {nextIndex}");
+            }
+        }
         // Show AOE preview on hover (only during targeting phase)
         if (GameStateManager.Instance.CurrentGameState == GameState.Combat &&
             CombatManager.Instance.IsPlayersTurn(boxMover) &&
@@ -42,6 +70,12 @@ public class MouseInputHandler : MonoBehaviour
         // Handle left click (original functionality)
         if (!Mouse.current.leftButton.wasPressedThisFrame)
             return;
+
+        if (boxMover == null)
+        {
+            Debug.LogWarning("boxMover is null, cannot handle click");
+            return;
+        }
 
         if (GameStateManager.Instance.CurrentGameState != GameState.FreeExplore &&
             GameStateManager.Instance.CurrentGameState != GameState.Combat)

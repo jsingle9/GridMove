@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 84ce2f114ad12bd4ebafc77060220324, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_Size: {x: 5.12, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!114 &3008226962890745494
 MonoBehaviour:
@@ -158,6 +158,11 @@ MonoBehaviour:
   breathOfLifeSpell: {fileID: 11400000, guid: 30c7f494049434ba88b3b1b891f55700, type: 2}
   cureWoundsSpell: {fileID: 11400000, guid: 47c51c33e70c94e70982d32bc33146ef, type: 2}
   burningHandsSpell: {fileID: 11400000, guid: 233f2b6c206b44a7b92caa1e7d41c8f9, type: 2}
+  magicMissleSpell: {fileID: 0}
+  shatterSpell: {fileID: 0}
+  fireBoltSpell: {fileID: 0}
+  vineGraspSpell: {fileID: 0}
+  longstriderSpell: {fileID: 0}
   spellTelegrapher: {fileID: 0}
   equippedWeapon: {fileID: 0}
 --- !u!114 &3931830472813988512
