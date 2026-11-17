@@ -2810,6 +2810,8 @@ MonoBehaviour:
   mysticButton: {fileID: 843301135}
   mageButton: {fileID: 1157924302}
   backButton: {fileID: 1549004566}
+  boxMoverPrefab: {fileID: 5640654273719775427, guid: d6579d7e8b0084533ae3fb3ba9ffae15, type: 3}
+  classDb: {fileID: 11400000, guid: b2b7b0f35e5404e0a97107e23f84d668, type: 2}
   classNameDisplay: {fileID: 75533713}
   classDescriptionDisplay: {fileID: 1710312925}
   mainMenuController: {fileID: 1817461826}
@@ -2883,7 +2885,7 @@ MonoBehaviour:
   testEnvironmentScene: SampleScene
   verticalSliceScene: VSlice
   classSelectionPanel: {fileID: 1735229000}
-  classDb: {fileID: 0}
+  classDb: {fileID: 11400000, guid: b2b7b0f35e5404e0a97107e23f84d668, type: 2}
 --- !u!4 &1817461827
 Transform:
   m_ObjectHideFlags: 0

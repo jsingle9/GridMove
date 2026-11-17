@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 /// <summary>
 /// Simple class selection UI for the main menu.
@@ -12,6 +13,8 @@ public class ClassSelectionUI : MonoBehaviour
     [SerializeField] private Button mysticButton;
     [SerializeField] private Button mageButton;
     [SerializeField] private Button backButton;
+    [SerializeField] private GameObject boxMoverPrefab;  // Assign in Inspector
+    [SerializeField] private ClassTemplateDatabase classDb;  // Assign in Inspector
 
     [SerializeField] private TextMeshProUGUI classNameDisplay;
     [SerializeField] private TextMeshProUGUI classDescriptionDisplay;
@@ -103,10 +106,7 @@ public class ClassSelectionUI : MonoBehaviour
             return;
         }
 
-        PlayerPrefs.SetString("SelectedClassId", selectedClassId);
-        PlayerPrefs.Save();
-        Debug.Log($"Saved SelectedClassId={selectedClassId}");        
-
+        // Just load the scene—GameSceneBootstrap will handle party setup
         if (mainMenuController != null)
         {
             mainMenuController.LoadVerticalSliceWithClass(selectedClassId);
@@ -114,6 +114,56 @@ public class ClassSelectionUI : MonoBehaviour
         else
         {
             Debug.LogError("MainMenuController not assigned to ClassSelectionUI!");
+        }
+    }
+
+    private void SetupParty()
+    {
+        if (boxMoverPrefab == null || classDb == null)
+        {
+            Debug.LogError("BoxMoverPrefab or ClassTemplateDatabase not assigned!");
+            return;
+        }
+
+        List<BoxMover> party = new List<BoxMover>();
+        string[] classIds = { "fighter", "mystic", "mage" };
+
+        foreach (string classId in classIds)
+        {
+            // Instantiate
+            GameObject instance = Instantiate(boxMoverPrefab);
+            BoxMover boxMover = instance.GetComponent<BoxMover>();
+
+            if (boxMover == null)
+            {
+                Debug.LogError($"BoxMoverPrefab missing BoxMover component!");
+                continue;
+            }
+
+            // Create sheet from template
+            var template = classDb.Get(classId);
+            if (template == null)
+            {
+                Debug.LogError($"No template for {classId}");
+                continue;
+            }
+
+            CharacterSheet sheet = CharacterFactory.CreateFromTemplate(template);
+            boxMover.SetCharacterSheet(sheet);
+
+            party.Add(boxMover);
+            Debug.Log($"Added {classId} to party");
+        }
+
+        // Register with PartyManager
+        if (PartyManager.Instance != null)
+        {
+            PartyManager.Instance.SetPartyMembers(party);
+            Debug.Log($"Party set up with {party.Count} members");
+        }
+        else
+        {
+            Debug.LogError("PartyManager.Instance is null!");
         }
     }
 
