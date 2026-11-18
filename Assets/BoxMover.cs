@@ -53,6 +53,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     public bool SecondWindUsedThisCombat { get; set; }
     public bool ActionSurgeUsedThisCombat { get; set; }
     [SerializeField] private FighterLoadout startingLoadout;
+    [SerializeField] private MysticLoadout mysticLoadout;
+    [SerializeField] private MageLoadout mageLoadout;
     [SerializeField] private SpellSlots spellSlots = new SpellSlots();
     [SerializeField] private SpellDefinition arcingBoltSpell;
     [SerializeField] private SpellDefinition breathOfLifeSpell;
@@ -73,6 +75,9 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     private ArmorItem equippedArmorItem;
     private ShieldItem equippedShieldItem;
 
+    [SerializeField] private Sprite fighterSprite;
+    [SerializeField] private Sprite mysticSprite;
+    [SerializeField] private Sprite mageSprite;
     [SerializeField] private WeaponItem equippedWeapon;
 
     public WeaponItem EquippedWeapon
@@ -108,6 +113,13 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     void Awake()
     {
+        // first first check if party manager already  created sheets
+        if (characterSheet != null)
+        {
+            Debug.Log($"[BoxMover.Awake] Sheet already set by PartyManager, skipping load");
+            return;
+        }
+
         // FIRST: Try to load from GameStateManager
         if (GameStateManager.Instance != null)
         {
@@ -632,6 +644,59 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         }
     }
 
+    private void ApplyLoadoutForClass(string classId)
+    {
+        switch (classId)
+        {
+            case "fighter":
+                if (startingLoadout != null)
+                {
+                    FighterLoadoutApplier.ApplyTo(this, startingLoadout);
+                    RefreshDerivedCombatStats();
+                }
+                break;
+
+            case "mystic":
+                if (mysticLoadout != null)
+                {
+                    // Assuming you have a MysticLoadoutApplier
+                    MysticLoadoutApplier.ApplyTo(this, mysticLoadout);
+                    RefreshDerivedCombatStats();
+                }
+                break;
+
+            case "mage":
+                if (mageLoadout != null)
+                {
+                    // Assuming you have a MageLoadoutApplier
+                    MageLoadoutApplier.ApplyTo(this, mageLoadout);
+                    RefreshDerivedCombatStats();
+                }
+                break;
+        }
+    }
+
+    private void SetSpriteForClass(string classId)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr == null) return;
+
+        switch (classId)
+        {
+            case "fighter":
+                if (fighterSprite != null) sr.sprite = fighterSprite;
+                break;
+            case "mystic":
+                if (mysticSprite != null) sr.sprite = mysticSprite;
+                break;
+            case "mage":
+                if (mageSprite != null) sr.sprite = mageSprite;
+                break;
+        }
+
+        Debug.Log($"[SetSpriteForClass] Set sprite for {classId}");
+    }
+
     void HandleCombatMovementClick()
     {
         if(!HasMove)
@@ -857,7 +922,15 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         characterSheet = loadedSheet;
         Debug.Log($"SetCharacterSheet called. Incoming HP={characterSheet.CurrentHP}");
+
+        // Apply the correct loadout based on class
+        ApplyLoadoutForClass(characterSheet.ClassId);
+
+        // Set sprite based on class
+        //SetSpriteForClass(characterSheet.ClassId);
+
         RebuildAbilities();
+
         // Recompute maxHP/AC/speed from loaded sheet
         RefreshDerivedCombatStats();
 

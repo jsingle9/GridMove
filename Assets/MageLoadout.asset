@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MageLoadout
   m_EditorClassIdentifier: Assembly-CSharp::MageLoadout
   startingWeapon: {fileID: 11400000, guid: 3018e7120a72446b6881570327d155bb, type: 2}
-  startingArmor: {fileID: 0}
+  startingArmor: {fileID: 11400000, guid: 15cd78b42b19e4da08ce886cc2644929, type: 2}
   startingShield: {fileID: 0}
   level0Spells:
   - {fileID: 11400000, guid: 4679137fdaf9a4ba7bbe706504661ba3, type: 2}

@@ -12,16 +12,16 @@ public static class FighterLoadoutApplier
             return;
         }
 
-        if (loadout.longsword != null)
+        if (loadout.weapon != null)
         {
-            eq.AddItem(loadout.longsword);
-            eq.EquipWeapon(loadout.longsword);
+            eq.AddItem(loadout.weapon);
+            eq.EquipWeapon(loadout.weapon);
         }
 
-        if (loadout.scaleMail != null)
+        if (loadout.armor != null)
         {
-            eq.AddItem(loadout.scaleMail);
-            eq.EquipArmor(loadout.scaleMail);
+            eq.AddItem(loadout.armor);
+            eq.EquipArmor(loadout.armor);
         }
 
         if (loadout.shield != null)
