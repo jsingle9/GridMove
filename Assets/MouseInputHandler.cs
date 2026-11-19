@@ -39,11 +39,25 @@ public class MouseInputHandler : MonoBehaviour
     {
         if (Keyboard.current.tabKey.wasPressedThisFrame)
         {
+            // Only allow party member switching during combat if it's a player turn
+            // (the system will handle advancing turns properly through initiative)
             if (PartyManager.Instance != null && PartyManager.Instance.Members.Count > 0)
             {
-                int nextIndex = (PartyManager.Instance.GetActiveIndex() + 1) % PartyManager.Instance.Members.Count;
-                PartyManager.Instance.SetActiveByIndex(nextIndex);
-                Debug.Log($"Switched to party member {nextIndex}");
+                // Check if currently in combat during a player turn
+                bool inCombat = GameStateManager.Instance?.CurrentGameState == GameState.Combat;
+                bool isPlayerTurn = inCombat && CombatManager.Instance != null && CombatManager.Instance.IsPlayerActive();
+                
+                if (isPlayerTurn)
+                {
+                    Debug.Log("Cannot switch party members during combat. Each party member has their own turn in initiative order.");
+                }
+                else
+                {
+                    // Allow switching in exploration or between turns
+                    int nextIndex = (PartyManager.Instance.GetActiveIndex() + 1) % PartyManager.Instance.Members.Count;
+                    PartyManager.Instance.SetActiveByIndex(nextIndex);
+                    Debug.Log($"Switched to party member {nextIndex}");
+                }
             }
         }
         // Show AOE preview on hover (only during targeting phase)
