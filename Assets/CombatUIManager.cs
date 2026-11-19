@@ -53,11 +53,11 @@ public class CombatUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-      if (PartyManager.Instance != null && PartyManager.Instance.ActiveMember != null)
-      {
-          currentPlayer = PartyManager.Instance.ActiveMember;
-          PartyManager.Instance.OnPartyMemberChanged += OnPartyMemberChanged;
-      }
+        if (PartyManager.Instance != null)
+        {
+            currentPlayer = PartyManager.Instance.ActiveMember;
+            PartyManager.Instance.OnPartyMemberChanged += OnPartyMemberChanged;
+        }
     }
 
     private void OnDisable()
@@ -72,7 +72,7 @@ public class CombatUIManager : MonoBehaviour
     {
         currentPlayer = newMember;
 
-        // Refresh UI to show the new member's abilities and resources
+        // Refresh UI for the new active party member during combat
         if (CombatManager.Instance != null && CombatManager.Instance.IsPlayerActive())
         {
             RefreshCombatUI();
