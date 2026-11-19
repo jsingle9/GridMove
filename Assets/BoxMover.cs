@@ -433,9 +433,27 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         string encounterId = triggerEnemy.EncounterId;
 
-        List<ICombatant> participants = new List<ICombatant> { self };
+        List<ICombatant> participants = new List<ICombatant>();
 
-        // Build participants from SAME encounter only
+        // Add all living party members
+        if (PartyManager.Instance != null)
+        {
+            foreach (var member in PartyManager.Instance.Members)
+            {
+                if (member != null && !member.IsDead())
+                {
+                    participants.Add(member as ICombatant);
+                }
+            }
+        }
+        else
+        {
+            // Fallback: just add self
+            participants.Add(self);
+        }
+
+        Debug.Log($"Added {participants.Count} party members to combat");
+
         foreach (Collider2D hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
@@ -487,6 +505,7 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
     public void StartTurn()
     {
+        Debug.Log($"[StartTurn] {characterSheet.ClassId} - HasAction set to true");
         if(turnStarted) return;
 
         Debug.Log("Player turn started");
@@ -923,21 +942,19 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         characterSheet = loadedSheet;
         Debug.Log($"SetCharacterSheet called. Incoming HP={characterSheet.CurrentHP}");
 
-        // Apply the correct loadout based on class
-        ApplyLoadoutForClass(characterSheet.ClassId);
+        // Apply class rules to populate features and stats
+        CharacterClassType classType = ClassIdToClassType(characterSheet.ClassId);
+        var rules = ClassRulesFactory.Create(classType);
+        rules?.ApplyLevel1(characterSheet);
+        rules?.ApplyLevelUp(characterSheet, 2);
 
-        // Set sprite based on class
-        //SetSpriteForClass(characterSheet.ClassId);
+        ApplyLoadoutForClass(characterSheet.ClassId);
+        SetSpriteForClass(characterSheet.ClassId);
 
         RebuildAbilities();
-
-        // Recompute maxHP/AC/speed from loaded sheet
         RefreshDerivedCombatStats();
 
-        // Final authoritative load: sheet -> runtime (clamped)
         currentHP = Mathf.Clamp(characterSheet.CurrentHP, 0, maxHP);
-
-        // Keep sheet and runtime in sync after clamp
         characterSheet.CurrentHP = currentHP;
 
         Debug.Log($"After SetCharacterSheet: SheetHP={characterSheet.CurrentHP}, CurrentHP={CurrentHP}, MaxHP={maxHP}");
@@ -947,6 +964,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
             AbilityUI.Instance.player = this;
             AbilityUI.Instance.RefreshAbilityButtons();
         }
+
+        statusManager = new StatusManager(this);
     }
 
     // this method is just for playtesting / debugging purposes

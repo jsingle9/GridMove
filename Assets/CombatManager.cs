@@ -32,6 +32,13 @@ public class CombatManager : MonoBehaviour{
       ICombatant current = combatants[currentIndex];
 
       if(current.IsPlayerControlled()){
+          // Set the active party member at combat start
+          if (current is BoxMover boxMover && PartyManager.Instance != null)
+          {
+              PartyManager.Instance.SetActive(boxMover);
+              Debug.Log($"Combat started. Active party member: {boxMover.Name}");
+          }
+
           SetCombatState(CombatState.PlayerTurn);
           SetPlayerPhase(PlayerTurnPhase.WaitingForAction);
       }
@@ -124,9 +131,15 @@ public class CombatManager : MonoBehaviour{
 
       Debug.Log(">>> NEW TURN: " + next);
 
-      next.StartTurn();
+      next.StartTurn();  // Sets HasAction = true
 
       if(next.IsPlayerControlled()){
+
+        if (next is BoxMover boxMover && PartyManager.Instance != null)
+        {
+            PartyManager.Instance.SetActive(boxMover);
+            Debug.Log($"Set active party member: {boxMover.Name}");
+        }
           if(CombatUIManager.Instance != null)
               CombatUIManager.Instance.OnPlayerTurnStart();
       }
@@ -134,7 +147,6 @@ public class CombatManager : MonoBehaviour{
           if(CombatUIManager.Instance != null)
               CombatUIManager.Instance.OnEnemyTurnStart();
       }
-
       turnAdvancing = false;
   }
 
@@ -244,7 +256,10 @@ public class CombatManager : MonoBehaviour{
       if(combatants == null || combatants.Count == 0)
           return;
 
-      BoxMover player = FindFirstObjectByType<BoxMover>();
+      BoxMover player = PartyManager.Instance != null
+          ? PartyManager.Instance.ActiveMember
+          : FindFirstObjectByType<BoxMover>();
+
       if(player == null)
           return;
 
