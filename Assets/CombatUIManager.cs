@@ -72,6 +72,13 @@ public class CombatUIManager : MonoBehaviour
     {
         currentPlayer = newMember;
 
+        // Update AbilityUI to point to the new active member
+        if (AbilityUI.Instance != null && newMember != null)
+        {
+            AbilityUI.Instance.player = newMember;
+            Debug.Log($"[CombatUIManager] Updated AbilityUI.player to {newMember.Name}");
+        }
+
         // Refresh UI for the new active party member during combat
         if (CombatManager.Instance != null && CombatManager.Instance.IsPlayerActive())
         {
