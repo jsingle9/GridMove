@@ -205,12 +205,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         intentExecutor = new IntentExecutor();
         intentExecutor.Initialize(grid, mover);
 
-        if (AbilityUI.Instance != null)
-        {
-            AbilityUI.Instance.player = this;
-            AbilityUI.Instance.RefreshAbilityButtons();
-        }
-
         Debug.Log($"[BoxMover.Start] Character ready: {characterSheet.ClassId}, HP={currentHP}/{maxHP}");
     }
 
@@ -1227,11 +1221,15 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         // Mystic & Mage get Cast Spell button
         if (characterSheet.ClassId == "mystic" || characterSheet.ClassId == "mage")
-            abilities.Add(new CastSpellAbility());    // Slot 4 (button 5)
+            abilities.Add(new CastSpellAbility());
+   // Slot 4 (button 5)
 
         // ADD SPELLS TO SPELLS LIST
         if (characterSheet.ClassId == "mystic")
         {
+            //mystic is a spell caster class with full casting
+            //abilities.Add(new CastSpellAbility());
+
             if (arcingBoltSpell != null)
                 spells.Add(new SpellAbility(arcingBoltSpell));
             if (breathOfLifeSpell != null)
@@ -1251,6 +1249,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         {
             if (characterSheet.FeatureIds.Contains(FeatureIds.ArcaneFortitude))
                 abilities.Add(new ArcaneFortitudeAbility());
+
+                //abilities.Add(new CastSpellAbility());
             // level 0 cantrips
             if (arcingBoltSpell != null)
                 spells.Add(new SpellAbility(arcingBoltSpell));
