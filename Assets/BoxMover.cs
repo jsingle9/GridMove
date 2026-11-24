@@ -7,7 +7,7 @@ using System.Linq;
 public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 {
     [SerializeField] GridController grid;
-    [SerializeField] UnitMover mover;
+    public UnitMover mover;
     List<Ability> abilities = new List<Ability>();
     TargetingSystem targeting;
     IntentExecutor intentExecutor;
@@ -79,6 +79,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
     [SerializeField] private Sprite mysticSprite;
     [SerializeField] private Sprite mageSprite;
     [SerializeField] private WeaponItem equippedWeapon;
+    // Make UnitMover accessible to PartyMovementManager
+    //public UnitMover mover => GetComponent<UnitMover>();
 
     public WeaponItem EquippedWeapon
     {
@@ -299,14 +301,37 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if(mover.IsMoving)
             return;
 
+        // Don't allow clicks while party is moving
+        if (PartyMovementManager.Instance != null && PartyMovementManager.Instance.IsPartyMoving)
+            return;
+
         Vector3 worldClick = GetMouseWorld();
         Vector3Int gridPos = grid.WorldToGrid(worldClick);
 
         if(!grid.IsWalkable(gridPos))
             return;
 
-        currentMoveIntent = new MoveIntent(gridPos);
-        ResolveMoveIntent();
+        // Check if we should move the whole party or just this character
+        // If this is the active member and there are other party members, move entire party
+        if (IsActivePartyLeader())
+        {
+            PartyMovementManager.Instance?.MovePartyToCell(gridPos);
+        }
+        else
+        {
+            // Individual character movement (not leader)
+            currentMoveIntent = new MoveIntent(gridPos);
+            ResolveMoveIntent();
+        }
+    }
+
+    // Helper method to check if this is the active party leader
+    private bool IsActivePartyLeader()
+    {
+        if (PartyManager.Instance == null)
+            return false;
+
+        return PartyManager.Instance.ActiveMember == this;
     }
 
     /// <summary>
@@ -953,12 +978,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
 
         Debug.Log($"After SetCharacterSheet: SheetHP={characterSheet.CurrentHP}, CurrentHP={CurrentHP}, MaxHP={maxHP}");
 
-        if (AbilityUI.Instance != null)
-        {
-            AbilityUI.Instance.player = this;
-            AbilityUI.Instance.RefreshAbilityButtons();
-        }
-
         statusManager = new StatusManager(this);
     }
 
@@ -1227,8 +1246,6 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         // ADD SPELLS TO SPELLS LIST
         if (characterSheet.ClassId == "mystic")
         {
-            //mystic is a spell caster class with full casting
-            //abilities.Add(new CastSpellAbility());
 
             if (arcingBoltSpell != null)
                 spells.Add(new SpellAbility(arcingBoltSpell));
