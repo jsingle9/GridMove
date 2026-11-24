@@ -153,9 +153,15 @@ public class CombatUIManager : MonoBehaviour
         if (currentPlayer == null || abilityButtons == null || abilityButtons.Length == 0)
             return;
 
+            Debug.Log($"[UpdateAbilityButtons] " +
+                $"currentPlayer={currentPlayer.Name}, " +
+                $"Total abilities in currentPlayer: {currentPlayer.GetAbilityCount()}, " +
+                $"UI buttons available: {abilityButtons.Length}");
+
         for (int i = 0; i < abilityButtons.Length; i++)
         {
             Ability ability = currentPlayer.GetAbility(i);
+            Debug.Log($"  Slot {i}: {(ability != null ? ability.AbilityName : "EMPTY")}");
             abilityButtons[i].SetAbility(ability, i);
         }
     }
