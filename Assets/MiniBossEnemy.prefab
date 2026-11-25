@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3999798319148086238}
   - component: {fileID: 8922826537559997795}
   - component: {fileID: 6128995983368999011}
+  - component: {fileID: 3761606105764315490}
   m_Layer: 0
   m_Name: MiniBossEnemy
   m_TagString: Untagged
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1776a135699194e078f0a201e18288cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiniBossEnemy
+  enemyDefinition: {fileID: 0}
   grid: {fileID: 0}
   maxHP: 25
   armorClass: 14
@@ -55,6 +57,8 @@ MonoBehaviour:
   damageDice: 1d8
   damageModifier: 4
   speed: 6
+  encounterId: encounter_01
+  fireballTelegraphStyle: {fileID: 0}
 --- !u!212 &6850189886367830044
 SpriteRenderer:
   serializedVersion: 2
@@ -176,3 +180,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DynamicObstacle
   gridController: {fileID: 0}
+--- !u!114 &3761606105764315490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409124937218125162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dce168185f343a5b819883f049181f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantActionFlash
+  spriteRenderer: {fileID: 6850189886367830044}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.12

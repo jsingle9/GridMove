@@ -72,6 +72,8 @@ public class PartyMovementManager : MonoBehaviour
             return;
         }
 
+        bool isExplorationMode = GameStateManager.Instance.CurrentGameState == GameState.FreeExplore;
+
         // For each party member, find path and queue movement
         foreach (var member in partyMembers)
         {
@@ -93,26 +95,37 @@ public class PartyMovementManager : MonoBehaviour
             }
 
             int moveCost = MovementCostUtility.CalculatePathCost(grid, path);
+            int remainingMovement = member.RemainingMovement;
 
-            // Clamp path to available movement
-            if (moveCost > member.RemainingMovement)
+            // In exploration mode, don't limit by movement budget
+            if (!isExplorationMode)
             {
-                int allowed = member.RemainingMovement;
-
-                if (allowed <= 0)
+                // Clamp path to available movement (combat mode only)
+                if (moveCost > remainingMovement)
                 {
-                    Debug.Log($"[PartyMovement] {member.Name} has no movement remaining");
-                    continue;
+                    int allowed = remainingMovement;
+
+                    if (allowed <= 0)
+                    {
+                        Debug.Log($"[PartyMovement] {member.Name} has no movement remaining");
+                        continue;
+                    }
+
+                    int spent;
+                    path = MovementCostUtility.TrimPathToBudget(grid, path, allowed, out spent);
+                    moveCost = spent;
+
+                    if (path == null || path.Count == 0)
+                    {
+                        Debug.Log($"[PartyMovement] {member.Name} cannot reach target within movement budget");
+                        continue;
+                    }
+
+                    remainingMovement -= moveCost;
                 }
-
-                int spent;
-                path = MovementCostUtility.TrimPathToBudget(grid, path, allowed, out spent);
-                moveCost = spent;
-
-                if (path == null || path.Count == 0)
+                else
                 {
-                    Debug.Log($"[PartyMovement] {member.Name} cannot reach target within movement budget");
-                    continue;
+                    remainingMovement -= moveCost;
                 }
             }
 
@@ -121,7 +134,7 @@ public class PartyMovementManager : MonoBehaviour
             {
                 Member = member,
                 Path = path,
-                RemainingMovement = member.RemainingMovement - moveCost,
+                RemainingMovement = remainingMovement,
                 IsMoving = false
             };
 
