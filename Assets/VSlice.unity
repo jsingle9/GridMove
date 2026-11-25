@@ -15968,36 +15968,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1409124937218125162, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 984862855}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
---- !u!1 &984862853 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1409124937218125162, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
-  m_PrefabInstance: {fileID: 984862852}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &984862854 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6850189886367830044, guid: 00d81b561cd604f07b993cee859e80de, type: 3}
-  m_PrefabInstance: {fileID: 984862852}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &984862855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 984862853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7dce168185f343a5b819883f049181f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatantActionFlash
-  spriteRenderer: {fileID: 984862854}
-  flashColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.12
 --- !u!1 &985321736
 GameObject:
   m_ObjectHideFlags: 0
