@@ -74,9 +74,11 @@ public class PartyMovementManager : MonoBehaviour
 
         bool isExplorationMode = GameStateManager.Instance.CurrentGameState == GameState.FreeExplore;
 
-        // For each party member, find path and queue movement
-        foreach (var member in partyMembers)
+        // Leader goes to target, followers get spaced behind in formation
+        for (int memberIndex = 0; memberIndex < partyMembers.Count; memberIndex++)
         {
+            var member = partyMembers[memberIndex];
+
             if (member == null || member.IsDead())
                 continue;
 
@@ -84,13 +86,65 @@ public class PartyMovementManager : MonoBehaviour
             if (startNode == null)
                 continue;
 
+            // Determine destination: leader goes to click, followers get formation positions
+            Vector3Int destination = targetCell;
+
+            if (memberIndex > 0)
+            {
+                // Followers: space them out in a line behind the leader
+                // Calculate direction from leader's current position to target
+                Vector3Int leaderPos = grid.WorldToGrid(partyMembers[0].GetWorldPosition());
+                Vector3Int direction = targetCell - leaderPos;
+
+                // Normalize direction to get a direction vector
+                Vector3Int normalized = new Vector3Int(
+                    direction.x != 0 ? (direction.x > 0 ? 1 : -1) : 0,
+                    direction.y != 0 ? (direction.y > 0 ? 1 : -1) : 0,
+                    0
+                );
+
+                // Place each follower offset from leader based on their index
+                // Follower 1 goes 1 cell back, Follower 2 goes 2 cells back, etc.
+                destination = targetCell - (normalized * memberIndex);
+
+                // If that position isn't walkable, try to find nearby alternative
+                if (!grid.IsWalkable(destination))
+                {
+                    // Try adjacent cells
+                    Vector3Int[] adjacent = new Vector3Int[]
+                    {
+                        destination + Vector3Int.left,
+                        destination + Vector3Int.right,
+                        destination + Vector3Int.up,
+                        destination + Vector3Int.down
+                    };
+
+                    bool foundAlternative = false;
+                    foreach (var alt in adjacent)
+                    {
+                        if (grid.IsWalkable(alt))
+                        {
+                            destination = alt;
+                            foundAlternative = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundAlternative)
+                    {
+                        Debug.Log($"[PartyMovement] {member.Name} has no valid formation position near {targetCell}");
+                        continue;
+                    }
+                }
+            }
+
             // Create movement intent for this member
-            MoveIntent intent = new MoveIntent(targetCell);
+            MoveIntent intent = new MoveIntent(destination);
             List<GridNode> path = resolver.Resolve(intent, startNode);
 
             if (path == null || path.Count == 0)
             {
-                Debug.Log($"[PartyMovement] {member.Name} has no path to {targetCell}");
+                Debug.Log($"[PartyMovement] {member.Name} has no path to {destination}");
                 continue;
             }
 
@@ -139,6 +193,8 @@ public class PartyMovementManager : MonoBehaviour
             };
 
             currentMovements.Add(movement);
+
+            Debug.Log($"[PartyMovement] {member.Name} (index {memberIndex}) -> destination {destination}");
         }
 
         if (currentMovements.Count == 0)
