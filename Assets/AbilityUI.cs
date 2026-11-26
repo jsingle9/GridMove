@@ -40,6 +40,13 @@ public class AbilityUI : MonoBehaviour
 
     private void Start()
     {
+        // Get the active player from PartyManager (exploration mode)
+        if (player == null && PartyManager.Instance != null)
+        {
+            player = PartyManager.Instance.ActiveMember;
+            Debug.Log($"[AbilityUI.Start] Set player from PartyManager: {player?.Name}");
+        }
+
         RefreshAbilityButtons();
     }
 
@@ -165,7 +172,7 @@ public class AbilityUI : MonoBehaviour
 
         targetingSystem.HighlightValidTargets(selectedAbility, player);
 
-        Debug.Log("[BeginTargetingForSelectedAbility] HighlightValidTargets completed");        
+        Debug.Log("[BeginTargetingForSelectedAbility] HighlightValidTargets completed");
 
         // Highlight valid targets for all ability types
         /*targetingSystem.HighlightValidTargets(
@@ -247,11 +254,18 @@ public class AbilityUI : MonoBehaviour
     public void RefreshAbilityButtons()
     {
         if (player == null || abilityButtons == null)
+        {
+            Debug.LogWarning($"RefreshAbilityButtons early exit: player={player}, buttons={abilityButtons}");
             return;
+        }
+
+        Debug.Log($"[RefreshAbilityButtons] abilityButtons.Length={abilityButtons.Length}, player ability count={player.GetAbilityCount()}");
 
         for (int i = 0; i < abilityButtons.Length; i++)
         {
             Ability ability = player.GetAbility(i);
+
+            Debug.Log($"  Slot {i}: ability={(ability != null ? ability.AbilityName : "NULL")} | Button active={abilityButtons[i].gameObject.activeSelf}");
 
             abilityButtons[i].gameObject.SetActive(
                 ability != null
@@ -263,4 +277,27 @@ public class AbilityUI : MonoBehaviour
             }
         }
     }
+
+    private void OnEnable()
+    {
+        if (PartyManager.Instance != null)
+        {
+            PartyManager.Instance.OnPartyMemberChanged += OnActivePartyMemberChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (PartyManager.Instance != null)
+        {
+            PartyManager.Instance.OnPartyMemberChanged -= OnActivePartyMemberChanged;
+        }
+    }
+
+    private void OnActivePartyMemberChanged(BoxMover newMember)
+    {
+        player = newMember;
+        RefreshAbilityButtons();
+        Debug.Log($"[AbilityUI] Party member changed to {newMember?.Name}");
+    }    
 }
