@@ -1235,8 +1235,8 @@ public class BoxMover : MonoBehaviour, ICombatant, IEquipmentUser
         if (characterSheet.FeatureIds.Contains(FeatureIds.MindThrustI))
             abilities.Add(new MindThrustAbility());  // STAYS IN ABILITIES
 
-        if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
-            abilities.Add(new PsionicStrikeAbility());  // STAYS IN ABILITIES
+        //if (characterSheet.FeatureIds.Contains(FeatureIds.PsionicStrike))
+          //  abilities.Add(new PsionicStrikeAbility());  // STAYS IN ABILITIES
 
         // Mystic & Mage get Cast Spell button
         if (characterSheet.ClassId == "mystic" || characterSheet.ClassId == "mage")
